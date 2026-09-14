@@ -1,5 +1,5 @@
 {
- "_note": "Reviewed degenerate-output flags (eval/suite.py, ruling 2026-09-13). A flag listed here is a real model behaviour, not a harness artefact, and its score is shown as measured with this note in the table footnote. Key: <stage>_<split>, then task. Qwen3-1.7B-tamil-Instruct entries added 2026-09-13 and confirmed by Vignesh 2026-09-14 (reviewed entry with a table footnote). Qwen3.5-2B GSM8K entry added and accepted by Vignesh 2026-09-14 after a 24-item sample review.",
+ "_note": "Reviewed degenerate-output flags (eval/suite.py). A flag listed here is a real model behaviour, not a harness artefact, and its score is shown as measured with this note in the table footnote. Key: <stage>_<split>, then task.",
  "cmp_Qwen3-1.7B-tamil-Instruct_chat_test": {
   "flores_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template (1,000 of 1,012 generations in Tamil script); a model failure scored as measured",
   "in22gen_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template; a model failure scored as measured"
@@ -9,6 +9,6 @@
   "in22gen_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template; a model failure scored as measured"
  },
  "cmp_Qwen3.5-2B_test": {
-  "gsm8k_en": "under the raw prompt the model gives a short final \"Answer: N\" line, often with no working, and repeats that line until the 512-token cap (16 of 24 regenerated samples); the scorer reads the last number, which is the answer the model gave, so the loop does not change the score; a model behaviour scored as measured (reviewed and accepted by Vignesh 2026-09-14)"
+  "gsm8k_en": "under the raw prompt the model gives a short final \"Answer: N\" line, often with no working, and repeats that line until the 512-token cap (16 of 24 regenerated samples); the scorer reads the last number, which is the answer the model gave, so the loop does not change the score; a model behaviour scored as measured"
  }
 }

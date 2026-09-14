@@ -27,7 +27,7 @@ def main():
     lic = open("data/LICENSES.md").read()
     lines.append(lic)
     lines += ["", "## Knowledge cutoff",
-              "Tamil Wikipedia content is from the 2023-11 dump (to be updated to 2026-08 only if the recency top-up experiment is kept); web crawl cutoff 2025-10 (fineweb-2 release); IndicCorpV2 is a 2022-2023 crawl. The model has no knowledge of events after that, and as a 2B model it makes factual errors outside the literature knowledge base."]
+              "Tamil Wikipedia content in the training data is from the 2023-11 dump (the serving stack's retrieval index uses the 2026-08 dump); web crawl cutoff 2025-10 (fineweb-2 release); IndicCorpV2 is a 2022-2023 crawl. The model has no knowledge of events after that, and as a 2B model it makes factual errors outside the literature knowledge base."]
     lines += ["", "## Wikipedia-derived instruction rows (round 3 onwards)",
               "Some supervised fine-tuning rows are grounded on Tamil Wikipedia and Tamil Wikibooks passages (CC BY-SA 4.0). Each such row carries the source title and URL; served answers that draw on Wikipedia carry an attribution line; these rows are Wikipedia-derived under CC BY-SA and are never redistributed under any other license."]
     lines += ["", "## What is and is not redistributed",

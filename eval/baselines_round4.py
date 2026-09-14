@@ -472,6 +472,62 @@ def table(rows, mode, split, title_note):
         L.append("")
     return L
 
+def public_note(text):
+    """Card-facing wording (2026-09-14): the substance of a note without internal process references (who reviewed and when, ruling
+    dates, log file paths)."""
+    import re as _re
+    t = _re.sub(r"\s*\((?:reviewed and )?(?:accepted|confirmed|approved)[^()]*\)", "", text)
+    t = _re.sub(r"[;,]?\s*\(?evidence:? logs/[^)]*\)?", "", t)
+    t = _re.sub(r"\s*\((?:ruling|rulings) [^()]*\)", "", t)
+    return t.strip()
+
+STATE_FOR_TABLES = {}
+def load_n(stage, split):
+    p = os.path.join(HERE, "results", f"{stage}_{split}.json")
+    return {f"{r['benchmark']}:{r['metric']}": r.get("n") for r in json.load(open(p))} if os.path.exists(p) else {}
+
+def running_models(rows):
+    """Models in the comparison that have not finished (not skipped, not removed, no complete result set)."""
+    return [r["model"] for r in rows if not r.get("not_run") and not r["model"].endswith("(locked TEST split)") and not r["scores"].get("raw_test") and not r["scores"].get("chat_test")]
+
+def table_t(rows, mode, split, title_note):
+    """Tables (a) and (b), transposed (2026-09-14): metrics as rows with their direction and tie margin, models as columns with their
+    parameter count, a model-group row, best scores bold within the tie margin, provisional rows marked (eval/table_rank.py)."""
+    import table_rank as TR
+    metrics = METRICS_TEST + (["probe_letter", "probe_option_identify", "probe_option_meaning"] if mode == "raw" else [])
+    shown = [r for r in rows if not r.get("not_run") and r["scores"].get(f"{mode}_{split}")]
+    running = running_models(rows)
+    cols = []
+    for cat in CATEGORIES:
+        for r in [x for x in shown if x["category"] == cat]:
+            p = r.get("params"); ps = f"{p/1e9:.2f}B" if p else f"~{r['size_b']}B"
+            cols.append((r["model"], f"{r['model']} ({ps})", cat))
+    stage_of = lambda n: f"cmp_{n}" if mode == "raw" else f"cmp_{n}_chat"
+    table_rows = [(None, "licence", {r["model"]: r["licence"] for r in shown}, None)]
+    tpw = {}
+    for r in shown:
+        if r.get("tok_per_word") is None: raise MissingResult(f"{r['model']}: tokens per Tamil word missing")
+        tpw[r["model"]] = r["tok_per_word"]
+    table_rows.append(("tok_per_word", "tokens per Tamil word", tpw, None))
+    for m in metrics:
+        vals, ns = {}, []
+        for r in shown:
+            v = r["scores"][f"{mode}_{split}"].get(m) if not m.startswith("probe") else r.get(m)
+            if v is None: raise MissingResult(f"{r['model']}: {m} missing in {mode}_{split} (ruling 2026-09-12: a missing result key fails the table)")
+            vals[r["model"]] = v
+            if not m.startswith("probe"):
+                n = load_n(stage_of(r["model"]), split).get(m)
+                if n: ns.append(n)
+        n = min(ns) if ns else (380 if m == "probe_letter" else 190)   # probe: identify source and meaning, 190 items each
+        table_rows.append((m, SHORT[m], vals, n))
+    src = lambda m: "tpw" if m == "tok_per_word" else ("probe" if m.startswith("probe") else mode)
+    body, decisions = TR.transposed(cols, table_rows, running, src, state=STATE_FOR_TABLES)
+    TR.write_decisions(f"{mode}_{split}", decisions)
+    L = [title_note, "", TR.CAPTION, ""] + body + [""]
+    note = TR.provisional_note(decisions)
+    if note: L += [note, ""]
+    return L
+
 def render(res, a):
     import suite
     rows = []
@@ -499,12 +555,13 @@ def render(res, a):
     va, vb, vd = check_versions("a"), check_versions("b"), check_versions("dev")   # raises on a mixed table
     st = dict(res.get("_storage") or {}); st.setdefault("free_gb_end", "run in progress")
     common = (f"Every number was produced locally by eval/suite.py and eval/run_probe.py on the LOCKED TEST SPLITS (full, no cap) with greedy decoding and bf16 weights; "
-              "no number is copied from a paper or a model card. The metric is named in every column header. Tokens per Tamil word: each model's tokenizer over the first 300 FLORES Tamil dev sentences. "
+              "no number is copied from a paper or a model card. The metric and its direction are named in the first column of every row; each column is one model with its parameter count. Tokens per Tamil word: each model's tokenizer over the first 300 FLORES Tamil dev sentences. "
               f"Storage rule: one baseline on disk per parallel slot, purged after its results; free space at start {need(st, 'free_gb_start', what='storage record')} GB, " + (f"at end {st['free_gb_end']} GB. " if isinstance(st.get('free_gb_end'), (int, float)) else "at end: run in progress. ") +
               "Generation is greedy in left-padded batches with EAGER attention for every model, except GSM8K, which decodes one item at a time in every mode (batching shifted its long chain-of-thought answers): padded SDPA attention shifted scores on some architectures (Gemma-3-1B lost up to 2.6 chrF++ on Tamil-to-English), eager reproduces single-item decoding within noise on our model and on Gemma-3-1B (eval/results/batch_check.md, eval/HARNESS_NOTES.md). Every row of a table comes from one harness version, named in the table title.")
-    ta = table(rows, "raw", "test", f"# Table (a): identical raw prompts, test split ({time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}, commit {suite.git_commit()}, harness version {va})\n\n" + common +
+    global STATE_FOR_TABLES; STATE_FOR_TABLES = res
+    ta = table_t(rows, "raw", "test", f"# Table (a): identical raw prompts, test split ({time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())}, commit {suite.git_commit()}, harness version {va})\n\n" + common +
                " Table (a): the SAME raw prompt for every model (eval/prompts/*.txt), no chat template for any model including ours, so chat-tuned models that expect their template (Qwen3.5 thinking modes, Gemma) are penalised on generation tasks; that is the design of this table, not a defect of those models.")
-    tb = table(rows, "chat", "test", f"# Table (b): each model with its own chat template and card-recommended system prompt, test split (harness version {vb})\n\n" + common +
+    tb = table_t(rows, "chat", "test", f"# Table (b): each model with its own chat template and card-recommended system prompt, test split (harness version {vb})\n\n" + common +
                " Table (b): every model wrapped in its OWN chat template with the system prompt its model card recommends (none for most; listed below), thinking disabled where the template supports it; ours with its own chat template. A model without a chat template would keep the raw prompt here; every model in the table has one (Sarvam-1's tokenizer ships a Llama 2 style [INST] template). The literature probe runs on raw weights only and is shown in table (a).")
     import preamble_share as PS
     pre = []
@@ -514,7 +571,7 @@ def render(res, a):
             a_, t_ = PS.local_share(stage)
             note = " (ours: an instruction-following result of the answer format taught in SFT, not a measure of translation quality)" if n == "tamil-lm-2b-instruct-r4" else ""
             pre.append(f"{n} {100*a_/t_:.1f}% ({a_} of {t_}){note}")
-    tb += ["Translations scored by their first line, the harness rule for every model (ruling 2026-09-13). Share of each model's translations whose first line is a preamble rather than a translation (the first non-empty line ends with a colon after markdown emphasis is removed; eval/preamble_share.py), which score near zero under that rule: " + "; ".join(pre) + ". The extracted-body score for every model is in table (e) (comparison_translation_rules.md), and every comparison claim uses it.", ""]
+    tb += ["Translations scored by their first line, the harness rule for every model. Share of each model's translations whose first line is a preamble rather than a translation (the first non-empty line ends with a colon after markdown emphasis is removed; eval/preamble_share.py), which score near zero under that rule: " + "; ".join(pre) + ". The extracted-body score for every model is in table (e) (comparison_translation_rules.md), and every comparison claim uses it.", ""]
     tb += ["Bits per character in table (b) is the same measurement as in table (a), except for our model: with no start token, the first text token is scored after the end-of-sequence token, and our chat mode loads the instruct tokenizer, whose end-of-sequence token is <|im_end|> rather than the base tokenizer's <|endoftext|>. Quote our bpc from table (a).", ""]
     tb += ["System prompts used in table (b): " + "; ".join(f"{k}: \"{v}\"" for k, v in CHAT_HINTS.items()) + "; every other model: none (template only).", ""]
     ours = next((r for r in rows if r["category"] == "ours"), None)
@@ -529,18 +586,18 @@ def render(res, a):
     by_spec = {}
     for n in checks:
         by_spec.setdefault(checks[n].get("spec") or (checks[n].get("note") and "verified in eval/results/batch_check.md (300 dev items)") or V1, []).append(n)
-    notes = ["", "Generation mode per model (batched harness safeguard, rulings 2026-09-12 and 2026-09-13: each model's dev check, batched against single-item, both eager, decides its mode; check used per model: " + " | ".join(f"{sp}: {', '.join(ns)}" for sp, ns in sorted(by_spec.items())) + "): "
+    notes = ["", "Generation mode per model (batched harness safeguard: each model's dev check, batched against single-item, both eager, decides its mode; check used per model: " + " | ".join(f"{sp}: {', '.join(ns)}" for sp, ns in sorted(by_spec.items())) + "): "
              + "batched: " + (", ".join(n for n, m in modes.items() if m == "batched") or "none") + "; single-item: "
              + (", ".join(f"{n} (failed the check on {'; '.join(checks[n].get('failed', []))})" if checks[n].get("failed") else f"{n} ({checks[n].get('reason', 'check not run')})" for n, m in modes.items() if m == "single") or "none") + ".",
-             "", "Models not run and why:"] + [f"- {r['model']}: {r['not_run']}" for r in rows if r.get("not_run")]
+             "", "Models not run and why:"] + [f"- {r['model']}: {public_note(r['not_run'])}" for r in rows if r.get("not_run")]
     notes += [f"- {r['model']} (raw mode note): {r['raw_note']}" for r in rows if r.get("raw_note")]
-    notes += ["", "Start token (harness rule bos-v1, ruling 2026-09-13): raw prompts and bits-per-character texts begin with each tokenizer's own defined start token and carry no other special tokens; chat-templated prompts are tokenized as the template writes them. Before bos-v1, generation relied on the tokenizer to add the token (Gemma 4's tokenizer adds none, which made its raw outputs degenerate) and the log-likelihood tasks had none for any model."]
+    notes += ["", "Start token (harness rule bos-v1): raw prompts and bits-per-character texts begin with each tokenizer's own defined start token and carry no other special tokens; chat-templated prompts are tokenized as the template writes them. Before bos-v1, generation relied on the tokenizer to add the token (Gemma 4's tokenizer adds none, which made its raw outputs degenerate) and the log-likelihood tasks had none for any model."]
     ba = os.path.join(HERE, "results", "bos_before_after.json")
     if os.path.exists(ba):
         bj = json.load(open(ba)); moved = bj.get("material") or []
         notes += ["Effect of the start token on raw-mode MILU, MMLU and Belebele, per re-run model (eval/results/bos_before_after.md): " + ("; ".join(moved) + "." if moved else f"no model moved by {bj.get('threshold_points')} accuracy points or more." ) + (" Still to re-run: " + ", ".join(bj["pending"]) + "." if bj.get("pending") else "")]
-    notes += ["", "Degenerate-output check (ruling 2026-09-13): a generation task is refused when at least half of its generations repeat the prompt's last line or loop on one line, when a translation task scores chrF++ below 2 with non-empty generations, or when bpc exceeds 4.8 (Tamil) or 6.0 (Tanglish); refused cells read \"degenerate\" and never show a score."]
-    notes += [f"- degenerate, not scored: {x}" for x in dict.fromkeys(DEGENERATE_CELLS)] + [f"- flagged and reviewed, shown as measured: {x}" for x in dict.fromkeys(REVIEWED_NOTES)]
+    notes += ["", "Degenerate-output check: a generation task is refused when at least half of its generations repeat the prompt's last line or loop on one line, when a translation task scores chrF++ below 2 with non-empty generations, or when bpc exceeds 4.8 (Tamil) or 6.0 (Tanglish); refused cells read \"degenerate\" and never show a score."]
+    notes += [f"- degenerate, not scored: {x}" for x in dict.fromkeys(DEGENERATE_CELLS)] + [f"- flagged and reviewed, shown as measured: {public_note(x)}" for x in dict.fromkeys(REVIEWED_NOTES)]
     for lg in glob.glob(os.path.join(ROOT, "logs", "cmp_gpt-oss-20b_raw_test.log")):
         for line in open(lg, encoding="utf-8", errors="ignore"):
             if "[suite] precision:" in line:
@@ -564,32 +621,48 @@ def render_translation_rules(rows):
         vers = {r["harness"] for r in d.values()}
         if vers != {"extract-v1"}: raise MissingResult(f"{fname}: extract rule versions {vers}; a table row must come from one rule version")
         return d
-    head = "| model | " + " | ".join(f"{t[1]} first line | {t[1]} extracted" for t in tasks) + " |"
-    sep = "|" + "---|" * (1 + 2 * len(tasks))
+    import table_rank as TR
     L = [f"# Table (e): translation chrF++ under two scoring rules, locked test split ({time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())})", "",
-         "Both columns come from the same generations. First line: the harness rule used in tables (a), (b) and (d), text.split(newline)[0]. "
+         "Both scores come from the same generations. First line: the harness rule used in tables (a), (b) and (d), text.split(newline)[0]. "
          "Extracted (rule extract-v1, eval/extract_score.py): markdown emphasis removed, leading empty lines and lines ending with a colon skipped, then the first remaining line. "
-         "A model without its four translation captures yet is not listed; the captures for models that ran before capture existed come from a re-run of the translation tasks only.", ""]
-    srcs = {}
+         "A model without its four translation captures yet is not listed; the captures for models that ran before capture existed come from a re-run of the translation tasks only.", "",
+         TR.CAPTION, ""]
+    srcs = {}; running = running_models(rows)
     for mode, suffix, title in (("raw", "", "identical raw prompts (as table a)"), ("chat", "_chat", "own chat template (as table b)")):
-        L += [f"**{title}**", "", head, sep]; shown = 0
+        cols, data = [], {}
         for r in rows:
-            if r["model"].endswith("(locked TEST split)"): continue
+            if r["model"].endswith("(locked TEST split)") or r.get("not_run") or not r["scores"].get(f"{mode}_test"): continue
             d = load(f"extract_cmp_{r['model']}{suffix}_test.json")
             if d is None: continue
             src_v = {x.get("source_harness", "unrecorded") for x in d.values()}
             srcs.setdefault(mode, set()).update(version_key(v) for x in src_v for v in x.split(","))
             sc = r["scores"].get(f"{mode}_test") or {}
-            if any(sc.get(f"{t}:chrf++") == "degenerate" for t, _ in tasks):   # the suite refused these generations: no score from them in any table
-                L.append(f"| {r['model']} | " + " | ".join("degenerate | degenerate" for _ in tasks) + " |"); shown += 1; continue
-            L.append(f"| {r['model']} | " + " | ".join(f"{need(d, (t, 'chrf++_firstline'), 'score'):.1f} | {need(d, (t, 'chrf++_extracted'), 'score'):.1f}" for t, _ in tasks) + " |"); shown += 1
+            p_ = r.get("params"); ps = f"{p_/1e9:.2f}B" if p_ else f"~{r['size_b']}B"
+            cols.append((r["model"], f"{r['model']} ({ps})", r["category"]))
+            for t, _ in tasks:
+                bad = sc.get(f"{t}:chrf++") == "degenerate"   # the suite refused these generations: no score from them in any table
+                data[(r["model"], f"{t}:chrf++_firstline")] = "degenerate" if bad else need(d, (t, "chrf++_firstline"), "score")
+                data[(r["model"], f"{t}:chrf++_extracted")] = "degenerate" if bad else need(d, (t, "chrf++_extracted"), "score")
         if mode == "chat":
-            for label, slug in (("Gemini 3.5 Flash-Lite (hosted)", "google_gemini-3.5-flash-lite"), ("GPT-5.4 nano (hosted)", "openai_gpt-5.4-nano"), ("gpt-oss-20b (hosted, any provider)", "openai_gpt-oss-20b"), ("gpt-oss-120b (hosted, any provider)", "openai_gpt-oss-120b")):
+            for label, slug in (("Gemini 3.5 Flash-Lite", "google_gemini-3.5-flash-lite"), ("GPT-5.4 nano", "openai_gpt-5.4-nano"), ("gpt-oss-20b (any provider)", "openai_gpt-oss-20b"), ("gpt-oss-120b (any provider)", "openai_gpt-oss-120b")):
                 d = load(f"extract_hosted_{slug}_test.json")
                 if d is None: continue
-                L.append(f"| {label} | " + " | ".join(f"{need(d, (t, 'chrf++_firstline'), 'score'):.1f} | {need(d, (t, 'chrf++_extracted'), 'score'):.1f}" for t, _ in tasks) + " |"); shown += 1
-        if not shown: L.append("| (no captures yet) |" + " |" * (2 * len(tasks)))
-        L.append("")
+                cols.append((slug, label, "hosted"))
+                for t, _ in tasks:
+                    data[(slug, f"{t}:chrf++_firstline")] = need(d, (t, "chrf++_firstline"), "score"); data[(slug, f"{t}:chrf++_extracted")] = need(d, (t, "chrf++_extracted"), "score")
+        L += [f"**{title}**", ""]
+        if not cols:
+            L += ["(no captures yet)", ""]; continue
+        trows = []
+        for t, tl in tasks:
+            for rule, rl in (("firstline", "first line"), ("extracted", "extracted")):
+                k = f"{t}:chrf++_{rule}"
+                trows.append((k, f"{tl} chrF++, {rl}", {c[0]: data[(c[0], k)] for c in cols}, None))
+        body, decisions = TR.transposed(cols, trows, running, lambda m, mode=mode: f"extract_{mode}")
+        TR.write_decisions(f"translation_rules_{mode}", decisions)
+        L += body + [""]
+        note = TR.provisional_note(decisions)
+        if note: L += [note, ""]
     for mode, vs in srcs.items():
         vs.discard(version_key("unrecorded"))
         if len(vs) > 1: raise MissingResult(f"table (e), {mode} mode: local rows come from generation harness versions {sorted(vs)}; one table, one version")

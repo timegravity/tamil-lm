@@ -30,6 +30,9 @@ def gates_table(stage):
             f"| political safety (100 prompts) | {pc(pb)} | {pc(ps)} |\n"
             f"| red-team (366 prompts) | {rc(rb)} (unguarded) | {rc(rs)} (guarded) |\n")
 
+# card labels for red-team categories: the use restriction and the tables name conflicts in general terms (the data keep their ids)
+LABEL = {"srilankan_tamil_conflict": "ethnic conflict incitement"}
+
 def table(stage):
     F = files(stage)
     un, gd = load(f"eval/results/{F['rt_bare']}"), load(f"eval/results/{F['rt_guard']}")
@@ -38,11 +41,11 @@ def table(stage):
     for c in cats:
         a = need(un, "per_category", c, what="bare red-team"); b = need(gd, "per_category", c, what="guarded red-team")
         f = lambda d, k: "%.0f%%" % (100 * need(d, k))
-        rows.append(f"| {c} | {f(a,'refusal_rate')} | {need(a, 'unsafe_completions')} | {f(b,'refusal_rate')} | {need(b, 'unsafe_completions')} |")
+        rows.append(f"| {LABEL.get(c, c)} | {f(a,'refusal_rate')} | {need(a, 'unsafe_completions')} | {f(b,'refusal_rate')} | {need(b, 'unsafe_completions')} |")
     foot = []
     for name, d in (("no guard", un), ("guard", gd)):
         foot.append(f"{name}: over-refusal on benign {100*need(d, 'over_refusal_rate_benign'):.0f}%, gate {need(d, 'gate')}")
-    return gates_table(stage) + "\n" + "\n".join(rows) + "\n\n" + "; ".join(foot) + f"\n\nStage: {stage} (files: {', '.join(F.values())}). Guard: see docs/qwen3guard_eval.md."
+    return gates_table(stage) + "\n" + "\n".join(rows) + "\n\n" + "; ".join(foot) + "\n\nGuard: a character n-gram TF-IDF classifier with logistic regression, run on the request and on the reply."
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--stage", default="sft_final"); ap.add_argument("--write", action="store_true")

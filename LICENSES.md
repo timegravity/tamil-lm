@@ -1,4 +1,4 @@
-# Licences: Timegravity Tamil app, models and knowledge packs (generated 2026-09-14 10:12 UTC by build_licenses_md.py)
+# Licences: Timegravity Tamil app, models and knowledge packs (generated 2026-09-14 12:04 UTC by build_licenses_md.py)
 
 This is an independent research project; no legal review has been performed on data licensing.
 
@@ -10,7 +10,7 @@ The app is not open source. The weights and the recipe are open; the app is prop
 - Kept private: the Android app source (timegravity/tamil-lm-android), its UI and on-device serving stack, and the plain-text lexicon and full rule list. The earlier line keeping the KB packs proprietary is superseded: pack contents keep their own licensing (CC BY-SA sources published under CC BY-SA in Timegravity/tamil-lm-2b-gguf; anything not redistributable stays out).
 - Rationale: nothing in the stack obliges source release, and the app is the product while the weights are the research contribution. The plain-text lexicon and rule list stay private because publishing the exact blocklist would be a map around it, and the list contains material that is not published.
 
-- On the device (ruling 2026-09-14): the lexicon (assets/safety/lexicon.hashed) and the request rule lists (assets/safety/rules.hashed.json) ship as salted SHA-256 hashes with exact matching preserved; the plain-text files never ship. The guard classifier (assets/safety/guard_v2.json) ships in plain text: it holds short character n-grams (2 to 5 characters) and their weights, hashing cannot hide strings that short because every one of them can be enumerated, and the weights reveal patterns rather than a word list. The sensitive material is the lexicon and the rule lists, which are hashed.
+- On the device: the lexicon (assets/safety/lexicon.hashed) and the request rule lists (assets/safety/rules.hashed.json) ship as salted SHA-256 hashes with exact matching preserved; the plain-text files never ship. The guard classifier (assets/safety/guard_v2.json) ships in plain text: it holds short character n-grams (2 to 5 characters) and their weights, hashing cannot hide strings that short because every one of them can be enumerated, and the weights reveal patterns rather than a word list. The sensitive material is the lexicon and the rule lists, which are hashed.
 ## Weights licence
 
 tamil-lm-2b weights: Apache License 2.0, matching the base model Qwen/Qwen3.5-2B-Base. Prohibited uses are stated in the model card as expectations, not licence terms. Enforceable use restrictions live in the app's Terms and govern people using the app. Any GGUF conversion Timegravity hosts inherits the licence of its source weights.
@@ -28,7 +28,7 @@ tamil-lm-2b weights: Apache License 2.0, matching the base model Qwen/Qwen3.5-2B
 Automated check: android/app/app/licence-audit.gradle.kts (task :app:licenceAudit, run before every assemble and bundle task and in CI by .github/workflows/licence-audit.yml).
 
 1. GPL and AGPL. Shipped runtime modules checked: 114 (both editions, Maven POM licences with parent POMs followed); build tooling modules checked: 144 (the Android Gradle plugin and the Kotlin Gradle plugin, transitively); native code compiled into the APK scanned for GPL headers. GPL or AGPL components found that fail the build: 0.
-   - Build tooling only, dual-licensed with a non-GPL option, not packaged into the APK: 2. The non-GPL licence (CDDL) is elected for these. They are recorded, not a build failure, because they run only on the build machine and nothing from them is linked into or packaged in the app; only a GPL or AGPL component in the shipped runtime graph or in the native code compiled into the APK fails the build (confirmed by Vignesh 2026-09-14).
+   - Build tooling only, dual-licensed with a non-GPL option, not packaged into the APK: 2. The non-GPL licence (CDDL) is elected for these. They are recorded, not a build failure, because they run only on the build machine and nothing from them is linked into or packaged in the app; only a GPL or AGPL component in the shipped runtime graph or in the native code compiled into the APK fails the build.
      - com.sun.activation:javax.activation:1.2.0 [build tooling] licence: CDDL/GPLv2+CE https://github.com/javaee/activation/blob/master/LICENSE.txt
      - javax.annotation:javax.annotation-api:1.3.2 [build tooling] licence: CDDL + GPLv2 with classpath exception https://github.com/javaee/javax.annotation/blob/master/LICENSE (with Classpath Exception)
    - LGPL (not GPL) in build tooling, offered with Apache 2.0: 2.
@@ -207,7 +207,7 @@ The only network client in the app is android/app/app/src/main/java/ai/timegravi
 
 | pin | status |
 |---|---|
-| No GPL or AGPL in the dependency graph, checked in CI | automated; 0 failing hits; build-time-only dual-licensed tooling recorded, not failed (confirmed by Vignesh 2026-09-14) |
+| No GPL or AGPL in the dependency graph, checked in CI | automated; 0 failing hits; build-time-only dual-licensed tooling recorded, not failed |
 | Licences screen renders every component with full text | the build fails if a shipped library has no mapped full text |
 | First-launch acceptance recorded locally and not shown again | Prefs.eulaAccepted |
 | APK SHA-256 in the release notes matches the hosted file | scripts/release_info.py computes it from the APK; to check at release |

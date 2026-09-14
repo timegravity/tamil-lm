@@ -185,13 +185,12 @@ Project Madurai's moolam edition was used instead), and all 20th-century
 commentaries bundled in Project Madurai urai editions.
 
 
-## Decisions by Vignesh (2026-08-25)
+## Source decisions
 - ai4bharat/samanantar (CC BY-NC 4.0): EXCLUDED from training. The bucket built from it was set aside (data/clean/EXCLUDED_samanantar_parallel.jsonl, gitignored, not used). Parallel bucket rebuilt from verified-permissive sources only: BPCC subsets individually verified as CC BY 4.0 or more permissive, plus OPUS corpora with open terms.
 - ai4bharat/IndicSentiment (no stated license): EVAL-ONLY, never redistributed, not in training.
 - Divyanshu/indicxnli (cc0 tag vs CC BY-NC text): EVAL-ONLY, never redistributed, not in training.
 - Tamil Virtual Academy: NOT USED. No permission request sent.
 - FLORES (gsarti/flores_101, CC BY-SA 4.0): eval-only.
-- HF_TOKEN: provided via environment only, never written to any file. Gated sources (uonlp/CulturaX, ai4bharat/MILU, bigcode/starcoderdata) become accessible once it is set; confirmation recorded in STATUS.md.
 
 ## English-Tamil parallel corpus sources (2026-08-25)
 
@@ -357,14 +356,14 @@ actually loaded (after the noted drops).
 ## Access update (2026-08-26)
 With an HF token present (stored outside the repo), the previously gated sources are accessible: ai4bharat/MILU (CC BY 4.0, eval-only), ai4bharat/IN22-Gen (CC BY 4.0, eval-only), uonlp/CulturaX (mC4/OSCAR terms, include-no-redistribute), bigcode/starcoderdata (The Stack ToU, include-no-redistribute), ai4bharat/BPCC (per-subset: CC0/CC-BY-4.0 subsets only; Samanantar-derived subsets excluded). Training inclusion of the last three is a separate decision, not part of the run-2 literature fix.
 
-## Recency and retrieval sources (added 2026-08-26, ruling B/A)
+## Recency and retrieval sources
 
 | # | Source | URL | License (verified 2026-08-26 via the MediaWiki siteinfo rightsinfo API) | Use |
 |---|---|---|---|---|
-| R1 | Tamil Wikipedia dump tawiki-20260801-pages-articles.xml.bz2 (275 MB, dump dated 2026-08-04) | https://dumps.wikimedia.org/tawiki/20260801/ | CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/deed.ta) | Retrieval index for serve.py (Phase 5b); candidate recency top-up CPT bucket (ruling A, improvement-loop only) |
+| R1 | Tamil Wikipedia dump tawiki-20260801-pages-articles.xml.bz2 (275 MB, dump dated 2026-08-04) | https://dumps.wikimedia.org/tawiki/20260801/ | CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/deed.ta) | Retrieval index for serve.py (not used in the training data) |
 | R2 | Tamil Wikinews (ta.wikinews.org) via API | https://ta.wikinews.org | CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) | Candidate recency top-up bucket only |
 
-No copyrighted news sites are used for recency (ruling A). Attribution for CC BY / CC BY-SA content is carried in data/manifest.json and the data card.
+No copyrighted news sites are used for recency. Attribution for CC BY / CC BY-SA content is carried in data/manifest.json and the data card.
 
 ## Bundled tools (added 2026-09-07)
 
@@ -373,11 +372,11 @@ No copyrighted news sites are used for recency (ruling A). Attribution for CC BY
 | Tamil phonetic transliterator (browser, dependency-free) | ui/transliterate.js, ui/README.md | MIT, Timegravity Labs Private Limited 2026 (header in file) | written for this project; no third-party code |
 | Reference serving stack (guard, routing, retrieval, chat UI) | serve.py, guard.py, guard_small.py, retrieval/, chat_server.py | same license as the repository code | this project |
 
-## AG-TU: Tamil University encyclopedias on Tamil Wikisource (added 2026-09-14, ruling item 15)
+## AG-TU: Tamil University encyclopedias on Tamil Wikisource (added 2026-09-14)
 
 | # | source | url | licence (as stated, quoted) | verified at | decision | what was taken |
 |---|---|---|---|---|---|---|
-| AG-TU | Tamil University, Thanjavur: அறிவியல் களஞ்சியம் (science encyclopedia, 19 volumes) and வாழ்வியற் களஞ்சியம் (social science encyclopedia, 15 volumes), proofreading pages on Tamil Wikisource | https://ta.wikisource.org/wiki/அட்டவணை:அறிவியல்_களஞ்சியம்_14.pdf (one index per volume) | Wikimedia Commons file page of each volume (checked for volumes 5 and 14 of the science encyclopedia and volume 1 of the social science encyclopedia): "The Tamil university released all its publications under CC-BY-SA. refer the below document."; licence template {{cc-by-sa-1.0+}}; Permission field: [[File:GoTN Tamil Development Departments order on creative commons cc by sa.pdf]], whose Commons page reads "Government Order of Department of Tamil Development Government of Tamil Nadu declared books publications under CC-BY-SA" with date 2016-08-12 | https://commons.wikimedia.org/wiki/File:அறிவியல்_களஞ்சியம்_14.pdf, https://commons.wikimedia.org/wiki/File:அறிவியல்_களஞ்சியம்_5.pdf, https://commons.wikimedia.org/wiki/File:வாழ்வியற்_களஞ்சியம்_1.pdf and https://commons.wikimedia.org/wiki/File:GoTN_Tamil_Development_Departments_order_on_creative_commons_cc_by_sa.pdf, fetched 2026-09-14 | include (Vignesh, 2026-09-14: on the strength of the government order) | entry text on crops, pests and farming practice (build_pack_tamil_university.py, data/packs/agriculture/chunks_tamil_university.jsonl) |
+| AG-TU | Tamil University, Thanjavur: அறிவியல் களஞ்சியம் (science encyclopedia, 19 volumes) and வாழ்வியற் களஞ்சியம் (social science encyclopedia, 15 volumes), proofreading pages on Tamil Wikisource | https://ta.wikisource.org/wiki/அட்டவணை:அறிவியல்_களஞ்சியம்_14.pdf (one index per volume) | Wikimedia Commons file page of each volume (checked for volumes 5 and 14 of the science encyclopedia and volume 1 of the social science encyclopedia): "The Tamil university released all its publications under CC-BY-SA. refer the below document."; licence template {{cc-by-sa-1.0+}}; Permission field: [[File:GoTN Tamil Development Departments order on creative commons cc by sa.pdf]], whose Commons page reads "Government Order of Department of Tamil Development Government of Tamil Nadu declared books publications under CC-BY-SA" with date 2016-08-12 | https://commons.wikimedia.org/wiki/File:அறிவியல்_களஞ்சியம்_14.pdf, https://commons.wikimedia.org/wiki/File:அறிவியல்_களஞ்சியம்_5.pdf, https://commons.wikimedia.org/wiki/File:வாழ்வியற்_களஞ்சியம்_1.pdf and https://commons.wikimedia.org/wiki/File:GoTN_Tamil_Development_Departments_order_on_creative_commons_cc_by_sa.pdf, fetched 2026-09-14 | include (on the strength of the government order) | entry text on crops, pests and farming practice (build_pack_tamil_university.py, data/packs/agriculture/chunks_tamil_university.jsonl) |
 
 - Pending review, to revisit: every volume's Commons file page carries {{LicenseReview}}, meaning the Commons licence review of the
   CC BY-SA claim has not been completed (checked 2026-09-14). The inclusion rests on the Tamil Nadu government order as cited on those

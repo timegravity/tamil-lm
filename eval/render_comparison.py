@@ -34,7 +34,7 @@ def table_block(path, pending=None, notes=True):
     lines = [l.rstrip("\n") for l in open(path, encoding="utf-8")]
     start = next((i for i, l in enumerate(lines) if l.startswith("Generation mode per model")), len(lines))
     body, shared = lines[:start], lines[start:]
-    keep = [l for l in body if l.startswith("|") or l.startswith("**") or l.startswith("System prompts") or l.startswith("Translations scored by") or l.startswith("This dev table is the legacy") or l.startswith("- ") or l == ""]
+    keep = [l for l in body if l.startswith("|") or l.startswith("**") or l.startswith(("Bold: ", "Provisional rows")) or l.startswith("System prompts") or l.startswith("Translations scored by") or l.startswith("This dev table is the legacy") or l.startswith("- ") or l == ""]
     if notes: keep += [l for l in shared if l.startswith("|") or l.startswith("- ") or l.startswith(NOTE_PREFIXES) or l == ""]
     v = table_version(path)
     return (f"Harness version: {v}.\n\n" if v and "comparison_" in path and "hosted" not in path and "translation_rules" not in path and "serving" not in path else "") + "\n".join(keep)
@@ -75,7 +75,7 @@ def probe_sentence():
     others = [r for n, r in rows.items() if n != "tamil-lm-2b-instruct-r4" and isinstance(r.get("probe_option_identify"), (int, float)) and same_version(n)]
     g = max(others, key=lambda r: r["probe_option_identify"]) if others else None
     best = f", the best other model ({g['model']}) {need(g, 'probe_option_identify')} and {need(g, 'probe_option_meaning')}" if g else ""
-    return ("Literature probe: the option-text scorer is the gating one (ruling 2026-08-28; options shuffled per item with a committed seed); the letter log-likelihood scorer is shown beside it. "
+    return ("Literature probe: the option-text scorer is the gating one (options shuffled per item with a committed seed); the letter log-likelihood scorer is shown beside it. "
             f"On bare weights ours scores {need(o, 'probe_option_identify')} (identify source) and {need(o, 'probe_option_meaning')} (meaning) by option text{best}; "
             "all within a few points of chance (0.25). The legacy mean over four item types, two of which (quote a kural verbatim, give a kural number) are near zero for every bare model, is not a comparison metric and is not published. "
             "In the serving path the literature questions are answered from the knowledge base, which is the serving-path table.")
@@ -249,7 +249,7 @@ def main():
     import suite
     commit = suite.git_commit(); hv = harness_version()
     block = "\n".join([
-        f"### Comparison with other open models (generated {time.strftime('%Y-%m-%d')}, commit {commit}, harness {hv})", "",
+        f"### Comparison with other open models (generated {time.strftime('%Y-%m-%d')}, harness version {table_version(os.path.join(R, 'comparison_bare.md'))})", "",
         "Tables (a), (b) and (e) were produced locally on this machine by this repository's evaluation harness on the locked test splits, with identical prompts within each table, identical split ids, greedy decoding and bf16 weights for every model; the dev reference table uses the dev split, table (d) comes from hosted APIs, and table (c) is the serving path with its own decoding (noted there). No number is copied from a paper or a model card. The metric is named in every column header (chrF++, accuracy, F1, contains-answer rate, bits per character). Models that could not be run are listed with the reason.", "",
         f"Summary: {summary()}", "",
         launch_status(), "",
@@ -261,12 +261,18 @@ def main():
         "**Table (d). Hosted models (generation tasks only, chat mode, locked test split).** The same prompts and scoring through OpenRouter; closed models pinned to the lab's own provider, the open-weight gpt-oss models served by any provider (recorded per response); exclusions and data policy in the notes under the table.", "",
         table_block(os.path.join(R, "comparison_hosted.md"), pending="Hosted-model table not yet rendered: the hosted runs are in progress (ruling 2026-09-13)."), "",
         preamble_note(), "", artifacts_note(), "",
-        "**Table (e). Translation under two scoring rules.** First-line score and extracted-body score from the same generations, the rule for each named in the table; filled as the translation captures land (ruling 2026-09-13).", "",
+        "**Table (e). Translation under two scoring rules.** First-line score and extracted-body score from the same generations, the rule for each named in the table; filled as the translation captures land.", "",
         complete_rows_only(table_block(os.path.join(R, "comparison_translation_rules.md"), pending="Table (e) not yet rendered: the translation captures are being produced (ruling 2026-09-13).")), "",
         "The dev reference table and the serving-path table (c) are not on the card at launch: they were measured under the earlier harness and return once re-run under the current one.", "",
         probe_sentence(), "", contamination_sentence(), "", regression_sentence(), "",
         "Sources: eval/results/comparison_bare.md, comparison_chat.md, comparison_hosted.md, comparison_translation_rules.md, bos_before_after.md; scripts eval/baselines_round4.py, eval/serving_vs_bare.py, eval/render_comparison.py.",
     ])
+    import re as _re
+    left = sorted(set(_re.findall(r"rulings? 20\d\d-\d\d-\d\d|Vignesh|confirmed by|by ruling", block)))
+    if left: raise MissingResult(f"card comparison block still carries internal process references: {left}")
+    # card display names: the internal run label of this release is not a model name (the result files keep it)
+    for internal, shown in (("tamil-lm-2b-instruct round 4c", "tamil-lm-2b-instruct"), ("tamil-lm-2b-instruct-r4", "tamil-lm-2b-instruct")):
+        block = block.replace(internal, shown)
     print(block[:3000])
     if a.write:
         p = os.path.join(ROOT, "README.md"); s = open(p, encoding="utf-8").read()
