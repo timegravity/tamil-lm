@@ -1,0 +1,16 @@
+# versions used to build and evaluate tamil-lm (2026-09); torch is the CUDA 12.8 build
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.11.0+cu128
+transformers==5.15.1
+peft==0.20.0
+accelerate==1.14.0
+datasets==5.0.1
+sacrebleu==2.6.0
+rouge-score==0.1.2
+huggingface-hub==1.28.0
+PyYAML==6.0.3
+numpy==2.4.4
+scikit-learn==1.9.0
+datasketch==2.0.0
+safetensors==0.8.0
+tokenizers==0.22.2

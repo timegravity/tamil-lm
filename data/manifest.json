@@ -1,0 +1,2957 @@
+{
+  "auto100m": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 153215,
+        "tokens": 103982924,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 2214,
+        "tokens": 71184,
+        "bucket": "literature"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 14,
+        "tokens": 1628,
+        "bucket": "literature"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 278,
+        "tokens": 212728,
+        "bucket": "literature"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 384,
+        "tokens": 77570,
+        "bucket": "literature"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 20,
+        "tokens": 8762,
+        "bucket": "literature"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 18,
+        "tokens": 5434,
+        "bucket": "literature"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 5100,
+        "tokens": 2432092,
+        "bucket": "literature"
+      },
+      "kb:kambaramayanam": {
+        "docs": 46764,
+        "tokens": 4502758,
+        "bucket": "literature"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 1454,
+        "tokens": 48094,
+        "bucket": "literature"
+      },
+      "kb:manimekalai": {
+        "docs": 886,
+        "tokens": 173084,
+        "bucket": "literature"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 260,
+        "tokens": 76046,
+        "bucket": "literature"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 12,
+        "tokens": 4576,
+        "bucket": "literature"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 14,
+        "tokens": 4066,
+        "bucket": "literature"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 12,
+        "tokens": 3694,
+        "bucket": "literature"
+      },
+      "kb:alai_osai": {
+        "docs": 14,
+        "tokens": 1534,
+        "bucket": "literature"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 12,
+        "tokens": 3498,
+        "bucket": "literature"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 8,
+        "tokens": 2172,
+        "bucket": "literature"
+      },
+      "kb:ponnagaram": {
+        "docs": 10,
+        "tokens": 2224,
+        "bucket": "literature"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 14,
+        "tokens": 1922,
+        "bucket": "literature"
+      },
+      "kb:chithirappavai": {
+        "docs": 12,
+        "tokens": 1568,
+        "bucket": "literature"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 10,
+        "tokens": 1966,
+        "bucket": "literature"
+      },
+      "kb:agal_vilakku": {
+        "docs": 10,
+        "tokens": 888,
+        "bucket": "literature"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 12,
+        "tokens": 1172,
+        "bucket": "literature"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 12,
+        "tokens": 1352,
+        "bucket": "literature"
+      },
+      "kb:mogamul": {
+        "docs": 10,
+        "tokens": 2932,
+        "bucket": "literature"
+      },
+      "kb:amma_vandhal": {
+        "docs": 12,
+        "tokens": 3140,
+        "bucket": "literature"
+      },
+      "kb:sindhanadhi": {
+        "docs": 10,
+        "tokens": 1038,
+        "bucket": "literature"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 12,
+        "tokens": 1944,
+        "bucket": "literature"
+      },
+      "kb:kadal_pura": {
+        "docs": 12,
+        "tokens": 1980,
+        "bucket": "literature"
+      },
+      "kb:yavana_rani": {
+        "docs": 12,
+        "tokens": 3748,
+        "bucket": "literature"
+      },
+      "kb:mannan_magal": {
+        "docs": 12,
+        "tokens": 1864,
+        "bucket": "literature"
+      },
+      "kb:udaiyar": {
+        "docs": 16,
+        "tokens": 5222,
+        "bucket": "literature"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 12,
+        "tokens": 1784,
+        "bucket": "literature"
+      },
+      "kb:47_natkal": {
+        "docs": 12,
+        "tokens": 3268,
+        "bucket": "literature"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 12,
+        "tokens": 1458,
+        "bucket": "literature"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 10,
+        "tokens": 2868,
+        "bucket": "literature"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 16,
+        "tokens": 1746,
+        "bucket": "literature"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 10,
+        "tokens": 1308,
+        "bucket": "literature"
+      },
+      "kb:vishnupuram": {
+        "docs": 10,
+        "tokens": 1366,
+        "bucket": "literature"
+      },
+      "kb:venmurasu": {
+        "docs": 12,
+        "tokens": 4920,
+        "bucket": "literature"
+      },
+      "kb:naaladiyar": {
+        "docs": 6488,
+        "tokens": 494354,
+        "bucket": "literature"
+      },
+      "kb:periyapuranam": {
+        "docs": 11200,
+        "tokens": 934000,
+        "bucket": "literature"
+      },
+      "kb:kurunthogai": {
+        "docs": 6578,
+        "tokens": 674674,
+        "bucket": "literature"
+      },
+      "kb:natrinai": {
+        "docs": 6438,
+        "tokens": 905754,
+        "bucket": "literature"
+      },
+      "kb:purananuru": {
+        "docs": 6442,
+        "tokens": 1270188,
+        "bucket": "literature"
+      },
+      "kb:ainkurunuru": {
+        "docs": 8086,
+        "tokens": 644256,
+        "bucket": "literature"
+      },
+      "kb:akananuru": {
+        "docs": 6422,
+        "tokens": 1596942,
+        "bucket": "literature"
+      },
+      "kb:pathitrupathu": {
+        "docs": 1322,
+        "tokens": 484570,
+        "bucket": "literature"
+      },
+      "kb:kalithogai": {
+        "docs": 2476,
+        "tokens": 997810,
+        "bucket": "literature"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 22,
+        "tokens": 85752,
+        "bucket": "literature"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 20,
+        "tokens": 56176,
+        "bucket": "literature"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 22,
+        "tokens": 73576,
+        "bucket": "literature"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 20,
+        "tokens": 124518,
+        "bucket": "literature"
+      },
+      "kb:mullaippattu": {
+        "docs": 20,
+        "tokens": 25362,
+        "bucket": "literature"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 18,
+        "tokens": 155702,
+        "bucket": "literature"
+      },
+      "kb:kurinjippattu": {
+        "docs": 20,
+        "tokens": 65800,
+        "bucket": "literature"
+      },
+      "kb:pattinappalai": {
+        "docs": 20,
+        "tokens": 62336,
+        "bucket": "literature"
+      },
+      "kb:malaipadukadam": {
+        "docs": 16,
+        "tokens": 112430,
+        "bucket": "literature"
+      },
+      "kb:silappathikaram": {
+        "docs": 890,
+        "tokens": 252192,
+        "bucket": "literature"
+      },
+      "kb:thevaram": {
+        "docs": 16818,
+        "tokens": 1635918,
+        "bucket": "literature"
+      },
+      "kb:thiruvasagam": {
+        "docs": 848,
+        "tokens": 815056,
+        "bucket": "literature"
+      },
+      "kb:thirukkural": {
+        "docs": 69106,
+        "tokens": 5344840,
+        "bucket": "literature"
+      },
+      "opus:NLLB": {
+        "docs": 401849,
+        "tokens": 16483282,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 200000,
+        "tokens": 6671149,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 60224,
+        "tokens": 3278077,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 10000,
+        "tokens": 564497,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 625,
+        "tokens": 218949,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 6802,
+        "tokens": 7242222,
+        "bucket": "replay"
+      }
+    }
+  },
+  "main3b": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 2863116,
+        "tokens": 1647507705,
+        "bucket": "tamil_web"
+      },
+      "indiccorp": {
+        "docs": 1399341,
+        "tokens": 315482639,
+        "bucket": "tamil_web"
+      },
+      "tawiki": {
+        "docs": 128792,
+        "tokens": 60410444,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 8856,
+        "tokens": 284736,
+        "bucket": "literature"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 56,
+        "tokens": 6512,
+        "bucket": "literature"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 1112,
+        "tokens": 850912,
+        "bucket": "literature"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 1536,
+        "tokens": 310280,
+        "bucket": "literature"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 80,
+        "tokens": 35048,
+        "bucket": "literature"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 72,
+        "tokens": 21736,
+        "bucket": "literature"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 20400,
+        "tokens": 9728368,
+        "bucket": "literature"
+      },
+      "kb:kambaramayanam": {
+        "docs": 187056,
+        "tokens": 18011032,
+        "bucket": "literature"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 5816,
+        "tokens": 192376,
+        "bucket": "literature"
+      },
+      "kb:manimekalai": {
+        "docs": 3544,
+        "tokens": 692336,
+        "bucket": "literature"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 1040,
+        "tokens": 304184,
+        "bucket": "literature"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 48,
+        "tokens": 18304,
+        "bucket": "literature"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 56,
+        "tokens": 16264,
+        "bucket": "literature"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 48,
+        "tokens": 14776,
+        "bucket": "literature"
+      },
+      "kb:alai_osai": {
+        "docs": 56,
+        "tokens": 6136,
+        "bucket": "literature"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 48,
+        "tokens": 13992,
+        "bucket": "literature"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 32,
+        "tokens": 8688,
+        "bucket": "literature"
+      },
+      "kb:ponnagaram": {
+        "docs": 40,
+        "tokens": 8896,
+        "bucket": "literature"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 56,
+        "tokens": 7688,
+        "bucket": "literature"
+      },
+      "kb:chithirappavai": {
+        "docs": 48,
+        "tokens": 6272,
+        "bucket": "literature"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 40,
+        "tokens": 7864,
+        "bucket": "literature"
+      },
+      "kb:agal_vilakku": {
+        "docs": 40,
+        "tokens": 3552,
+        "bucket": "literature"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 48,
+        "tokens": 4688,
+        "bucket": "literature"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 48,
+        "tokens": 5408,
+        "bucket": "literature"
+      },
+      "kb:mogamul": {
+        "docs": 40,
+        "tokens": 11728,
+        "bucket": "literature"
+      },
+      "kb:amma_vandhal": {
+        "docs": 48,
+        "tokens": 12560,
+        "bucket": "literature"
+      },
+      "kb:sindhanadhi": {
+        "docs": 40,
+        "tokens": 4152,
+        "bucket": "literature"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 48,
+        "tokens": 7776,
+        "bucket": "literature"
+      },
+      "kb:kadal_pura": {
+        "docs": 48,
+        "tokens": 7920,
+        "bucket": "literature"
+      },
+      "kb:yavana_rani": {
+        "docs": 48,
+        "tokens": 14992,
+        "bucket": "literature"
+      },
+      "kb:mannan_magal": {
+        "docs": 48,
+        "tokens": 7456,
+        "bucket": "literature"
+      },
+      "kb:udaiyar": {
+        "docs": 64,
+        "tokens": 20888,
+        "bucket": "literature"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 48,
+        "tokens": 7136,
+        "bucket": "literature"
+      },
+      "kb:47_natkal": {
+        "docs": 48,
+        "tokens": 13072,
+        "bucket": "literature"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 48,
+        "tokens": 5832,
+        "bucket": "literature"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 40,
+        "tokens": 11472,
+        "bucket": "literature"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 64,
+        "tokens": 6984,
+        "bucket": "literature"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 40,
+        "tokens": 5232,
+        "bucket": "literature"
+      },
+      "kb:vishnupuram": {
+        "docs": 40,
+        "tokens": 5464,
+        "bucket": "literature"
+      },
+      "kb:venmurasu": {
+        "docs": 48,
+        "tokens": 19680,
+        "bucket": "literature"
+      },
+      "kb:naaladiyar": {
+        "docs": 25952,
+        "tokens": 1977416,
+        "bucket": "literature"
+      },
+      "kb:periyapuranam": {
+        "docs": 44800,
+        "tokens": 3736000,
+        "bucket": "literature"
+      },
+      "kb:kurunthogai": {
+        "docs": 26312,
+        "tokens": 2698696,
+        "bucket": "literature"
+      },
+      "kb:natrinai": {
+        "docs": 25752,
+        "tokens": 3623016,
+        "bucket": "literature"
+      },
+      "kb:purananuru": {
+        "docs": 25768,
+        "tokens": 5080752,
+        "bucket": "literature"
+      },
+      "kb:ainkurunuru": {
+        "docs": 32344,
+        "tokens": 2577024,
+        "bucket": "literature"
+      },
+      "kb:akananuru": {
+        "docs": 25688,
+        "tokens": 6387768,
+        "bucket": "literature"
+      },
+      "kb:pathitrupathu": {
+        "docs": 5288,
+        "tokens": 1938280,
+        "bucket": "literature"
+      },
+      "kb:kalithogai": {
+        "docs": 9904,
+        "tokens": 3991240,
+        "bucket": "literature"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 88,
+        "tokens": 343008,
+        "bucket": "literature"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 80,
+        "tokens": 224704,
+        "bucket": "literature"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 88,
+        "tokens": 294304,
+        "bucket": "literature"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 80,
+        "tokens": 498072,
+        "bucket": "literature"
+      },
+      "kb:mullaippattu": {
+        "docs": 80,
+        "tokens": 101448,
+        "bucket": "literature"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 72,
+        "tokens": 622808,
+        "bucket": "literature"
+      },
+      "kb:kurinjippattu": {
+        "docs": 80,
+        "tokens": 263200,
+        "bucket": "literature"
+      },
+      "kb:pattinappalai": {
+        "docs": 80,
+        "tokens": 249344,
+        "bucket": "literature"
+      },
+      "kb:malaipadukadam": {
+        "docs": 64,
+        "tokens": 449720,
+        "bucket": "literature"
+      },
+      "kb:silappathikaram": {
+        "docs": 3560,
+        "tokens": 1008768,
+        "bucket": "literature"
+      },
+      "kb:thevaram": {
+        "docs": 67272,
+        "tokens": 6543672,
+        "bucket": "literature"
+      },
+      "kb:thiruvasagam": {
+        "docs": 3392,
+        "tokens": 3260224,
+        "bucket": "literature"
+      },
+      "kb:thirukkural": {
+        "docs": 276424,
+        "tokens": 21379360,
+        "bucket": "literature"
+      },
+      "opus:NLLB": {
+        "docs": 5089159,
+        "tokens": 180601563,
+        "bucket": "parallel"
+      },
+      "opus:Anuvaad": {
+        "docs": 1318739,
+        "tokens": 81876169,
+        "bucket": "parallel"
+      },
+      "opus:WikiMatrix": {
+        "docs": 53587,
+        "tokens": 2625654,
+        "bucket": "parallel"
+      },
+      "opus:wikimedia": {
+        "docs": 234782,
+        "tokens": 32975403,
+        "bucket": "parallel"
+      },
+      "opus:Joshua-IPC": {
+        "docs": 28099,
+        "tokens": 1289923,
+        "bucket": "parallel"
+      },
+      "opus:translatewiki": {
+        "docs": 7389,
+        "tokens": 224818,
+        "bucket": "parallel"
+      },
+      "opus:tldr-pages": {
+        "docs": 3604,
+        "tokens": 104216,
+        "bucket": "parallel"
+      },
+      "opus:tico-19": {
+        "docs": 3068,
+        "tokens": 229988,
+        "bucket": "parallel"
+      },
+      "opus:Tatoeba": {
+        "docs": 345,
+        "tokens": 7599,
+        "bucket": "parallel"
+      },
+      "opus:ELRC_2922": {
+        "docs": 200,
+        "tokens": 12965,
+        "bucket": "parallel"
+      },
+      "opus:ELRC-wikipedia_health": {
+        "docs": 200,
+        "tokens": 12963,
+        "bucket": "parallel"
+      },
+      "opus:Ubuntu": {
+        "docs": 2091,
+        "tokens": 52804,
+        "bucket": "parallel"
+      },
+      "pmindia:v1": {
+        "docs": 39206,
+        "tokens": 1985957,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 1800000,
+        "tokens": 60040341,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 542016,
+        "tokens": 29502693,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 90000,
+        "tokens": 5080473,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 5625,
+        "tokens": 1970541,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 144537,
+        "tokens": 151000749,
+        "bucket": "replay"
+      }
+    }
+  },
+  "releasing_entity": {
+    "name": "Timegravity Labs Private Limited",
+    "location": "Coimbatore, India",
+    "hf_org": "Timegravity",
+    "models": [
+      "Timegravity/tamil-lm-2b-base",
+      "Timegravity/tamil-lm-2b-instruct"
+    ],
+    "note": "Dataset agreements recorded as accepted by Timegravity Labs Private Limited. No legal review has been performed on data licensing."
+  },
+  "main3b_ext_v2": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 2863117,
+        "tokens": 1647508195,
+        "bucket": "tamil_web"
+      },
+      "indiccorp": {
+        "docs": 1399340,
+        "tokens": 315482245,
+        "bucket": "tamil_web"
+      },
+      "tawiki": {
+        "docs": 128792,
+        "tokens": 60410444,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 23200,
+        "tokens": 767856,
+        "bucket": "literature_t1"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 74592,
+        "tokens": 37877168,
+        "bucket": "literature_t1"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 17632,
+        "tokens": 635264,
+        "bucket": "literature_t1"
+      },
+      "kb:naaladiyar": {
+        "docs": 95728,
+        "tokens": 7775152,
+        "bucket": "literature_t1"
+      },
+      "kb:thirukkural": {
+        "docs": 628240,
+        "tokens": 49544000,
+        "bucket": "literature_t1"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 48,
+        "tokens": 5592,
+        "bucket": "literature_t2"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 2008,
+        "tokens": 1651832,
+        "bucket": "literature_t2"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 2784,
+        "tokens": 595600,
+        "bucket": "literature_t2"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 120,
+        "tokens": 56416,
+        "bucket": "literature_t2"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 168,
+        "tokens": 54776,
+        "bucket": "literature_t2"
+      },
+      "kb:kambaramayanam": {
+        "docs": 340144,
+        "tokens": 35993984,
+        "bucket": "literature_t2"
+      },
+      "kb:manimekalai": {
+        "docs": 4968,
+        "tokens": 1211656,
+        "bucket": "literature_t2"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 1008,
+        "tokens": 297080,
+        "bucket": "literature_t2"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 48,
+        "tokens": 18312,
+        "bucket": "literature_t2"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 40,
+        "tokens": 11464,
+        "bucket": "literature_t2"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 56,
+        "tokens": 17296,
+        "bucket": "literature_t2"
+      },
+      "kb:alai_osai": {
+        "docs": 32,
+        "tokens": 3344,
+        "bucket": "literature_t2"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 40,
+        "tokens": 11568,
+        "bucket": "literature_t2"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 48,
+        "tokens": 13272,
+        "bucket": "literature_t2"
+      },
+      "kb:ponnagaram": {
+        "docs": 40,
+        "tokens": 8896,
+        "bucket": "literature_t2"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 48,
+        "tokens": 6544,
+        "bucket": "literature_t2"
+      },
+      "kb:chithirappavai": {
+        "docs": 40,
+        "tokens": 5128,
+        "bucket": "literature_t2"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 40,
+        "tokens": 7864,
+        "bucket": "literature_t2"
+      },
+      "kb:agal_vilakku": {
+        "docs": 56,
+        "tokens": 5128,
+        "bucket": "literature_t2"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 56,
+        "tokens": 5528,
+        "bucket": "literature_t2"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 48,
+        "tokens": 5400,
+        "bucket": "literature_t2"
+      },
+      "kb:mogamul": {
+        "docs": 56,
+        "tokens": 16592,
+        "bucket": "literature_t2"
+      },
+      "kb:amma_vandhal": {
+        "docs": 40,
+        "tokens": 10400,
+        "bucket": "literature_t2"
+      },
+      "kb:sindhanadhi": {
+        "docs": 64,
+        "tokens": 6808,
+        "bucket": "literature_t2"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 40,
+        "tokens": 6408,
+        "bucket": "literature_t2"
+      },
+      "kb:kadal_pura": {
+        "docs": 48,
+        "tokens": 7984,
+        "bucket": "literature_t2"
+      },
+      "kb:yavana_rani": {
+        "docs": 48,
+        "tokens": 14928,
+        "bucket": "literature_t2"
+      },
+      "kb:mannan_magal": {
+        "docs": 48,
+        "tokens": 7448,
+        "bucket": "literature_t2"
+      },
+      "kb:udaiyar": {
+        "docs": 48,
+        "tokens": 15600,
+        "bucket": "literature_t2"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 32,
+        "tokens": 4584,
+        "bucket": "literature_t2"
+      },
+      "kb:47_natkal": {
+        "docs": 48,
+        "tokens": 13072,
+        "bucket": "literature_t2"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 48,
+        "tokens": 5832,
+        "bucket": "literature_t2"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 48,
+        "tokens": 13832,
+        "bucket": "literature_t2"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 32,
+        "tokens": 3272,
+        "bucket": "literature_t2"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 56,
+        "tokens": 7568,
+        "bucket": "literature_t2"
+      },
+      "kb:vishnupuram": {
+        "docs": 48,
+        "tokens": 6568,
+        "bucket": "literature_t2"
+      },
+      "kb:venmurasu": {
+        "docs": 40,
+        "tokens": 16344,
+        "bucket": "literature_t2"
+      },
+      "kb:periyapuranam": {
+        "docs": 80032,
+        "tokens": 7181448,
+        "bucket": "literature_t2"
+      },
+      "kb:kurunthogai": {
+        "docs": 48288,
+        "tokens": 5302184,
+        "bucket": "literature_t2"
+      },
+      "kb:natrinai": {
+        "docs": 48056,
+        "tokens": 7205496,
+        "bucket": "literature_t2"
+      },
+      "kb:purananuru": {
+        "docs": 47816,
+        "tokens": 10121752,
+        "bucket": "literature_t2"
+      },
+      "kb:ainkurunuru": {
+        "docs": 60008,
+        "tokens": 5134672,
+        "bucket": "literature_t2"
+      },
+      "kb:akananuru": {
+        "docs": 48000,
+        "tokens": 12822888,
+        "bucket": "literature_t2"
+      },
+      "kb:pathitrupathu": {
+        "docs": 9592,
+        "tokens": 3784440,
+        "bucket": "literature_t2"
+      },
+      "kb:kalithogai": {
+        "docs": 18000,
+        "tokens": 7694336,
+        "bucket": "literature_t2"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 152,
+        "tokens": 631936,
+        "bucket": "literature_t2"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 144,
+        "tokens": 434288,
+        "bucket": "literature_t2"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 144,
+        "tokens": 516760,
+        "bucket": "literature_t2"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 160,
+        "tokens": 1060112,
+        "bucket": "literature_t2"
+      },
+      "kb:mullaippattu": {
+        "docs": 136,
+        "tokens": 184376,
+        "bucket": "literature_t2"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 160,
+        "tokens": 1476216,
+        "bucket": "literature_t2"
+      },
+      "kb:kurinjippattu": {
+        "docs": 144,
+        "tokens": 507400,
+        "bucket": "literature_t2"
+      },
+      "kb:pattinappalai": {
+        "docs": 128,
+        "tokens": 431720,
+        "bucket": "literature_t2"
+      },
+      "kb:malaipadukadam": {
+        "docs": 136,
+        "tokens": 1027408,
+        "bucket": "literature_t2"
+      },
+      "kb:silappathikaram": {
+        "docs": 5288,
+        "tokens": 1766696,
+        "bucket": "literature_t2"
+      },
+      "kb:thevaram": {
+        "docs": 123456,
+        "tokens": 13018440,
+        "bucket": "literature_t2"
+      },
+      "kb:thiruvasagam": {
+        "docs": 6312,
+        "tokens": 6700896,
+        "bucket": "literature_t2"
+      },
+      "opus:NLLB": {
+        "docs": 5089234,
+        "tokens": 180603693,
+        "bucket": "parallel"
+      },
+      "opus:Anuvaad": {
+        "docs": 1318734,
+        "tokens": 81875707,
+        "bucket": "parallel"
+      },
+      "opus:WikiMatrix": {
+        "docs": 53587,
+        "tokens": 2625654,
+        "bucket": "parallel"
+      },
+      "opus:wikimedia": {
+        "docs": 234773,
+        "tokens": 32973725,
+        "bucket": "parallel"
+      },
+      "opus:Joshua-IPC": {
+        "docs": 28099,
+        "tokens": 1289923,
+        "bucket": "parallel"
+      },
+      "opus:translatewiki": {
+        "docs": 7389,
+        "tokens": 224818,
+        "bucket": "parallel"
+      },
+      "opus:tldr-pages": {
+        "docs": 3604,
+        "tokens": 104216,
+        "bucket": "parallel"
+      },
+      "opus:tico-19": {
+        "docs": 3068,
+        "tokens": 229988,
+        "bucket": "parallel"
+      },
+      "opus:Tatoeba": {
+        "docs": 345,
+        "tokens": 7599,
+        "bucket": "parallel"
+      },
+      "opus:ELRC_2922": {
+        "docs": 200,
+        "tokens": 12965,
+        "bucket": "parallel"
+      },
+      "opus:ELRC-wikipedia_health": {
+        "docs": 200,
+        "tokens": 12963,
+        "bucket": "parallel"
+      },
+      "opus:Ubuntu": {
+        "docs": 2091,
+        "tokens": 52804,
+        "bucket": "parallel"
+      },
+      "pmindia:v1": {
+        "docs": 39206,
+        "tokens": 1985957,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 1800000,
+        "tokens": 60040341,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 542016,
+        "tokens": 29502693,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 90000,
+        "tokens": 5080473,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 5625,
+        "tokens": 1970541,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 144544,
+        "tokens": 151000813,
+        "bucket": "replay"
+      }
+    },
+    "profile": "main3b",
+    "mix": {
+      "tamil_web": 0.67,
+      "literature_t1": 0.075,
+      "literature_t2": 0.075,
+      "parallel": 0.1,
+      "tanglish": 0.03,
+      "replay": 0.05
+    },
+    "repeat_caps": {
+      "literature_t1": 16,
+      "literature_t2": 8
+    }
+  },
+  "auto100m_ext_v2": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 174446,
+        "tokens": 118123275,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 2900,
+        "tokens": 95982,
+        "bucket": "literature_t1"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 9324,
+        "tokens": 4734646,
+        "bucket": "literature_t1"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 2204,
+        "tokens": 79408,
+        "bucket": "literature_t1"
+      },
+      "kb:naaladiyar": {
+        "docs": 11966,
+        "tokens": 971894,
+        "bucket": "literature_t1"
+      },
+      "kb:thirukkural": {
+        "docs": 78530,
+        "tokens": 6193000,
+        "bucket": "literature_t1"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 6,
+        "tokens": 699,
+        "bucket": "literature_t2"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 251,
+        "tokens": 206479,
+        "bucket": "literature_t2"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 348,
+        "tokens": 74450,
+        "bucket": "literature_t2"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 15,
+        "tokens": 7052,
+        "bucket": "literature_t2"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 21,
+        "tokens": 6847,
+        "bucket": "literature_t2"
+      },
+      "kb:kambaramayanam": {
+        "docs": 42518,
+        "tokens": 4499248,
+        "bucket": "literature_t2"
+      },
+      "kb:manimekalai": {
+        "docs": 621,
+        "tokens": 151457,
+        "bucket": "literature_t2"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 126,
+        "tokens": 37135,
+        "bucket": "literature_t2"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 6,
+        "tokens": 2289,
+        "bucket": "literature_t2"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 5,
+        "tokens": 1433,
+        "bucket": "literature_t2"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 7,
+        "tokens": 2162,
+        "bucket": "literature_t2"
+      },
+      "kb:alai_osai": {
+        "docs": 4,
+        "tokens": 418,
+        "bucket": "literature_t2"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 5,
+        "tokens": 1446,
+        "bucket": "literature_t2"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 6,
+        "tokens": 1659,
+        "bucket": "literature_t2"
+      },
+      "kb:ponnagaram": {
+        "docs": 5,
+        "tokens": 1112,
+        "bucket": "literature_t2"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 6,
+        "tokens": 818,
+        "bucket": "literature_t2"
+      },
+      "kb:chithirappavai": {
+        "docs": 5,
+        "tokens": 641,
+        "bucket": "literature_t2"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 5,
+        "tokens": 983,
+        "bucket": "literature_t2"
+      },
+      "kb:agal_vilakku": {
+        "docs": 7,
+        "tokens": 641,
+        "bucket": "literature_t2"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 7,
+        "tokens": 691,
+        "bucket": "literature_t2"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 6,
+        "tokens": 675,
+        "bucket": "literature_t2"
+      },
+      "kb:mogamul": {
+        "docs": 7,
+        "tokens": 2074,
+        "bucket": "literature_t2"
+      },
+      "kb:amma_vandhal": {
+        "docs": 5,
+        "tokens": 1300,
+        "bucket": "literature_t2"
+      },
+      "kb:sindhanadhi": {
+        "docs": 8,
+        "tokens": 851,
+        "bucket": "literature_t2"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 5,
+        "tokens": 801,
+        "bucket": "literature_t2"
+      },
+      "kb:kadal_pura": {
+        "docs": 6,
+        "tokens": 998,
+        "bucket": "literature_t2"
+      },
+      "kb:yavana_rani": {
+        "docs": 6,
+        "tokens": 1866,
+        "bucket": "literature_t2"
+      },
+      "kb:mannan_magal": {
+        "docs": 6,
+        "tokens": 931,
+        "bucket": "literature_t2"
+      },
+      "kb:udaiyar": {
+        "docs": 6,
+        "tokens": 1950,
+        "bucket": "literature_t2"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 4,
+        "tokens": 573,
+        "bucket": "literature_t2"
+      },
+      "kb:47_natkal": {
+        "docs": 6,
+        "tokens": 1634,
+        "bucket": "literature_t2"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 6,
+        "tokens": 729,
+        "bucket": "literature_t2"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 6,
+        "tokens": 1729,
+        "bucket": "literature_t2"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 4,
+        "tokens": 409,
+        "bucket": "literature_t2"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 7,
+        "tokens": 946,
+        "bucket": "literature_t2"
+      },
+      "kb:vishnupuram": {
+        "docs": 6,
+        "tokens": 821,
+        "bucket": "literature_t2"
+      },
+      "kb:venmurasu": {
+        "docs": 5,
+        "tokens": 2043,
+        "bucket": "literature_t2"
+      },
+      "kb:periyapuranam": {
+        "docs": 10004,
+        "tokens": 897681,
+        "bucket": "literature_t2"
+      },
+      "kb:kurunthogai": {
+        "docs": 6036,
+        "tokens": 662773,
+        "bucket": "literature_t2"
+      },
+      "kb:natrinai": {
+        "docs": 6007,
+        "tokens": 900687,
+        "bucket": "literature_t2"
+      },
+      "kb:purananuru": {
+        "docs": 5977,
+        "tokens": 1265219,
+        "bucket": "literature_t2"
+      },
+      "kb:ainkurunuru": {
+        "docs": 7501,
+        "tokens": 641834,
+        "bucket": "literature_t2"
+      },
+      "kb:akananuru": {
+        "docs": 6000,
+        "tokens": 1602861,
+        "bucket": "literature_t2"
+      },
+      "kb:pathitrupathu": {
+        "docs": 1199,
+        "tokens": 473055,
+        "bucket": "literature_t2"
+      },
+      "kb:kalithogai": {
+        "docs": 2250,
+        "tokens": 961792,
+        "bucket": "literature_t2"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 19,
+        "tokens": 78992,
+        "bucket": "literature_t2"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 18,
+        "tokens": 54286,
+        "bucket": "literature_t2"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 18,
+        "tokens": 64595,
+        "bucket": "literature_t2"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 20,
+        "tokens": 132514,
+        "bucket": "literature_t2"
+      },
+      "kb:mullaippattu": {
+        "docs": 17,
+        "tokens": 23047,
+        "bucket": "literature_t2"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 13,
+        "tokens": 115324,
+        "bucket": "literature_t2"
+      },
+      "opus:NLLB": {
+        "docs": 401848,
+        "tokens": 16483210,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 92357,
+        "tokens": 3079274,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 27743,
+        "tokens": 1505012,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 4602,
+        "tokens": 262426,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 275,
+        "tokens": 96513,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 6802,
+        "tokens": 7242222,
+        "bucket": "replay"
+      }
+    },
+    "profile": "auto100m",
+    "mix": {
+      "tamil_web": 0.67,
+      "literature_t1": 0.075,
+      "literature_t2": 0.075,
+      "parallel": 0.1,
+      "tanglish": 0.03,
+      "replay": 0.05
+    },
+    "repeat_caps": {
+      "literature_t1": 16,
+      "literature_t2": 8
+    }
+  },
+  "auto100m_ext_e1": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 153215,
+        "tokens": 103982924,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 2900,
+        "tokens": 95982,
+        "bucket": "literature_t1"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 9324,
+        "tokens": 4734646,
+        "bucket": "literature_t1"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 2204,
+        "tokens": 79408,
+        "bucket": "literature_t1"
+      },
+      "kb:naaladiyar": {
+        "docs": 11966,
+        "tokens": 971894,
+        "bucket": "literature_t1"
+      },
+      "kb:thirukkural": {
+        "docs": 78530,
+        "tokens": 6193000,
+        "bucket": "literature_t1"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 6,
+        "tokens": 699,
+        "bucket": "literature_t2"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 251,
+        "tokens": 206479,
+        "bucket": "literature_t2"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 348,
+        "tokens": 74450,
+        "bucket": "literature_t2"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 15,
+        "tokens": 7052,
+        "bucket": "literature_t2"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 21,
+        "tokens": 6847,
+        "bucket": "literature_t2"
+      },
+      "kb:kambaramayanam": {
+        "docs": 42518,
+        "tokens": 4499248,
+        "bucket": "literature_t2"
+      },
+      "kb:manimekalai": {
+        "docs": 621,
+        "tokens": 151457,
+        "bucket": "literature_t2"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 126,
+        "tokens": 37135,
+        "bucket": "literature_t2"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 6,
+        "tokens": 2289,
+        "bucket": "literature_t2"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 5,
+        "tokens": 1433,
+        "bucket": "literature_t2"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 7,
+        "tokens": 2162,
+        "bucket": "literature_t2"
+      },
+      "kb:alai_osai": {
+        "docs": 4,
+        "tokens": 418,
+        "bucket": "literature_t2"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 5,
+        "tokens": 1446,
+        "bucket": "literature_t2"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 6,
+        "tokens": 1659,
+        "bucket": "literature_t2"
+      },
+      "kb:ponnagaram": {
+        "docs": 5,
+        "tokens": 1112,
+        "bucket": "literature_t2"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 6,
+        "tokens": 818,
+        "bucket": "literature_t2"
+      },
+      "kb:chithirappavai": {
+        "docs": 5,
+        "tokens": 641,
+        "bucket": "literature_t2"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 5,
+        "tokens": 983,
+        "bucket": "literature_t2"
+      },
+      "kb:agal_vilakku": {
+        "docs": 7,
+        "tokens": 641,
+        "bucket": "literature_t2"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 7,
+        "tokens": 691,
+        "bucket": "literature_t2"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 6,
+        "tokens": 675,
+        "bucket": "literature_t2"
+      },
+      "kb:mogamul": {
+        "docs": 7,
+        "tokens": 2074,
+        "bucket": "literature_t2"
+      },
+      "kb:amma_vandhal": {
+        "docs": 5,
+        "tokens": 1300,
+        "bucket": "literature_t2"
+      },
+      "kb:sindhanadhi": {
+        "docs": 8,
+        "tokens": 851,
+        "bucket": "literature_t2"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 5,
+        "tokens": 801,
+        "bucket": "literature_t2"
+      },
+      "kb:kadal_pura": {
+        "docs": 6,
+        "tokens": 998,
+        "bucket": "literature_t2"
+      },
+      "kb:yavana_rani": {
+        "docs": 6,
+        "tokens": 1866,
+        "bucket": "literature_t2"
+      },
+      "kb:mannan_magal": {
+        "docs": 6,
+        "tokens": 931,
+        "bucket": "literature_t2"
+      },
+      "kb:udaiyar": {
+        "docs": 6,
+        "tokens": 1950,
+        "bucket": "literature_t2"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 4,
+        "tokens": 573,
+        "bucket": "literature_t2"
+      },
+      "kb:47_natkal": {
+        "docs": 6,
+        "tokens": 1634,
+        "bucket": "literature_t2"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 6,
+        "tokens": 729,
+        "bucket": "literature_t2"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 6,
+        "tokens": 1729,
+        "bucket": "literature_t2"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 4,
+        "tokens": 409,
+        "bucket": "literature_t2"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 7,
+        "tokens": 946,
+        "bucket": "literature_t2"
+      },
+      "kb:vishnupuram": {
+        "docs": 6,
+        "tokens": 821,
+        "bucket": "literature_t2"
+      },
+      "kb:venmurasu": {
+        "docs": 5,
+        "tokens": 2043,
+        "bucket": "literature_t2"
+      },
+      "kb:periyapuranam": {
+        "docs": 10004,
+        "tokens": 897681,
+        "bucket": "literature_t2"
+      },
+      "kb:kurunthogai": {
+        "docs": 6036,
+        "tokens": 662773,
+        "bucket": "literature_t2"
+      },
+      "kb:natrinai": {
+        "docs": 6007,
+        "tokens": 900687,
+        "bucket": "literature_t2"
+      },
+      "kb:purananuru": {
+        "docs": 5977,
+        "tokens": 1265219,
+        "bucket": "literature_t2"
+      },
+      "kb:ainkurunuru": {
+        "docs": 7501,
+        "tokens": 641834,
+        "bucket": "literature_t2"
+      },
+      "kb:akananuru": {
+        "docs": 6000,
+        "tokens": 1602861,
+        "bucket": "literature_t2"
+      },
+      "kb:pathitrupathu": {
+        "docs": 1199,
+        "tokens": 473055,
+        "bucket": "literature_t2"
+      },
+      "kb:kalithogai": {
+        "docs": 2250,
+        "tokens": 961792,
+        "bucket": "literature_t2"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 19,
+        "tokens": 78992,
+        "bucket": "literature_t2"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 18,
+        "tokens": 54286,
+        "bucket": "literature_t2"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 18,
+        "tokens": 64595,
+        "bucket": "literature_t2"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 20,
+        "tokens": 132514,
+        "bucket": "literature_t2"
+      },
+      "kb:mullaippattu": {
+        "docs": 17,
+        "tokens": 23047,
+        "bucket": "literature_t2"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 13,
+        "tokens": 115324,
+        "bucket": "literature_t2"
+      },
+      "opus:NLLB": {
+        "docs": 401848,
+        "tokens": 16483210,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 200000,
+        "tokens": 6671149,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 60224,
+        "tokens": 3278077,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 10000,
+        "tokens": 564497,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 625,
+        "tokens": 218949,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 6802,
+        "tokens": 7242222,
+        "bucket": "replay"
+      }
+    },
+    "profile": "auto100m",
+    "mix": {
+      "tamil_web": 0.6,
+      "literature_t1": 0.075,
+      "literature_t2": 0.075,
+      "parallel": 0.1,
+      "tanglish": 0.1,
+      "replay": 0.05
+    },
+    "repeat_caps": {
+      "literature_t1": 16,
+      "literature_t2": 8
+    }
+  },
+  "main3b_ext_e1": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 1716789,
+        "tokens": 1007974904,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 23200,
+        "tokens": 767856,
+        "bucket": "literature_t1"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 74592,
+        "tokens": 37877168,
+        "bucket": "literature_t1"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 17632,
+        "tokens": 635264,
+        "bucket": "literature_t1"
+      },
+      "kb:naaladiyar": {
+        "docs": 95728,
+        "tokens": 7775152,
+        "bucket": "literature_t1"
+      },
+      "kb:thirukkural": {
+        "docs": 628240,
+        "tokens": 49544000,
+        "bucket": "literature_t1"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 48,
+        "tokens": 5592,
+        "bucket": "literature_t2"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 2008,
+        "tokens": 1651832,
+        "bucket": "literature_t2"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 2784,
+        "tokens": 595600,
+        "bucket": "literature_t2"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 120,
+        "tokens": 56416,
+        "bucket": "literature_t2"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 168,
+        "tokens": 54776,
+        "bucket": "literature_t2"
+      },
+      "kb:kambaramayanam": {
+        "docs": 340144,
+        "tokens": 35993984,
+        "bucket": "literature_t2"
+      },
+      "kb:manimekalai": {
+        "docs": 4968,
+        "tokens": 1211656,
+        "bucket": "literature_t2"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 1008,
+        "tokens": 297080,
+        "bucket": "literature_t2"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 48,
+        "tokens": 18312,
+        "bucket": "literature_t2"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 40,
+        "tokens": 11464,
+        "bucket": "literature_t2"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 56,
+        "tokens": 17296,
+        "bucket": "literature_t2"
+      },
+      "kb:alai_osai": {
+        "docs": 32,
+        "tokens": 3344,
+        "bucket": "literature_t2"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 40,
+        "tokens": 11568,
+        "bucket": "literature_t2"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 48,
+        "tokens": 13272,
+        "bucket": "literature_t2"
+      },
+      "kb:ponnagaram": {
+        "docs": 40,
+        "tokens": 8896,
+        "bucket": "literature_t2"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 48,
+        "tokens": 6544,
+        "bucket": "literature_t2"
+      },
+      "kb:chithirappavai": {
+        "docs": 40,
+        "tokens": 5128,
+        "bucket": "literature_t2"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 40,
+        "tokens": 7864,
+        "bucket": "literature_t2"
+      },
+      "kb:agal_vilakku": {
+        "docs": 56,
+        "tokens": 5128,
+        "bucket": "literature_t2"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 56,
+        "tokens": 5528,
+        "bucket": "literature_t2"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 48,
+        "tokens": 5400,
+        "bucket": "literature_t2"
+      },
+      "kb:mogamul": {
+        "docs": 56,
+        "tokens": 16592,
+        "bucket": "literature_t2"
+      },
+      "kb:amma_vandhal": {
+        "docs": 40,
+        "tokens": 10400,
+        "bucket": "literature_t2"
+      },
+      "kb:sindhanadhi": {
+        "docs": 64,
+        "tokens": 6808,
+        "bucket": "literature_t2"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 40,
+        "tokens": 6408,
+        "bucket": "literature_t2"
+      },
+      "kb:kadal_pura": {
+        "docs": 48,
+        "tokens": 7984,
+        "bucket": "literature_t2"
+      },
+      "kb:yavana_rani": {
+        "docs": 48,
+        "tokens": 14928,
+        "bucket": "literature_t2"
+      },
+      "kb:mannan_magal": {
+        "docs": 48,
+        "tokens": 7448,
+        "bucket": "literature_t2"
+      },
+      "kb:udaiyar": {
+        "docs": 48,
+        "tokens": 15600,
+        "bucket": "literature_t2"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 32,
+        "tokens": 4584,
+        "bucket": "literature_t2"
+      },
+      "kb:47_natkal": {
+        "docs": 48,
+        "tokens": 13072,
+        "bucket": "literature_t2"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 48,
+        "tokens": 5832,
+        "bucket": "literature_t2"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 48,
+        "tokens": 13832,
+        "bucket": "literature_t2"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 32,
+        "tokens": 3272,
+        "bucket": "literature_t2"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 56,
+        "tokens": 7568,
+        "bucket": "literature_t2"
+      },
+      "kb:vishnupuram": {
+        "docs": 48,
+        "tokens": 6568,
+        "bucket": "literature_t2"
+      },
+      "kb:venmurasu": {
+        "docs": 40,
+        "tokens": 16344,
+        "bucket": "literature_t2"
+      },
+      "kb:periyapuranam": {
+        "docs": 80032,
+        "tokens": 7181448,
+        "bucket": "literature_t2"
+      },
+      "kb:kurunthogai": {
+        "docs": 48288,
+        "tokens": 5302184,
+        "bucket": "literature_t2"
+      },
+      "kb:natrinai": {
+        "docs": 48056,
+        "tokens": 7205496,
+        "bucket": "literature_t2"
+      },
+      "kb:purananuru": {
+        "docs": 47816,
+        "tokens": 10121752,
+        "bucket": "literature_t2"
+      },
+      "kb:ainkurunuru": {
+        "docs": 60008,
+        "tokens": 5134672,
+        "bucket": "literature_t2"
+      },
+      "kb:akananuru": {
+        "docs": 48000,
+        "tokens": 12822888,
+        "bucket": "literature_t2"
+      },
+      "kb:pathitrupathu": {
+        "docs": 9592,
+        "tokens": 3784440,
+        "bucket": "literature_t2"
+      },
+      "kb:kalithogai": {
+        "docs": 18000,
+        "tokens": 7694336,
+        "bucket": "literature_t2"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 152,
+        "tokens": 631936,
+        "bucket": "literature_t2"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 144,
+        "tokens": 434288,
+        "bucket": "literature_t2"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 144,
+        "tokens": 516760,
+        "bucket": "literature_t2"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 160,
+        "tokens": 1060112,
+        "bucket": "literature_t2"
+      },
+      "kb:mullaippattu": {
+        "docs": 136,
+        "tokens": 184376,
+        "bucket": "literature_t2"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 160,
+        "tokens": 1476216,
+        "bucket": "literature_t2"
+      },
+      "kb:kurinjippattu": {
+        "docs": 144,
+        "tokens": 507400,
+        "bucket": "literature_t2"
+      },
+      "kb:pattinappalai": {
+        "docs": 128,
+        "tokens": 431720,
+        "bucket": "literature_t2"
+      },
+      "kb:malaipadukadam": {
+        "docs": 136,
+        "tokens": 1027408,
+        "bucket": "literature_t2"
+      },
+      "kb:silappathikaram": {
+        "docs": 5288,
+        "tokens": 1766696,
+        "bucket": "literature_t2"
+      },
+      "kb:thevaram": {
+        "docs": 123456,
+        "tokens": 13018440,
+        "bucket": "literature_t2"
+      },
+      "kb:thiruvasagam": {
+        "docs": 6312,
+        "tokens": 6700896,
+        "bucket": "literature_t2"
+      },
+      "opus:NLLB": {
+        "docs": 2999420,
+        "tokens": 104973915,
+        "bucket": "parallel"
+      },
+      "opus:Anuvaad": {
+        "docs": 926239,
+        "tokens": 61274926,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 2800000,
+        "tokens": 93396086,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 843136,
+        "tokens": 45893078,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 140000,
+        "tokens": 7902958,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 8750,
+        "tokens": 3065286,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 78852,
+        "tokens": 83641326,
+        "bucket": "replay"
+      }
+    },
+    "profile": "main3b",
+    "mix": {
+      "tamil_web": 0.6,
+      "literature_t1": 0.075,
+      "literature_t2": 0.075,
+      "parallel": 0.1,
+      "tanglish": 0.1,
+      "replay": 0.05
+    },
+    "repeat_caps": {
+      "literature_t1": 16,
+      "literature_t2": 8
+    }
+  },
+  "auto100m_ext_topupA": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 54365,
+        "tokens": 37597340,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 2900,
+        "tokens": 95982,
+        "bucket": "literature_t1"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 9324,
+        "tokens": 4734646,
+        "bucket": "literature_t1"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 2204,
+        "tokens": 79408,
+        "bucket": "literature_t1"
+      },
+      "kb:naaladiyar": {
+        "docs": 11966,
+        "tokens": 971894,
+        "bucket": "literature_t1"
+      },
+      "kb:thirukkural": {
+        "docs": 78530,
+        "tokens": 6193000,
+        "bucket": "literature_t1"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 6,
+        "tokens": 699,
+        "bucket": "literature_t2"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 251,
+        "tokens": 206479,
+        "bucket": "literature_t2"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 348,
+        "tokens": 74450,
+        "bucket": "literature_t2"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 15,
+        "tokens": 7052,
+        "bucket": "literature_t2"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 21,
+        "tokens": 6847,
+        "bucket": "literature_t2"
+      },
+      "kb:kambaramayanam": {
+        "docs": 42518,
+        "tokens": 4499248,
+        "bucket": "literature_t2"
+      },
+      "kb:manimekalai": {
+        "docs": 621,
+        "tokens": 151457,
+        "bucket": "literature_t2"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 126,
+        "tokens": 37135,
+        "bucket": "literature_t2"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 6,
+        "tokens": 2289,
+        "bucket": "literature_t2"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 5,
+        "tokens": 1433,
+        "bucket": "literature_t2"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 7,
+        "tokens": 2162,
+        "bucket": "literature_t2"
+      },
+      "kb:alai_osai": {
+        "docs": 4,
+        "tokens": 418,
+        "bucket": "literature_t2"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 5,
+        "tokens": 1446,
+        "bucket": "literature_t2"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 6,
+        "tokens": 1659,
+        "bucket": "literature_t2"
+      },
+      "kb:ponnagaram": {
+        "docs": 5,
+        "tokens": 1112,
+        "bucket": "literature_t2"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 6,
+        "tokens": 818,
+        "bucket": "literature_t2"
+      },
+      "kb:chithirappavai": {
+        "docs": 5,
+        "tokens": 641,
+        "bucket": "literature_t2"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 5,
+        "tokens": 983,
+        "bucket": "literature_t2"
+      },
+      "kb:agal_vilakku": {
+        "docs": 7,
+        "tokens": 641,
+        "bucket": "literature_t2"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 7,
+        "tokens": 691,
+        "bucket": "literature_t2"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 6,
+        "tokens": 675,
+        "bucket": "literature_t2"
+      },
+      "kb:mogamul": {
+        "docs": 7,
+        "tokens": 2074,
+        "bucket": "literature_t2"
+      },
+      "kb:amma_vandhal": {
+        "docs": 5,
+        "tokens": 1300,
+        "bucket": "literature_t2"
+      },
+      "kb:sindhanadhi": {
+        "docs": 8,
+        "tokens": 851,
+        "bucket": "literature_t2"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 5,
+        "tokens": 801,
+        "bucket": "literature_t2"
+      },
+      "kb:kadal_pura": {
+        "docs": 6,
+        "tokens": 998,
+        "bucket": "literature_t2"
+      },
+      "kb:yavana_rani": {
+        "docs": 6,
+        "tokens": 1866,
+        "bucket": "literature_t2"
+      },
+      "kb:mannan_magal": {
+        "docs": 6,
+        "tokens": 931,
+        "bucket": "literature_t2"
+      },
+      "kb:udaiyar": {
+        "docs": 6,
+        "tokens": 1950,
+        "bucket": "literature_t2"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 4,
+        "tokens": 573,
+        "bucket": "literature_t2"
+      },
+      "kb:47_natkal": {
+        "docs": 6,
+        "tokens": 1634,
+        "bucket": "literature_t2"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 6,
+        "tokens": 729,
+        "bucket": "literature_t2"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 6,
+        "tokens": 1729,
+        "bucket": "literature_t2"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 4,
+        "tokens": 409,
+        "bucket": "literature_t2"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 7,
+        "tokens": 946,
+        "bucket": "literature_t2"
+      },
+      "kb:vishnupuram": {
+        "docs": 6,
+        "tokens": 821,
+        "bucket": "literature_t2"
+      },
+      "kb:venmurasu": {
+        "docs": 5,
+        "tokens": 2043,
+        "bucket": "literature_t2"
+      },
+      "kb:periyapuranam": {
+        "docs": 10004,
+        "tokens": 897681,
+        "bucket": "literature_t2"
+      },
+      "kb:kurunthogai": {
+        "docs": 6036,
+        "tokens": 662773,
+        "bucket": "literature_t2"
+      },
+      "kb:natrinai": {
+        "docs": 6007,
+        "tokens": 900687,
+        "bucket": "literature_t2"
+      },
+      "kb:purananuru": {
+        "docs": 5977,
+        "tokens": 1265219,
+        "bucket": "literature_t2"
+      },
+      "kb:ainkurunuru": {
+        "docs": 7501,
+        "tokens": 641834,
+        "bucket": "literature_t2"
+      },
+      "kb:akananuru": {
+        "docs": 6000,
+        "tokens": 1602861,
+        "bucket": "literature_t2"
+      },
+      "kb:pathitrupathu": {
+        "docs": 1199,
+        "tokens": 473055,
+        "bucket": "literature_t2"
+      },
+      "kb:kalithogai": {
+        "docs": 2250,
+        "tokens": 961792,
+        "bucket": "literature_t2"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 19,
+        "tokens": 78992,
+        "bucket": "literature_t2"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 18,
+        "tokens": 54286,
+        "bucket": "literature_t2"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 18,
+        "tokens": 64595,
+        "bucket": "literature_t2"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 20,
+        "tokens": 132514,
+        "bucket": "literature_t2"
+      },
+      "kb:mullaippattu": {
+        "docs": 17,
+        "tokens": 23047,
+        "bucket": "literature_t2"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 13,
+        "tokens": 115324,
+        "bucket": "literature_t2"
+      },
+      "opus:NLLB": {
+        "docs": 239140,
+        "tokens": 9948769,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 125434,
+        "tokens": 4185787,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 37575,
+        "tokens": 2040769,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 6279,
+        "tokens": 356728,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 384,
+        "tokens": 134994,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 32313,
+        "tokens": 34485613,
+        "bucket": "replay"
+      },
+      "replay_math:unknown": {
+        "docs": 46249,
+        "tokens": 59447463,
+        "bucket": "replay_math"
+      }
+    },
+    "profile": "auto100m",
+    "mix": {
+      "tamil_web": 0.2,
+      "literature_t1": 0.075,
+      "literature_t2": 0.075,
+      "parallel": 0.06,
+      "tanglish": 0.04,
+      "replay": 0.2,
+      "replay_math": 0.35
+    },
+    "repeat_caps": {
+      "literature_t1": 16,
+      "literature_t2": 8
+    }
+  },
+  "auto100m_ext_annealB": {
+    "licenses_register": "data/LICENSES.md",
+    "sources": {
+      "fineweb2": {
+        "docs": 92859,
+        "tokens": 63701590,
+        "bucket": "tamil_web"
+      },
+      "kb:aathichudi": {
+        "docs": 10150,
+        "tokens": 335937,
+        "bucket": "literature_t1"
+      },
+      "kb:bharathiyar_padalgal_(songs_of_subramania_bharati)": {
+        "docs": 32634,
+        "tokens": 16571261,
+        "bucket": "literature_t1"
+      },
+      "kb:konrai_vendhan": {
+        "docs": 7714,
+        "tokens": 277928,
+        "bucket": "literature_t1"
+      },
+      "kb:naaladiyar": {
+        "docs": 41881,
+        "tokens": 3401629,
+        "bucket": "literature_t1"
+      },
+      "kb:thirukkural": {
+        "docs": 274855,
+        "tokens": 21675500,
+        "bucket": "literature_t1"
+      },
+      "kb:works_of_bharathidasan": {
+        "docs": 12,
+        "tokens": 1398,
+        "bucket": "literature_t2"
+      },
+      "kb:azhagin_sirippu": {
+        "docs": 502,
+        "tokens": 412958,
+        "bucket": "literature_t2"
+      },
+      "kb:puratchik_kavithaigal": {
+        "docs": 696,
+        "tokens": 148900,
+        "bucket": "literature_t2"
+      },
+      "kb:kudumba_vilakku": {
+        "docs": 30,
+        "tokens": 14104,
+        "bucket": "literature_t2"
+      },
+      "kb:pandiyan_parisu": {
+        "docs": 42,
+        "tokens": 13694,
+        "bucket": "literature_t2"
+      },
+      "kb:kambaramayanam": {
+        "docs": 85036,
+        "tokens": 8998496,
+        "bucket": "literature_t2"
+      },
+      "kb:manimekalai": {
+        "docs": 1242,
+        "tokens": 302914,
+        "bucket": "literature_t2"
+      },
+      "kb:modern_tamil_literature": {
+        "docs": 252,
+        "tokens": 74270,
+        "bucket": "literature_t2"
+      },
+      "kb:ponniyin_selvan": {
+        "docs": 12,
+        "tokens": 4578,
+        "bucket": "literature_t2"
+      },
+      "kb:sivagamiyin_sabatham": {
+        "docs": 10,
+        "tokens": 2866,
+        "bucket": "literature_t2"
+      },
+      "kb:parthiban_kanavu": {
+        "docs": 14,
+        "tokens": 4324,
+        "bucket": "literature_t2"
+      },
+      "kb:alai_osai": {
+        "docs": 8,
+        "tokens": 836,
+        "bucket": "literature_t2"
+      },
+      "kb:sila_nerangalil_sila_manithargal": {
+        "docs": 10,
+        "tokens": 2892,
+        "bucket": "literature_t2"
+      },
+      "kb:en_iniya_iyanthira": {
+        "docs": 12,
+        "tokens": 3318,
+        "bucket": "literature_t2"
+      },
+      "kb:ponnagaram": {
+        "docs": 10,
+        "tokens": 2224,
+        "bucket": "literature_t2"
+      },
+      "kb:pudhumaipithan_kathaigal": {
+        "docs": 12,
+        "tokens": 1636,
+        "bucket": "literature_t2"
+      },
+      "kb:chithirappavai": {
+        "docs": 10,
+        "tokens": 1282,
+        "bucket": "literature_t2"
+      },
+      "kb:pavai_vilakku": {
+        "docs": 10,
+        "tokens": 1966,
+        "bucket": "literature_t2"
+      },
+      "kb:agal_vilakku": {
+        "docs": 14,
+        "tokens": 1282,
+        "bucket": "literature_t2"
+      },
+      "kb:aathmavin_ragangal": {
+        "docs": 14,
+        "tokens": 1382,
+        "bucket": "literature_t2"
+      },
+      "kb:gopalla_gramam": {
+        "docs": 12,
+        "tokens": 1350,
+        "bucket": "literature_t2"
+      },
+      "kb:mogamul": {
+        "docs": 14,
+        "tokens": 4148,
+        "bucket": "literature_t2"
+      },
+      "kb:amma_vandhal": {
+        "docs": 10,
+        "tokens": 2600,
+        "bucket": "literature_t2"
+      },
+      "kb:sindhanadhi": {
+        "docs": 16,
+        "tokens": 1702,
+        "bucket": "literature_t2"
+      },
+      "kb:thuppariyum_sambu": {
+        "docs": 10,
+        "tokens": 1602,
+        "bucket": "literature_t2"
+      },
+      "kb:kadal_pura": {
+        "docs": 12,
+        "tokens": 1996,
+        "bucket": "literature_t2"
+      },
+      "kb:yavana_rani": {
+        "docs": 12,
+        "tokens": 3732,
+        "bucket": "literature_t2"
+      },
+      "kb:mannan_magal": {
+        "docs": 12,
+        "tokens": 1862,
+        "bucket": "literature_t2"
+      },
+      "kb:udaiyar": {
+        "docs": 12,
+        "tokens": 3900,
+        "bucket": "literature_t2"
+      },
+      "kb:irumbu_kudhiraigal": {
+        "docs": 8,
+        "tokens": 1146,
+        "bucket": "literature_t2"
+      },
+      "kb:47_natkal": {
+        "docs": 12,
+        "tokens": 3268,
+        "bucket": "literature_t2"
+      },
+      "kb:arthamulla_indhu_matham": {
+        "docs": 12,
+        "tokens": 1458,
+        "bucket": "literature_t2"
+      },
+      "kb:yesu_kaviyam": {
+        "docs": 12,
+        "tokens": 3458,
+        "bucket": "literature_t2"
+      },
+      "kb:kanneer_pookkal": {
+        "docs": 8,
+        "tokens": 818,
+        "bucket": "literature_t2"
+      },
+      "kb:oru_puliyamarathin_kathai": {
+        "docs": 14,
+        "tokens": 1892,
+        "bucket": "literature_t2"
+      },
+      "kb:vishnupuram": {
+        "docs": 12,
+        "tokens": 1642,
+        "bucket": "literature_t2"
+      },
+      "kb:venmurasu": {
+        "docs": 10,
+        "tokens": 4086,
+        "bucket": "literature_t2"
+      },
+      "kb:periyapuranam": {
+        "docs": 20008,
+        "tokens": 1795362,
+        "bucket": "literature_t2"
+      },
+      "kb:kurunthogai": {
+        "docs": 12072,
+        "tokens": 1325546,
+        "bucket": "literature_t2"
+      },
+      "kb:natrinai": {
+        "docs": 12014,
+        "tokens": 1801374,
+        "bucket": "literature_t2"
+      },
+      "kb:purananuru": {
+        "docs": 11954,
+        "tokens": 2530438,
+        "bucket": "literature_t2"
+      },
+      "kb:ainkurunuru": {
+        "docs": 15002,
+        "tokens": 1283668,
+        "bucket": "literature_t2"
+      },
+      "kb:akananuru": {
+        "docs": 12000,
+        "tokens": 3205722,
+        "bucket": "literature_t2"
+      },
+      "kb:pathitrupathu": {
+        "docs": 2398,
+        "tokens": 946110,
+        "bucket": "literature_t2"
+      },
+      "kb:kalithogai": {
+        "docs": 4500,
+        "tokens": 1923584,
+        "bucket": "literature_t2"
+      },
+      "kb:thirumurugatruppadai": {
+        "docs": 38,
+        "tokens": 157984,
+        "bucket": "literature_t2"
+      },
+      "kb:porunaratruppadai": {
+        "docs": 36,
+        "tokens": 108572,
+        "bucket": "literature_t2"
+      },
+      "kb:sirupanatruppadai": {
+        "docs": 36,
+        "tokens": 129190,
+        "bucket": "literature_t2"
+      },
+      "kb:perumpanatruppadai": {
+        "docs": 40,
+        "tokens": 265028,
+        "bucket": "literature_t2"
+      },
+      "kb:mullaippattu": {
+        "docs": 34,
+        "tokens": 46094,
+        "bucket": "literature_t2"
+      },
+      "kb:maduraikkanchi": {
+        "docs": 40,
+        "tokens": 369054,
+        "bucket": "literature_t2"
+      },
+      "kb:kurinjippattu": {
+        "docs": 36,
+        "tokens": 126850,
+        "bucket": "literature_t2"
+      },
+      "kb:pattinappalai": {
+        "docs": 32,
+        "tokens": 107930,
+        "bucket": "literature_t2"
+      },
+      "kb:malaipadukadam": {
+        "docs": 34,
+        "tokens": 256852,
+        "bucket": "literature_t2"
+      },
+      "kb:silappathikaram": {
+        "docs": 1322,
+        "tokens": 441674,
+        "bucket": "literature_t2"
+      },
+      "kb:thevaram": {
+        "docs": 30864,
+        "tokens": 3254610,
+        "bucket": "literature_t2"
+      },
+      "kb:thiruvasagam": {
+        "docs": 1578,
+        "tokens": 1675224,
+        "bucket": "literature_t2"
+      },
+      "opus:NLLB": {
+        "docs": 119820,
+        "tokens": 5027262,
+        "bucket": "parallel"
+      },
+      "synthetic": {
+        "docs": 58733,
+        "tokens": 1957495,
+        "bucket": "tanglish"
+      },
+      "synthetic_pair": {
+        "docs": 17578,
+        "tokens": 956456,
+        "bucket": "tanglish"
+      },
+      "dakshina": {
+        "docs": 2965,
+        "tokens": 169715,
+        "bucket": "tanglish"
+      },
+      "dakshina_lexicon": {
+        "docs": 183,
+        "tokens": 64448,
+        "bucket": "tanglish"
+      },
+      "HuggingFaceFW/fineweb-edu": {
+        "docs": 16884,
+        "tokens": 17449821,
+        "bucket": "replay"
+      },
+      "replay_math:unknown": {
+        "docs": 5942,
+        "tokens": 7603298,
+        "bucket": "replay_math"
+      }
+    },
+    "profile": "auto100m",
+    "mix": {
+      "tamil_web": 0.35,
+      "literature_t1": 0.25,
+      "literature_t2": 0.2,
+      "parallel": 0.03,
+      "tanglish": 0.02,
+      "replay": 0.1,
+      "replay_math": 0.05
+    },
+    "repeat_caps": {
+      "literature_t1": 16,
+      "literature_t2": 8
+    }
+  }
+}

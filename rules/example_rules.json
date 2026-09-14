@@ -1,0 +1,102 @@
+{
+ "format": "tamil-lm-safety-rules/1",
+ "_comment": "Example rule file: a few illustrative entries per key, not the rules the project uses. The structure is documented in docs/safety_rule_file.md; point TAMIL_LM_RULES at your own file.",
+ "self_harm_cues": [
+  "kill myself",
+  "end my life",
+  "want to die",
+  "தற்கொலை"
+ ],
+ "romance_cues": [
+  "boyfriend",
+  "girlfriend",
+  "love letter"
+ ],
+ "child_risk": {
+  "sexual": [
+   "porn",
+   "nude"
+  ],
+  "violence": [
+   "make a bomb",
+   "how to hurt"
+  ],
+  "bad_word": [
+   "bad word",
+   "swear word"
+  ],
+  "insult": [
+   "insult",
+   "make fun of"
+  ]
+ },
+ "contested_topics": [
+  "kashmir",
+  "காஷ்மீர்"
+ ],
+ "contested_with_cue": [
+  {
+   "terms": [
+    "aadhaar",
+    "ஆதார்"
+   ],
+   "cues": [
+    "privacy",
+    "surveillance"
+   ]
+  }
+ ],
+ "wiki_category_blocklist": [
+  "pornograph",
+  "suicide methods",
+  "explosives"
+ ],
+ "caste": {
+  "words": [
+   "caste",
+   "சாதி"
+  ],
+  "names": [],
+  "rank": [
+   "superior",
+   "better"
+  ],
+  "assistant": [
+   "your caste"
+  ],
+  "untouchability": [
+   "untouchability",
+   "தீண்டாமை"
+  ],
+  "factual": [
+   "history",
+   "reservation"
+  ]
+ },
+ "medicine_names": {
+  "pattern": "paracetamol|ibuprofen",
+  "flags": 2
+ },
+ "dose_question": {
+  "pattern": "how many|how much|dose",
+  "flags": 2
+ },
+ "caution_topics": {
+  "pattern": "alcohol|drugs?",
+  "flags": 2
+ },
+ "tease": {
+  "lead": [
+   "you are a",
+   "nee oru"
+  ],
+  "words": [
+   "stupid",
+   "useless"
+  ]
+ },
+ "anatomy_terms": {
+  "chest": "மார்பு",
+  "stomach": "வயிறு"
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "_note": "Reviewed degenerate-output flags (eval/suite.py, ruling 2026-09-13). A flag listed here is a real model behaviour, not a harness artefact, and its score is shown as measured with this note in the table footnote. Key: <stage>_<split>, then task. Added by the harness operator on 2026-09-13 for Vignesh to confirm.",
+ "cmp_Qwen3-1.7B-tamil-Instruct_chat_test": {
+  "flores_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template (1,000 of 1,012 generations in Tamil script); a model failure scored as measured",
+  "in22gen_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template; a model failure scored as measured"
+ },
+ "cmp_Qwen3-1.7B-tamil-Instruct_trans_chat_test": {
+  "flores_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template (1,000 of 1,012 generations in Tamil script); a model failure scored as measured",
+  "in22gen_ta_en": "the model answers Tamil-to-English requests in Tamil under its chat template; a model failure scored as measured"
+ }
+}

@@ -1,0 +1,6 @@
+windows: []
+blackouts:
+  - date: 2026-09-05
+    start: "08:40"
+    end: "17:20"
+    reason: planned power outage 09:00-17:00 (Vignesh 2026-09-04); enforced by blackout_guard.sh

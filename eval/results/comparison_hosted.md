@@ -1,0 +1,29 @@
+# Hosted models, locked test split, generation tasks, chat mode (2026-09-14 03:56 UTC)
+
+Prompts and scoring are eval/suite.py's, unchanged; the answers came from the hosted API through OpenRouter at temperature 0 with reasoning off or minimal, each request pinned to the lab's own provider with fallbacks off (gpt-oss: any provider by ruling, cheapest first, provider recorded per response; it cannot switch reasoning off and runs at low effort, with 1,024 extra output tokens allowed for its reasoning), and the serving provider recorded on every response. Our model's row is its table (b) run on the same items.
+
+| model | served by | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | IndicQA F1 | IndicQA contains-answer rate | GSM8K accuracy | requests | cost (USD) | answer caps |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| tamil-lm-2b-instruct (round 4c, this repository) | local, bf16 | 42.6 | 51.5 | 38.2 | 48.8 | 0.220 | 0.414 | 0.163 | | | suite v3 caps |
+| Gemini 3.5 Flash-Lite | Google | 31.0 | 24.7 | 31.9 | 24.2 | 0.426 | 0.654 | 0.831 | 4989 | 1.02 | v3 caps flores_en_ta 160, flores_ta_en 160, in22gen_en_ta 208, in22gen_ta_en 160, indicqa_ta 48, gsm8k_en 512 |
+| GPT-5.4 nano | OpenAI | 39.7 | 47.3 | 35.5 | 45.0 | 0.229 | 0.624 | 0.881 | 4889 | 0.53 | v3 caps flores_en_ta 160, flores_ta_en 160, in22gen_en_ta 256, in22gen_ta_en 160, indicqa_ta 48, gsm8k_en 512 |
+| gpt-oss-20b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable) | Darkbloom 4834, AkashML 5, CoreWeave 4, DekaLLM 2 | 37.8 | 43.7 | 28.7 | 38.4 | 0.300 | 0.385 | 0.769 | 4845 | 0.07 | old caps plus 1,024 reasoning tokens |
+| gpt-oss-120b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable) | AkashML 3829, CoreWeave 947, DekaLLM 63, DeepInfra 6 | 34.3 | 41.8 | 30.8 | 39.4 | 0.245 | 0.505 | 0.806 | 4845 | 0.11 | old caps plus 1,024 reasoning tokens |
+
+Notes:
+
+- tamil-lm-2b-instruct (round 4c, this repository): translations opening with a preamble line 0.0% (0 of 3664); an instruction-following result of the answer format taught in SFT, not a measure of translation quality.
+- Gemini 3.5 Flash-Lite: 4989 requests served by Google (Google (Vertex), zero data retention); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 56.3% (2061 of 3663).
+- GPT-5.4 nano: 4889 requests served by OpenAI (OpenAI, no zero retention (ruling 2026-09-13), no data collection); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 14.5% (531 of 3663).
+- gpt-oss-20b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable): 4845 requests served by Darkbloom 4834, AkashML 5, CoreWeave 4, DekaLLM 2 (any provider, cheapest first with fallbacks, no data collection (ruling 2026-09-13); reasoning at low effort); reasoning tokens billed 98487; the scored split has 4846 items; translations opening with a preamble line 8.2% (299 of 3663).
+- gpt-oss-120b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable): 4845 requests served by AkashML 3829, CoreWeave 947, DekaLLM 63, DeepInfra 6 (any provider, cheapest first with fallbacks, no data collection (ruling 2026-09-13); reasoning at low effort); reasoning tokens billed 126791; the scored split has 4846 items; translations opening with a preamble line 11.3% (414 of 3663).
+- Hosted spend for the models shown 1.73 USD, within a 4.50 USD cap.
+- Not run, on cost: Claude Haiku 4.5 (Anthropic) and Grok 4.3 (xAI); projected at about 4.0 USD and 3.7 USD for these splits before any reasoning tokens (2.23 million input and 0.36 million expected output tokens counted with the o200k tokenizer as a proxy, at 1 and 5 USD, and 1.25 and 2.5 USD, per million; STATUS 2026-09-13), which alone would break the cap beside the other models.
+- DeepSeek V4.1 Flash: not measured, because DeepSeek's own endpoint trains on the prompts it receives.
+- No free tier exists on OpenRouter for any of the five labs' models (checked 2026-09-13); the only free Google models are Gemma, served by third parties.
+- Only generation tasks are scored: MILU, MMLU, the bits-per-character sets and the literature probe need log-likelihoods that a hosted chat API does not expose.
+- Translations in this table are scored by their first line, the harness rule for every model (ruling 2026-09-13); a preamble line (the first non-empty line ends with a colon after markdown emphasis is removed, eval/preamble_share.py) scores near zero under it. The per-model preamble share is in the notes above. The extracted-body score from the same responses is in table (e), and every comparison claim uses that column.
+- Request counts: the scored split has 4,846 items, and responses are cached by prompt, so one prompt that occurs twice in the test splits is sent once (4,845 first-run requests; 3,663 distinct translation prompts against 3,664 scored items). Gemini 3.5 Flash-Lite and GPT-5.4 nano add the responses re-sent at the v3 caps (eval/results/hosted_recap.md: old and corrected scores side by side, and spend against OpenRouter's usage figure).
+- gpt-oss-20b and gpt-oss-120b are not directly comparable with the other rows: they cannot switch reasoning off, so every request carried its answer cap plus 1,024 tokens for reasoning (low effort), and almost none of their answers reached a cap, while the other hosted rows and every local row run at the v3 caps.
+
+Raw responses with provider, tokens and cost: eval/results/hosted_raw/ (not committed); scripts eval/hosted_compare.py and eval/render_hosted.py.

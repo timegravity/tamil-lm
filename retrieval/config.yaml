@@ -1,0 +1,62 @@
+# Retrieval sources for serve.py. Edit this file to add sources; no code change needed.
+# Each entry: name, type, params. Types: kb | wiki_dump | folder.
+# Scores are normalised per source (score / best score of that source) before merging.
+top_k: 4
+sources:
+  - name: literature_kb
+    type: kb
+    glob: data/kb/*.jsonl
+    k: 3
+    weight: 1.0
+  - name: tawiki_20260801
+    type: wiki_dump
+    index_dir: data/index/tawiki_20260801     # built by retrieval/build_wiki_index.py
+    family_safe_index_dir: data/index/tawiki_20260801_fs   # built by build_wiki_index.py --family-safe; used when FAMILY_SAFE=1 and present
+    k: 4
+    weight: 0.9
+    dense:                                     # server-side only (ruling 2026-09-09); BM25-only when the index or model is missing or DENSE_RETRIEVAL=0
+      model: BAAI/bge-m3                       # chosen over multilingual-e5 on eval/results/retrieval_dense_eval.md (built by retrieval/dense.py)
+      index_dir: data/index/tawiki_20260801_fs_dense_bgem3
+      fusion: rrf                              # reciprocal rank fusion (k=60) over the top 50 of BM25 and dense; minmax is the alternative
+      weight: 2.0                              # dense side weight in the fusion (sweep in the eval report)
+      top_n: 50
+  # - name: my_docs
+  #   type: folder
+  #   path: /path/to/folder        # every .txt .md .jsonl (field "text") under it; indexed on first use
+  #   index_dir: data/index/my_docs
+  #   k: 4
+  #   weight: 0.9
+# Live Wikipedia lookup is a tool (retrieval/wiki_live.py, WIKI_LIVE=0 disables), not a source; general web search is not part of the design.
+
+# Domain retrieval packs (docs/retrieval_packs.md; pack controls ruling 2026-09-10). Loaded by retrieval/packs.py.
+# enabled: the default when neither the UI checkboxes nor the PACKS env var say otherwise. An unchecked pack is not searched.
+# floor / margin: calibrated per pack by eval/calibrate_pack_gate.py (raw title-boosted BM25 of the fused top hit; margin = top minus second).
+# caveat: the line serve.py appends when a chunk from this pack is used (none | dated | finance | govservices).
+packs:
+  - name: cooking
+    dir: data/packs/cooking
+    enabled: true
+    scale: dense
+    floor: 0.54
+    margin: 0.01
+    caveat: none
+    languages: [ta, en]
+    calibrated: 2026-09-10 (45 positives, 283 negatives)
+  - name: agriculture
+    dir: data/packs/agriculture
+    enabled: true
+    scale: dense
+    floor: 0.56
+    margin: 0.005
+    caveat: dated
+    languages: [ta, en]
+    calibrated: 2026-09-10 (90 positives, 444 negatives)
+  - name: finance
+    dir: data/packs/finance
+    enabled: true
+    scale: dense
+    floor: 0.56
+    margin: 0.065
+    caveat: finance
+    languages: [ta, en]
+    calibrated: 2026-09-10 (90 positives, 441 negatives)

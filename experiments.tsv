@@ -1,0 +1,27 @@
+id	commit	change	val_bpc	probe_acc	tok_per_s	kept
+exp000	a0b2997	baseline: reference recipe (LoRA r128/r256, 8bit AdamW, lr 2e-4, mb1 x accum16, 15 min)	1.2732	0.1329	7281	baseline
+exp000v2	f956ac4	baseline re-run on contamination-cleaned shards (reference row)	1.2718	0.1421	7375	reference
+exp001	f956ac4	tokenizer extension: +22222 Tamil tokens, Stage A 200M warmup of new rows, then full recipe 15 min	1.0898	0.1329	6427	kept-provisional (probe -0.9pt within noise; chrF 14.5->9.4 flagged)
+exp002	7d18a32	lr 1e-4 (on kept tokenizer-ext recipe)	1.0925	0.2447	6625	reverted (bpc +0.0027 vs exp001; fast-probe 0.245 vs exp001 0.266 within noise)
+exp003	b4dcfc0	lr 3e-4 (on kept tokenizer-ext recipe)	1.0921	0.2289	6610	reverted (bpc +0.0023 vs exp001)
+exp004	620cc49	lr 5e-4 (on kept tokenizer-ext recipe)	1.1156	0.2816	6611	reverted (bpc +0.0258 vs exp001)
+exp005	cd7c047	LoRA r256 attn/deltanet, r512 MLP	1.1079	0.3289	5351	KEPT (rule b: full probe 0.1645 vs 0.1329, +3.2 pt; bpc +0.018 and 19% slower accepted; new reference)
+exp006	a87c772	full fine-tune of MLP (LoRA elsewhere)	1.1363	0.2263	7846	reverted (bpc +0.0465)
+exp007	03a9c45	unfreeze all embedding rows + tied lm_head	1.1613	0.2289	1109	invalid (gradient mask left active: duplicate of exp001; see exp007b)
+exp008	f0c190f	seq 2048 (accum 32)	1.0988	0.2263	6405	reverted (bpc +0.0090)
+exp009	9cfa57e	Lion 8-bit optimizer (lr 2e-5)	1.1034	0.2395	6615	reverted (bpc +0.0136)
+exp010	99c05f0	loss masking at doc boundaries	1.0900	0.2289	6589	reverted (bpc +0.0002, no effect; row appended by hand: script instance was disturbed by an autoresearch.sh edit)
+exp011	4d3a3a7	warmup 1%, cosine floor 0	1.0883	0.2289	6613	reverted (bpc -0.0015, fast-probe -3.7 pt)
+exp007b	759fef4	unfreeze ALL embedding rows + tied lm_head (mask removed; exp007 was a no-op)	1.0886	0.2316	6618	reverted vs exp001 (bpc -0.0012, fast-probe -3.4 pt)
+exp012	861db10	seq 8192 (accum 8)	1.2604	0.3184	394	reverted (bpc +0.1525, fast-probe -1.1 pt)
+exp013	3dc964e	literature share 15% (mix shards)	1.1123	0.4184	5353	CONFIRMED (full probe 0.2092 vs 0.1645, +4.5 pt; identify_source 0.36->0.58; literature bpc +0.050)
+exp014	c3effc5	literature share 45% (mix shards)	1.1002	0.2263	5414	reverted (per-bucket judge_mix)
+exp015	ead94a5	replay 5% (mix shards)	1.1323	0.3658	5416	CONFIRMED (full probe 0.1829 vs 0.1645, +1.8 pt; identify_source 0.48; replay bpc +0.010)
+exp016	6d0516d	replay 15% (mix shards)	1.0776	0.2289	5416	reverted (per-bucket judge_mix)
+exp017	6b5a180	literature: extra rule templates (more unique renderings)	1.1295	0.3763	5425	CONFIRMED (full probe 0.1882 vs 0.1645, +2.4 pt)
+exp018	b4384de	tanglish: 1M synthetic sentences (less repetition)	1.1306	0.2289	5404	reverted (per-bucket judge_mix)
+exp019	79df69d	conv path: fla Triton causal conv instead of torch fallback (throughput)	1.1087	0.2974	5487	reverted (bpc +0.0008, fast-probe -3.2 pt)
+exp020	02879c5	literature: Q&A renderings at 50% (vs 100%)	1.1064	0.3947	5415	CONFIRMED (full probe 0.1974 vs 0.1645, +3.3 pt)
+exp021	c956af3	composed confirmation of confirmed candidates: exp013 exp015 exp017 exp020 (auto100m_ext_lit15rep05xqa50)	1.1256	0.4395	5277	CONFIRMED-COMPOSED (full probe 0.2197 vs 0.1645, +5.5 pt; fast-probe +11.0; tamil_web bpc -0.022, replay +0.007; retention check pending)
+E1	cc9bec3	decision E1: exp021 mix ratios (lit 15%) on quarantine-clean data, current LR		0.3658	5383	
+E2	71e769c	decision E2: run-2 mix, peak LR halved		0.3342	5316	

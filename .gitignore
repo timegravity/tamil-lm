@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+data/private/
+data/raw/
+data/clean/
+data/shards/
+data/index/
+data/kb/*.jsonl
+ckpt/
+exports/
+logs/
+eval/results/*.json
