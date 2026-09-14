@@ -25,9 +25,10 @@ Target capabilities, in priority order:
 
 ```bash
 # instruct model with guard (input + output moderation) and retrieval (literature KB, Tamil Wikipedia 2026-08, fact sheet)
-.venv/bin/python serve.py --model ckpt/final/tamil-lm-2b-instruct --chat "திருக்குறள் 42 என்ன?"
+git clone https://github.com/timegravity/tamil-lm && cd tamil-lm && pip install -r requirements.txt
+python serve.py --model Timegravity/tamil-lm-2b-instruct --chat "திருக்குறள் 42 என்ன?"
 # same, as a Python function
-python -c "import serve; answer, meta = serve.make_answerer('ckpt/final/tamil-lm-2b-instruct'); print(answer('தமிழ்நாட்டின் முதலமைச்சர் யார்?'))"
+python -c "import serve; answer, meta = serve.make_answerer('Timegravity/tamil-lm-2b-instruct'); print(answer('தமிழ்நாட்டின் முதலமைச்சர் யார்?'))"
 ```
 
 The serving path is what every safety number in this card was measured on: guard on by default (`--no-guard` disables), deterministic abstention on office-holder / party / election questions unless a verified fact sheet is present, self-harm questions routed to verified helplines, verbatim literature quotes from the knowledge base.
@@ -38,7 +39,7 @@ The serving path is what every safety number in this card was measured on: guard
 
 The published instruct weights are SFT round 4c (adapter ckpt/sft4c/step_1589 merged onto the CPT base; 50,857 SFT rows, of which 4,699 are refusal or abstention rows, mix in eval/results/round4c_mix.md). Round 4c replaced round 3 under the criteria of the ruling of 2026-09-11 (assert-inside abstention under 10 percent, benign over-refusal under 5 percent, IndicQA contains-answer rate within 0.02 of round 3): the four-round table is eval/results/rounds_3_4_4b_4c.md. Changes recorded from round 3 and carried to the next round (ROUND5.md): benign over-refusal on the guarded red-team 3.0 to 4.5 percent and benign-sweep serving blocks 12 to 24 of 1,000; unsafe completions stayed at zero in every gate (eval/results/safety_battery_r4.md). GGUF files ship only after the quantised build passes its own gate through the serving path (eval/results/gguf_release_gate_r4.md); when that file says FAIL, no GGUF is in this repository.
 
-## Recipe (updated as decisions are made)
+## Recipe
 
 ### Environment
 - torch 2.11.0+cu128 stable (matched to the known-working env on this machine), transformers 5.15.1, flash-linear-attention 0.5.2. bf16 only, no 4-bit quantization.
@@ -63,7 +64,7 @@ Structured JSONL first (work, section, number, verbatim text, urai, translation,
 Holdout: every 7th kural (number % 7 == 0) is eval-only; its renderings are excluded from training. Trade-off: the released model is weaker on exactly those until a final post-eval CPT pass that includes them; the reported probe score predates that pass.
 
 ### Phase 4 long CPT (run 1)
-Recipe: the autoresearch winner (extended tokenizer with Stage A rows, LoRA r256/512, 8-bit AdamW lr 2e-4, 64K tokens/step). Data: data/shards/main3b_ext_lit15rep05xqa50_tng03 (Vignesh's ruling, variant B): literature 15% nominal with extra templates and 50% Q&A renderings capped at 8x, replay 5%, Tanglish 3%, Tamil web 67%; contamination exclusions applied. Supervision: run_cpt.sh in tmux session tamil-cpt (checkpoints every 500 steps or 20 min, atomic; resume from the exact token; loss-spike LR halving; PAUSE/STOP/schedule.yaml). Evals: val bpc per bucket every 1000 steps; full literature probe at 500M and 1B tokens (reported, no pause). Progress lives in STATUS.md and the dashboard (127.0.0.1:7860).
+Recipe: the autoresearch winner (extended tokenizer with Stage A rows, LoRA r256/512, 8-bit AdamW lr 2e-4, 64K tokens/step). Data: data/shards/main3b_ext_lit15rep05xqa50_tng03 (variant B): literature 15% nominal with extra templates and 50% Q&A renderings capped at 8x, replay 5%, Tanglish 3%, Tamil web 67%; contamination exclusions applied. Supervision: run_cpt.sh (checkpoints every 500 steps or 20 min, atomic; resume from the exact token; loss-spike LR halving). Evals: val bpc per bucket every 1000 steps; full literature probe at 500M and 1B tokens.
 
 ### Findings (autoresearch, 15-minute budget on the 100M subset, metric = val bits per character + literature probe)
 Loop closed after 21 experiments (stop rule: 60 runs or 15 consecutive non-keeps; neither hit). Kept: tokenizer extension (exp001), LoRA r256/512 (exp005), and the composed data mix of four confirmed changes (exp013, exp015, exp017, exp020 -> exp021). Reverted: exp002, exp003, exp004, exp006, exp008, exp009, exp010, exp011, exp007b, exp012, exp014, exp016, exp018, exp019. Headline: literature probe 0.1632 (untrained) -> 0.2197 (exp021) on the 100M subset in 15 minutes; all of the gain is source identification, none yet in verbatim recall, which the long run must deliver.
@@ -108,14 +109,14 @@ The model card (organisation: Timegravity Labs Private Limited, Coimbatore, Indi
 - The README results table is written only by eval/render_table.py from the results files.
 - Literature probe (eval/run_probe.py) remains the primary metric; the public benchmarks are secondary. English retention: MMLU (500-item subsample: 100 dev, 400 test) and GSM8K (200 items: 40 dev, 160 test), reported as deltas vs base.
 
-## Model card (draft)
+## Model card
 - Organisation: Timegravity Labs Private Limited (Coimbatore, India); author: Vignesh Angurajan; repositories Timegravity/tamil-lm-2b-base and Timegravity/tamil-lm-2b-instruct.
 - Base model: Qwen/Qwen3.5-2B-Base (Apache-2.0). Architecture unchanged (hybrid Gated DeltaNet + gated attention); vocabulary extended by 22,222 Tamil tokens.
-- Recipe: see "Recipe" and "Phase 4" above; the exact commands, commit hashes and shard profile are recorded in STATUS.md and experiments.tsv.
+- Recipe: see "Recipe" and "Phase 4" above; the training scripts and the experiment log (experiments.tsv) are in https://github.com/timegravity/tamil-lm.
 - Data: generated data card data/DATACARD.md (every source with license, documents and token count from data/manifest.json); mix by tokens and repetition caps stated there.
 - Attribution: Qwen3.5 (Alibaba Cloud, Apache-2.0); Wikipedia and Wikisource text under CC BY-SA 4.0 with attribution to their contributors; Project Madurai etexts (used, not redistributed); dataset citations for each source in data/LICENSES.md.
 - Evaluation: the results table in this README is generated by eval/render_table.py from eval/results/*.json (base, cpt_final, sft_final, sft4_final; dev and test); the literature probe (eval/run_probe.py) is the primary metric. No number appears here without its script and commit hash.
-- Known weaknesses: filled from the final analysis reports (eval/results/analysis_*.md) at release time.
+- Known weaknesses: see "Known gaps", "Literature recall: measured honestly", "Safety status of the weights" and the English retention note under the comparison.
 - This is an independent research project; no legal review has been performed on data licensing.
 
 ## Knowledge cutoff and factuality
@@ -183,7 +184,7 @@ Largest remaining weaknesses of the base model (from the base pass): every Tamil
 
 ## Literature recall: measured honestly
 
-The in-weights literature source-identification gate was NOT met: on the 190-item held-out probe (4-way choice, chance 0.25, options shuffled with a committed seed, scored by option-text likelihood) the released base model scores 0.305. Verbatim quotations of Thirukkural and the other canon works ARE guaranteed, but through the serving stack's retrieval layer (serve.py), which looks up the requested unit in the structured KB and quotes it byte-exactly; the bare weights will paraphrase or misquote. A reproducible finding from this project: a 74-step LoRA checkpoint (experiment E1) reached 0.468 on the same gate, but that level did not survive full-scale training in two independent runs (1.26B and 1.47B tokens); the gain appears to be an early-adaptation transient. Details and per-run numbers are in STATUS.md and eval/results/.
+The in-weights literature source-identification gate was NOT met: on the 190-item held-out probe (4-way choice, chance 0.25, options shuffled with a committed seed, scored by option-text likelihood) the released base model scores 0.305. Verbatim quotations of Thirukkural and the other canon works ARE guaranteed, but through the serving stack's retrieval layer (serve.py), which looks up the requested unit in the structured KB and quotes it byte-exactly; the bare weights will paraphrase or misquote. A reproducible finding from this project: a 74-step LoRA checkpoint (experiment E1) reached 0.468 on the same gate, but that level did not survive full-scale training in two independent runs (1.26B and 1.47B tokens); the gain appears to be an early-adaptation transient. Per-run numbers are in experiments.tsv and eval/results/ in the GitHub repository.
 
 ## Family-safe by default
 
@@ -197,12 +198,12 @@ When a factual question about an entity or topic has no confident match in the l
 
 Two numbers are reported for every safety gate: the bare weights (what you get if you load the model with your own code) and the reference serving stack (serve.py: input and output guard, deterministic abstention on office-holder / party / election intents unless a verified fact sheet is present, self-harm routing to verified helplines, verbatim literature quotes from the knowledge base). The release gates are met by the serving stack; the bare instruct weights do NOT meet the political-safety gate on their own and refuse only part of the red-team set. If you deploy the weights without serve.py or an equivalent moderation layer, you are deploying a model that will state political facts from memory and answer some harmful requests.
 
-## Tools included
+## Code
 
-Shipped in the model repository under `tools/` (same files as in this code repository):
+The serving stack, the evaluation harness, the training recipe and the knowledge base and pack build scripts are in the public repository https://github.com/timegravity/tamil-lm (Apache 2.0). This model repository holds the weights, this card, the data card, the licence registers and the aggregate evaluation results only.
 
-- `serve.py`, `guard.py`, `guard_small.py`, `retrieval/`: the reference serving path measured by every safety number in this card (input and output guard, political and self-harm routing, retrieval over the literature KB and Tamil Wikipedia 2026-08, verbatim quotes).
-- `chat_server.py`: a local test chat (127.0.0.1 only) with per-turn logging and feedback buttons.
+- `serve.py`, `guard.py`, `retrieval/`: the reference serving path measured by every safety number in this card (input and output guard, political and self-harm routing, retrieval over the literature KB and Tamil Wikipedia 2026-08, verbatim quotes).
+- The family-safe layer is published as an interface: the loaders, the gate logic, the hashed lexicon and a small example rule file, with the file formats documented in `docs/safety_rule_file.md`. The project's plain-text lexicon and full rule list are not published: publishing the exact blocklist would be a map around it, and the list contains material that is not published.
 - `ui/transliterate.js`: a self-contained Tamil phonetic transliterator for the browser (romanised typing to Tamil script, e.g. "vanakkam" to வணக்கம்), MIT, no network, with its conventions in `ui/README.md` and a 50-case test (`node ui/test_transliterate.js`).
 
 ## Prohibited uses
@@ -251,202 +252,151 @@ Report unsafe outputs, data or licensing concerns, or errors to: contact@timegra
 
 ## Comparison with other open models
 <!-- COMPARISON:BEGIN -->
-### Comparison with other open models (generated 2026-09-13, commit 1d1bde1, harness 131286b (2026-09-13))
+### Comparison with other open models (generated 2026-09-14, commit a11079e, harness table a ce037bd7c0:eager; table b ce037bd7c0:eager; dev table legacy single-item harness, before harness versions)
 
-All comparison numbers in these tables were produced locally on this machine by this repository's evaluation harness on the locked test splits, with identical prompts within each table, identical split ids, greedy decoding and bf16 weights for every model; no number is copied from a paper or a model card. The metric is named in every column header (chrF++, accuracy, F1, contains-answer rate, bits per character). Models that could not be run are listed with the reason.
+Tables (a), (b) and (e) were produced locally on this machine by this repository's evaluation harness on the locked test splits, with identical prompts within each table, identical split ids, greedy decoding and bf16 weights for every model; the dev reference table uses the dev split, table (d) comes from hosted APIs, and table (c) is the serving path with its own decoding (noted there). No number is copied from a paper or a model card. The metric is named in every column header (chrF++, accuracy, F1, contains-answer rate, bits per character). Models that could not be run are listed with the reason.
 
-Summary: pending. The comparison claim is computed from the extracted translation chrF++ (table e) once every open model under 8B has it; still to come: Qwen3.5-2B, Qwen3.5-4B, Llama-3.2-3B-Instruct, Gemma-3-4B-it, Gemma-4-E2B-it, Sarvam-1, Tamil-Llama-7B-instruct-v0.2, tamil-qwen25-7b-instruct.
+Summary: pending. The comparison claim is computed from the extracted translation chrF++ (table e) once every open model under 8B has it; still to come: Qwen3.5-4B, Llama-3.2-3B-Instruct, Gemma-3-4B-it, Sarvam-1, BharatGPT-3B-Indic, Tamil-Llama-7B-instruct-v0.2, tamil-qwen25-7b-instruct.
 
-**Dev reference table. Dev split, 300 items per task, identical raw prompts.** Our own model's row also shows its locked test numbers alongside, marked as test. The test-split tables (a) and (b) below carry our model's rows now; each baseline is added as its run lands (priority ruling 2026-09-12).
-
-
-**ours**
-
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Belebele accuracy | IndicXNLI accuracy | IndicSentiment accuracy | MMLU accuracy | GSM8K accuracy | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct-r4 (locked TEST split) | 1.99B | apache-2.0 (Qwen3.5 base) | 1.81 | 47.9 | 51.5 | 41.1 | 49.5 | 0.292 | 0.167 | 0.405 | 0.272 | 0.340 | 0.511 | 0.338 | 0.069 | 1.214 | 3.024 | no test split | no test split | no test split |
-| tamil-lm-2b-instruct-r4 | 1.99B | apache-2.0 (Qwen3.5 base) | 1.81 | 49.1 | 52.3 | 41.1 | 51.1 | 0.303 | 0.204 | 0.463 | 0.267 | 0.327 | 0.506 | 0.380 | 0.050 | 1.295 | 3.023 | 0.133 | 0.274 | 0.242 |
-
-**base family**
-
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Belebele accuracy | IndicXNLI accuracy | IndicSentiment accuracy | MMLU accuracy | GSM8K accuracy | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-2B | 2.27B | apache-2.0 | 6.59 | 4.8 | 13.9 | 5.3 | 13.0 | 0.240 | 0.047 | 0.106 | 0.272 | 0.333 | 0.545 | 0.570 | 0.200 | 4.455 | 3.286 | 0.126 | 0.237 | 0.258 |
-| Qwen3.5-4B | 4.66B | apache-2.0 | 6.59 | 18.8 | 23.3 | 17.3 | 23.9 | 0.243 | 0.097 | 0.200 | 0.272 | 0.330 | 0.500 | 0.710 | 0.025 | 4.327 | 3.161 | 0.128 | 0.253 | 0.200 |
-
-**big-lab small models**
-
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Belebele accuracy | IndicXNLI accuracy | IndicSentiment accuracy | MMLU accuracy | GSM8K accuracy | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Gemma-3-1B-it | 1.00B | gemma | 2.46 | 30.0 | 40.4 | 29.5 | 39.1 | 0.253 | 0.167 | 0.392 | 0.294 | 0.333 | 0.487 | 0.210 | 0.250 | 1.856 | 3.956 | 0.190 | 0.274 | 0.305 |
-| Llama-3.2-1B-Instruct | 1.24B | llama3.2 | 12.05 | 16.9 | 30.7 | 15.6 | 31.5 | 0.263 | 0.108 | 0.157 | 0.256 | 0.333 | 0.481 | 0.410 | 0.325 | 1.823 | 3.369 | 0.161 | 0.289 | 0.295 |
-| Llama-3.2-3B-Instruct | 3.21B | llama3.2 | 12.05 | 25.9 | 30.0 | 24.2 | 32.4 | 0.280 | 0.210 | 0.353 | 0.233 | 0.333 | 0.481 | 0.540 | 0.700 | 1.669 | 3.220 | 0.274 | 0.284 | 0.295 |
-| Ministral-3-3B-Instruct | ~3.8B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: architecture not in the pinned transformers 5.15.1
-| Gemma-3-4B-it | 4.30B | gemma | 2.46 | 45.2 | 51.8 | 41.8 | 50.2 | 0.220 | 0.266 | 0.671 | 0.261 | 0.333 | 0.519 | 0.370 | 0.700 | 1.970 | 3.877 | 0.312 | 0.268 | 0.284 |
-| Gemma-4-E2B-it | 5.12B | apache-2.0 | 2.46 | 0.0 | 0.7 | 0.0 | 0.5 | 0.243 | 0.033 | 0.067 | 0.267 | 0.333 | 0.462 | 0.310 | 0.000 | 5.029 | 7.089 | 0.141 | 0.263 | 0.232 |
-| Gemma-4-E4B-it | ~8.0B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| gpt-oss-20b | ~20.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-
-**Indian labs**
-
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Belebele accuracy | IndicXNLI accuracy | IndicSentiment accuracy | MMLU accuracy | GSM8K accuracy | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Sarvam-1 | 2.53B | not stated on the card | 2.21 | 23.3 | 38.0 | 20.1 | 35.9 | 0.343 | 0.256 | 0.447 | 0.328 | 0.333 | 0.487 | 0.450 | 0.050 | 1.348 | 3.270 | 0.208 | 0.247 | 0.295 |
-| Param-1-2.9B-Instruct | ~2.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode
-| BharatGPT-3B-Indic | 3.21B | other | 12.05 | 19.4 | 23.2 | 17.9 | 24.5 | 0.227 | 0.098 | 0.133 | 0.278 | 0.337 | 0.641 | 0.500 | 0.375 | 2.028 | 3.389 | 0.155 | 0.263 | 0.300 |
-| Param2-17B-A2.4B-Thinking | ~17.0B | not stated on the card | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Sarvam-30B | ~32.0B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-
-**community Tamil fine-tunes**
-
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Belebele accuracy | IndicXNLI accuracy | IndicSentiment accuracy | MMLU accuracy | GSM8K accuracy | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3-1.7B-tamil-Instruct | 1.72B | apache-2.0 | 9.91 | 14.2 | 19.6 | 13.0 | 16.0 | 0.237 | 0.125 | 0.251 | 0.272 | 0.333 | 0.814 | 0.490 | 0.225 | 2.131 | 4.394 | 0.190 | 0.284 | 0.321 |
-| Tamil-Llama-7B-instruct-v0.2 | ~6.9B | llama2 | 1.84 | 28.0 | 39.4 | 29.0 | 37.4 | 0.297 | 0.183 | 0.522 | 0.317 | 0.373 | 0.481 | 0.320 | 0.150 | 1.474 | 2.758 | 0.143 | 0.263 | 0.237 |
-| tamil-qwen25-7b-instruct | 7.62B | apache-2.0 | 9.91 | 26.4 | 13.2 | 23.4 | 12.5 | 0.277 | 0.131 | 0.286 | 0.283 | 0.333 | 0.949 | 0.670 | 0.300 | 1.393 | 3.233 | 0.151 | 0.279 | 0.300 |
-
-
-
-Models not run and why:
-- Ministral-3-3B-Instruct: architecture not in the pinned transformers 5.15.1
-- Param-1-2.9B-Instruct: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode
+**Status (last updated 2026-09-14 10:11 UTC).** Rows complete under the current harness: tamil-lm-2b-instruct-r4, Qwen3.5-2B, Gemma-3-1B-it, Llama-3.2-1B-Instruct, Qwen3-1.7B-tamil-Instruct, and the hosted models in table (d). Still running: Qwen3.5-4B, Llama-3.2-3B-Instruct, Gemma-3-4B-it, Sarvam-1, BharatGPT-3B-Indic, Tamil-Llama-7B-instruct-v0.2, tamil-qwen25-7b-instruct, Sarvam-30B. This table is updated as each of them completes; no statement on this card rests on a model that has not run.
 
 **Table (a). Identical raw prompts.** The same raw prompt for every model, no chat template for any model including ours. Chat-tuned models that expect their template are penalised on generation tasks in this table by design.
 
+Harness version: ce037bd7c0:eager.
+
 
 
 **ours**
 
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
+| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy (identify source and meaning) | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct-r4 | 1.99B | apache-2.0 (Qwen3.5 base) | 1.81 | 48.0 | 51.7 | 41.3 | 49.6 | 0.293 | 0.168 | 0.412 | 1.214 | 3.024 | 0.338 | 0.069 | 0.133 | 0.274 | 0.242 |
+| tamil-lm-2b-instruct-r4 | 1.99B | apache-2.0 (Qwen3.5 base) | 1.81 | 48.0 | 51.5 | 41.3 | 49.5 | 0.293 | 0.172 | 0.417 | 1.308 | 3.340 | 0.338 | 0.069 | 0.253 | 0.268 | 0.242 |
 
 **base family**
 
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
+| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy (identify source and meaning) | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-2B | 2.27B | apache-2.0 | 6.59 | 4.9 | 12.3 | 6.1 | 12.8 | 0.267 | 0.041 | 0.088 | 4.368 | 3.301 | 0.490 | 0.200 | 0.126 | 0.237 | 0.258 |
-| Qwen3.5-4B | 4.66B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Qwen3.5-2B | 2.27B | apache-2.0 | 6.59 | 4.9 | 12.4 | 5.9 | 12.9 | 0.267 | 0.041 | 0.092 | 4.422 | 3.326 | 0.490 | 0.256 | 0.253 | 0.237 | 0.258 |
 
 **big-lab small models**
 
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
+| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy (identify source and meaning) | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Gemma-3-1B-it | 1.00B | gemma | 2.46 | 27.8 | 41.5 | 26.4 | 39.8 | 0.268 | 0.161 | 0.417 | 1.719 | 3.979 | 0.235 | 0.494 | 0.190 | 0.274 | 0.305 |
-| Llama-3.2-1B-Instruct | 1.24B | llama3.2 | 12.05 | 17.3 | 31.6 | 16.0 | 30.8 | 0.277 | 0.098 | 0.167 | 1.688 | 3.376 | 0.390 | 0.375 | 0.161 | 0.289 | 0.295 |
-| Llama-3.2-3B-Instruct | 3.21B | llama3.2 | 12.05 | 27.1 | 30.8 | 23.4 | 32.7 | 0.302 | 0.221 | 0.391 | 1.541 | 3.216 | 0.468 | 0.662 | 0.274 | 0.284 | 0.295 |
-| Ministral-3-3B-Instruct | ~3.8B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: architecture not in the pinned transformers 5.15.1
-| Gemma-3-4B-it | 4.30B | gemma | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Gemma-4-E2B-it | 5.12B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Gemma-4-E4B-it | ~8.0B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| gpt-oss-20b | ~20.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Gemma-3-1B-it | 1.00B | gemma | 2.46 | 27.7 | 41.4 | 26.2 | 39.8 | 0.314 | 0.164 | 0.422 | 1.719 | 3.979 | 0.390 | 0.562 | 0.371 | 0.232 | 0.205 |
+| Llama-3.2-1B-Instruct | 1.24B | llama3.2 | 12.05 | 17.0 | 31.6 | 15.3 | 30.9 | 0.268 | 0.100 | 0.254 | 1.688 | 3.376 | 0.355 | 0.412 | 0.318 | 0.305 | 0.295 |
 
 **Indian labs**
 
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
+| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy (identify source and meaning) | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Sarvam-1 | 2.53B | not stated on the card | 2.21 | 19.6 | 36.0 | 18.7 | 35.8 | 0.326 | 0.264 | 0.446 | 1.295 | 3.291 | 0.440 | 0.050 | 0.208 | 0.247 | 0.295 |
-| Param-1-2.9B-Instruct | ~2.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode
-| BharatGPT-3B-Indic | 3.21B | other | 12.05 | 19.2 | 24.2 | 17.6 | 24.4 | 0.273 | 0.130 | 0.225 | 1.878 | 3.385 | 0.420 | 0.400 | 0.155 | 0.263 | 0.300 |
-| Param2-17B-A2.4B-Thinking | ~17.0B | not stated on the card | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Sarvam-30B | ~32.0B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Param-1-2.9B-Instruct | ~2.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode (evidence: logs/serving_vs_bare_param1.log)
+| Param2-17B-A2.4B-Thinking | ~17.0B | not stated on the card | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code is written for transformers 4.x and does not build under the pinned transformers 5.15.1: it imports removed helpers (is_torch_fx_available, then ROPE_INIT_FUNCTIONS['default'], legacy attention-mask utilities); evidence logs/cmp_Param2-17B-A2.4B-Thinking.log and logs/param2_load_check.log (2026-09-13)
 
 **community Tamil fine-tunes**
 
-| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
+| model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy | literature probe, letter log-likelihood accuracy (identify source and meaning) | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3-1.7B-tamil-Instruct | 1.72B | apache-2.0 | 9.91 | 15.0 | 18.1 | 12.8 | 17.6 | 0.267 | 0.121 | 0.256 | 2.010 | 4.406 | 0.372 | 0.169 | 0.190 | 0.284 | 0.321 |
-| Tamil-Llama-7B-instruct-v0.2 | ~6.9B | llama2 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| tamil-qwen25-7b-instruct | 7.62B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Qwen3-1.7B-tamil-Instruct | 1.72B | apache-2.0 | 9.91 | 14.6 | 17.9 | 11.8 | 17.5 | 0.267 | 0.121 | 0.353 | 2.263 | 4.828 | 0.372 | 0.256 | 0.366 | 0.274 | 0.305 |
 
 
+Generation mode per model (batched harness safeguard, rulings 2026-09-12 and 2026-09-13: each model's dev check, batched against single-item, both eager, decides its mode; check used per model: check-v2: 100 items per generation task, single-item half on generation tasks only, thresholds chrF++ 3.5, F1 0.035, contains 0.05, accuracy 0.05: Qwen3.5-2B, Gemma-3-1B-it, Llama-3.2-1B-Instruct, Qwen3-1.7B-tamil-Instruct | verified in eval/results/batch_check.md (300 dev items): tamil-lm-2b-instruct-r4): batched: tamil-lm-2b-instruct-r4, Qwen3.5-2B, Gemma-3-1B-it, Llama-3.2-1B-Instruct, Qwen3-1.7B-tamil-Instruct; single-item: none.
 
 Models not run and why:
-- Ministral-3-3B-Instruct: architecture not in the pinned transformers 5.15.1
-- Param-1-2.9B-Instruct: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode
+- Param-1-2.9B-Instruct: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode (evidence: logs/serving_vs_bare_param1.log)
+- Param2-17B-A2.4B-Thinking: its repository modelling code is written for transformers 4.x and does not build under the pinned transformers 5.15.1: it imports removed helpers (is_torch_fx_available, then ROPE_INIT_FUNCTIONS['default'], legacy attention-mask utilities); evidence logs/cmp_Param2-17B-A2.4B-Thinking.log and logs/param2_load_check.log (2026-09-13)
+
+Start token (harness rule bos-v1, ruling 2026-09-13): raw prompts and bits-per-character texts begin with each tokenizer's own defined start token and carry no other special tokens; chat-templated prompts are tokenized as the template writes them. Before bos-v1, generation relied on the tokenizer to add the token (Gemma 4's tokenizer adds none, which made its raw outputs degenerate) and the log-likelihood tasks had none for any model.
+Effect of the start token on raw-mode MILU, MMLU and Belebele, per re-run model (eval/results/bos_before_after.md): Gemma-3-1B-it: dev mmlu_en 21.0 to 41.0, test milu_ta 26.8 to 31.4, test mmlu_en 23.5 to 39.0; Llama-3.2-1B-Instruct: dev milu_ta 26.0 to 28.0, dev mmlu_en 39.0 to 35.0, test mmlu_en 39.0 to 35.5. Still to re-run: BharatGPT-3B-Indic, Llama-3.2-3B-Instruct, Sarvam-1.
+
+Degenerate-output check (ruling 2026-09-13): a generation task is refused when at least half of its generations repeat the prompt's last line or loop on one line, when a translation task scores chrF++ below 2 with non-empty generations, or when bpc exceeds 4.8 (Tamil) or 6.0 (Tanglish); refused cells read "degenerate" and never show a score.
+- flagged and reviewed, shown as measured: cmp_Qwen3.5-2B gsm8k_en: 94 of 160 generations degenerate (mostly: loops on one line); reviewed: under the raw prompt the model gives a short final "Answer: N" line, often with no working, and repeats that line until the 512-token cap (16 of 24 regenerated samples); the scorer reads the last number, which is the answer the model gave, so the loop does not change the score; a model behaviour scored as measured (reviewed and accepted by Vignesh 2026-09-14)
+- flagged and reviewed, shown as measured: cmp_Qwen3-1.7B-tamil-Instruct_chat in22gen_ta_en: chrF++ 1.78 with 820 of 820 generations non-empty (810 contain Tamil script); reviewed: the model answers Tamil-to-English requests in Tamil under its chat template; a model failure scored as measured
 
 **Table (b). Each model with its own chat template.** Every model wrapped in its own chat template with the system prompt its model card recommends, thinking disabled where the template supports it; ours with its own chat template. The two tables differ only in prompt wrapping; table (b) is the fairer view of chat-tuned models, table (a) the strictly identical one.
 
+Harness version: ce037bd7c0:eager.
+
 
 
 **ours**
 
 | model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct-r4 | 1.99B | apache-2.0 (Qwen3.5 base) | 1.81 | 42.6 | 51.4 | 38.2 | 48.7 | 0.280 | 0.216 | 0.418 | 1.214 | 3.024 | 0.343 | 0.163 |
+| tamil-lm-2b-instruct-r4 | 1.99B | apache-2.0 (Qwen3.5 base) | 1.81 | 42.6 | 51.5 | 38.2 | 48.8 | 0.284 | 0.220 | 0.414 | 1.373 | 3.209 | 0.330 | 0.163 |
 
 **base family**
 
 | model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-2B | 2.27B | apache-2.0 | 6.59 | 28.7 | 22.6 | 27.2 | 23.4 | 0.243 | 0.021 | 0.028 | 4.368 | 3.301 | 0.253 | 0.381 |
-| Qwen3.5-4B | 4.66B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Qwen3.5-2B | 2.27B | apache-2.0 | 6.59 | 28.0 | 22.3 | 25.8 | 23.2 | 0.242 | 0.021 | 0.025 | 4.422 | 3.326 | 0.260 | 0.769 |
 
 **big-lab small models**
 
 | model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Gemma-3-1B-it | 1.00B | gemma | 2.46 | 7.0 | 29.1 | 8.1 | 22.8 | 0.264 | 0.156 | 0.455 | 1.719 | 3.979 | 0.345 | 0.381 |
-| Llama-3.2-1B-Instruct | 1.24B | llama3.2 | 12.05 | 20.6 | 33.7 | 18.4 | 33.0 | 0.260 | 0.148 | 0.211 | 1.688 | 3.376 | 0.310 | 0.394 |
-| Llama-3.2-3B-Instruct | 3.21B | llama3.2 | 12.05 | 29.5 | 43.6 | 24.9 | 44.2 | 0.299 | 0.303 | 0.436 | 1.541 | 3.216 | 0.505 | 0.569 |
-| Ministral-3-3B-Instruct | ~3.8B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: architecture not in the pinned transformers 5.15.1
-| Gemma-3-4B-it | 4.30B | gemma | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Gemma-4-E2B-it | 5.12B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Gemma-4-E4B-it | ~8.0B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| gpt-oss-20b | ~20.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Gemma-3-1B-it | 1.00B | gemma | 2.46 | 7.0 | 29.3 | 8.2 | 22.9 | 0.279 | 0.155 | 0.450 | 1.719 | 3.979 | 0.325 | 0.487 |
+| Llama-3.2-1B-Instruct | 1.24B | llama3.2 | 12.05 | 24.1 | 33.8 | 22.7 | 33.2 | 0.257 | 0.166 | 0.282 | 1.688 | 3.376 | 0.275 | 0.444 |
 
 **Indian labs**
 
 | model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Sarvam-1 | 2.53B | not stated on the card | 2.21 | 31.8 | 14.5 | 30.3 | 15.0 | 0.384 | 0.214 | 0.396 | 1.295 | 3.291 | 0.435 | 0.125 |
-| Param-1-2.9B-Instruct | ~2.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode
-| BharatGPT-3B-Indic | 3.21B | other | 12.05 | 21.1 | 25.7 | 18.8 | 27.1 | 0.283 | 0.181 | 0.265 | 1.878 | 3.385 | 0.480 | 0.475 |
-| Param2-17B-A2.4B-Thinking | ~17.0B | not stated on the card | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Sarvam-30B | ~32.0B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Param-1-2.9B-Instruct | ~2.9B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode (evidence: logs/serving_vs_bare_param1.log)
+| Param2-17B-A2.4B-Thinking | ~17.0B | not stated on the card | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: its repository modelling code is written for transformers 4.x and does not build under the pinned transformers 5.15.1: it imports removed helpers (is_torch_fx_available, then ROPE_INIT_FUNCTIONS['default'], legacy attention-mask utilities); evidence logs/cmp_Param2-17B-A2.4B-Thinking.log and logs/param2_load_check.log (2026-09-13)
 
 **community Tamil fine-tunes**
 
 | model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | MMLU accuracy | GSM8K accuracy |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Qwen3-1.7B-tamil-Instruct | 1.72B | apache-2.0 | 9.91 | 17.9 | 2.0 | 15.0 | 1.8 | 0.308 | 0.128 | 0.253 | 2.010 | 4.406 | 0.472 | 0.400 |
-| Tamil-Llama-7B-instruct-v0.2 | ~6.9B | llama2 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| tamil-qwen25-7b-instruct | 7.62B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Qwen3-1.7B-tamil-Instruct | 1.72B | apache-2.0 | 9.91 | 18.3 | 2.0 | 15.3 | 1.8 | 0.312 | 0.159 | 0.378 | 2.263 | 4.828 | 0.487 | 0.506 |
+
+Translations scored by their first line, the harness rule for every model (ruling 2026-09-13). Share of each model's translations whose first line is a preamble rather than a translation (the first non-empty line ends with a colon after markdown emphasis is removed; eval/preamble_share.py), which score near zero under that rule: tamil-lm-2b-instruct-r4 0.0% (0 of 3664) (ours: an instruction-following result of the answer format taught in SFT, not a measure of translation quality); Qwen3.5-2B 7.8% (286 of 3664); Gemma-3-1B-it 55.0% (2016 of 3664); Llama-3.2-1B-Instruct 0.3% (10 of 3664); Qwen3-1.7B-tamil-Instruct 18.7% (684 of 3664). The extracted-body score for every model is in table (e) (comparison_translation_rules.md), and every comparison claim uses it.
 
 
 System prompts used in table (b): tamil-lm-2b-instruct-r4: "நீங்கள் தமிழ் மொழியில் உதவும் ஒரு உதவியாளர். துல்லியமாகவும் மரியாதையாகவும் பதிலளிக்கவும்."; Tamil-Llama-7B-instruct-v0.2: "You are a helpful assistant."; tamil-qwen25-7b-instruct: "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."; every other model: none (template only).
 
 
 
-Models not run and why:
-- Ministral-3-3B-Instruct: architecture not in the pinned transformers 5.15.1
-- Param-1-2.9B-Instruct: its repository modelling code uses the legacy key-value cache API and rope_scaling keys that the pinned transformers 5.15.1 no longer provides (KeyError 'type', then DynamicCache not subscriptable); generation would need use_cache=False at about 7 hours per mode
+Hosted frontier models are context, not competitors: they are ahead of this model on reasoning and on most translation directions; ties within a point and exceptions are listed. Gemini 3.5 Flash-Lite is ahead by more than 1 chrF++ point on 3 of 4 translation directions (FLORES ta-en 58.7 vs 51.5; IN22 en-ta 46.2 vs 41.3; IN22 ta-en 59.4 vs 49.5), tied within 1 point on FLORES en-ta 47.2 vs 48.0; on GSM8K reasoning it is ahead, 0.831 vs 0.163. GPT-5.4 nano is ahead by more than 1 chrF++ point on 2 of 4 translation directions (FLORES ta-en 52.8 vs 51.5; IN22 ta-en 53.5 vs 49.5), tied within 1 point on IN22 en-ta 42.1 vs 41.3, behind this model on FLORES en-ta 44.5 vs 48.0; on GSM8K reasoning it is ahead, 0.881 vs 0.163 (extracted chrF++, this model at the better of its raw and chat-template modes). The comparison this model is built for is open models that run offline on a phone (tables a, b and e); a 2B model at 1.3 GB in Q4_K_M is not a substitute for a hosted frontier model.
 
-Hosted frontier models are context, not competitors: they are ahead of this model on reasoning and on most translation directions; the exceptions are listed. Gemini 3.5 Flash-Lite is ahead on 3 of 4 translation directions (FLORES ta-en 58.7 vs 51.7; IN22 en-ta 45.9 vs 41.3; IN22 ta-en 59.4 vs 49.6) and not ahead on FLORES en-ta 47.2 vs 48.0, and on GSM8K reasoning 0.512 vs 0.163. GPT-5.4 nano is ahead on 3 of 4 translation directions (FLORES ta-en 52.8 vs 51.7; IN22 en-ta 41.9 vs 41.3; IN22 ta-en 53.5 vs 49.6) and not ahead on FLORES en-ta 44.5 vs 48.0, and on GSM8K reasoning 0.819 vs 0.163 (extracted chrF++, this model at the better of its raw and chat-template modes). The comparison this model is built for is open models that run offline on a phone (tables a, b and e); a 2B model at 1.3 GB in Q4_K_M is not a substitute for a hosted frontier model.
-
-**Table (d). Hosted models (generation tasks only, chat mode, locked test split).** The same prompts and scoring through OpenRouter, each request pinned to the lab's own provider; exclusions and data policy in the notes under the table.
+**Table (d). Hosted models (generation tasks only, chat mode, locked test split).** The same prompts and scoring through OpenRouter; closed models pinned to the lab's own provider, the open-weight gpt-oss models served by any provider (recorded per response); exclusions and data policy in the notes under the table.
 
 
 
-| model | served by | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | IndicQA F1 | IndicQA contains-answer rate | GSM8K accuracy | requests | cost (USD) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct (round 4c, this repository) | local, bf16 | 42.6 | 51.4 | 38.2 | 48.7 | 0.216 | 0.418 | 0.163 | | |
-| Gemini 3.5 Flash-Lite | Google | 31.0 | 24.7 | 30.7 | 24.2 | 0.426 | 0.654 | 0.512 | 4845 | 0.94 |
-| GPT-5.4 nano | OpenAI | 39.7 | 47.3 | 35.3 | 45.0 | 0.229 | 0.624 | 0.819 | 4845 | 0.52 |
+| model | served by | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | IndicQA F1 | IndicQA contains-answer rate | GSM8K accuracy | requests | cost (USD) | answer caps |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| tamil-lm-2b-instruct (round 4c, this repository) | local, bf16 | 42.6 | 51.5 | 38.2 | 48.8 | 0.220 | 0.414 | 0.163 | | | suite v3 caps |
+| Gemini 3.5 Flash-Lite | Google | 31.0 | 24.7 | 31.9 | 24.2 | 0.426 | 0.654 | 0.831 | 4989 | 1.02 | v3 caps flores_en_ta 160, flores_ta_en 160, in22gen_en_ta 208, in22gen_ta_en 160, indicqa_ta 48, gsm8k_en 512 |
+| GPT-5.4 nano | OpenAI | 39.7 | 47.3 | 35.5 | 45.0 | 0.229 | 0.624 | 0.881 | 4889 | 0.53 | v3 caps flores_en_ta 160, flores_ta_en 160, in22gen_en_ta 256, in22gen_ta_en 160, indicqa_ta 48, gsm8k_en 512 |
+| gpt-oss-20b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable) | Darkbloom 4834, AkashML 5, CoreWeave 4, DekaLLM 2 | 37.8 | 43.7 | 28.7 | 38.4 | 0.300 | 0.385 | 0.769 | 4845 | 0.07 | old caps plus 1,024 reasoning tokens |
+| gpt-oss-120b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable) | AkashML 3829, CoreWeave 947, DekaLLM 63, DeepInfra 6 | 34.3 | 41.8 | 30.8 | 39.4 | 0.245 | 0.505 | 0.806 | 4845 | 0.11 | old caps plus 1,024 reasoning tokens |
 
 
 - tamil-lm-2b-instruct (round 4c, this repository): translations opening with a preamble line 0.0% (0 of 3664); an instruction-following result of the answer format taught in SFT, not a measure of translation quality.
-- Gemini 3.5 Flash-Lite: all 4845 responses served by Google (Google (Vertex), zero data retention); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 56.7% (2078 of 3663).
-- GPT-5.4 nano: all 4845 responses served by OpenAI (OpenAI, no zero retention (ruling 2026-09-13), no data collection); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 14.4% (529 of 3663).
-- Hosted spend for the models shown 1.46 USD, within a 4.50 USD cap.
-- Not run, on cost: Claude Haiku 4.5 (Anthropic) and Grok 4.3 (xAI); each projected at about 4 USD for these splits, which alone would break the cap beside the other models.
+- Gemini 3.5 Flash-Lite: 4989 requests served by Google (Google (Vertex), zero data retention); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 56.3% (2061 of 3663).
+- GPT-5.4 nano: 4889 requests served by OpenAI (OpenAI, no zero retention (ruling 2026-09-13), no data collection); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 14.5% (531 of 3663).
+- gpt-oss-20b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable): 4845 requests served by Darkbloom 4834, AkashML 5, CoreWeave 4, DekaLLM 2 (any provider, cheapest first with fallbacks, no data collection (ruling 2026-09-13); reasoning at low effort); reasoning tokens billed 98487; the scored split has 4846 items; translations opening with a preamble line 8.2% (299 of 3663).
+- gpt-oss-120b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable): 4845 requests served by AkashML 3829, CoreWeave 947, DekaLLM 63, DeepInfra 6 (any provider, cheapest first with fallbacks, no data collection (ruling 2026-09-13); reasoning at low effort); reasoning tokens billed 126791; the scored split has 4846 items; translations opening with a preamble line 11.3% (414 of 3663).
+- Hosted spend for the models shown 1.73 USD, within a 4.50 USD cap.
+- Not run, on cost: Claude Haiku 4.5 (Anthropic) and Grok 4.3 (xAI); projected at about 4.0 USD and 3.7 USD for these splits before any reasoning tokens (2.23 million input and 0.36 million expected output tokens counted with the o200k tokenizer as a proxy, at 1 and 5 USD, and 1.25 and 2.5 USD, per million; STATUS 2026-09-13), which alone would break the cap beside the other models.
 - DeepSeek V4.1 Flash: not measured, because DeepSeek's own endpoint trains on the prompts it receives.
 - No free tier exists on OpenRouter for any of the five labs' models (checked 2026-09-13); the only free Google models are Gemma, served by third parties.
 - Only generation tasks are scored: MILU, MMLU, the bits-per-character sets and the literature probe need log-likelihoods that a hosted chat API does not expose.
-- Translations are scored by their first line, the harness rule for every model (ruling 2026-09-13); a preamble line (the first non-empty line ends with a colon after markdown emphasis is removed, eval/preamble_share.py) scores near zero under it. The per-model preamble share is in the notes above; an extracted-body score follows as a separate, versioned column.
+- Translations in this table are scored by their first line, the harness rule for every model (ruling 2026-09-13); a preamble line (the first non-empty line ends with a colon after markdown emphasis is removed, eval/preamble_share.py) scores near zero under it. The per-model preamble share is in the notes above. The extracted-body score from the same responses is in table (e), and every comparison claim uses that column.
+- Request counts: the scored split has 4,846 items, and responses are cached by prompt, so one prompt that occurs twice in the test splits is sent once (4,845 first-run requests; 3,663 distinct translation prompts against 3,664 scored items). Gemini 3.5 Flash-Lite and GPT-5.4 nano add the responses re-sent at the v3 caps (eval/results/hosted_recap.md: old and corrected scores side by side, and spend against OpenRouter's usage figure).
+- gpt-oss-20b and gpt-oss-120b are not directly comparable with the other rows: they cannot switch reasoning off, so every request carried its answer cap plus 1,024 tokens for reasoning (low effort), and almost none of their answers reached a cap, while the other hosted rows and every local row run at the v3 caps.
 
 
-Methodology note on translation scoring. The harness scores the first line of each translation for every model. Many chat models open with a preamble line ("Here is the Tamil translation:") and put the translation below it; under the first-line rule such an answer scores near zero, so the first-line column measures format-following as much as translation. Table (e) adds an extracted score from the same generations (rule extract-v1: markdown emphasis removed, leading lines that are empty or end with a colon skipped, the first remaining line scored). Every comparison claim on this card uses the extracted column. Share of translations opening with a preamble line, chat-template mode: tamil-lm-2b-instruct-r4 0.0% (this model: an instruction-following result of the answer format taught in SFT, not translation quality); Qwen3.5-2B 7.8%; Gemma-3-1B-it 55.3%; Llama-3.2-1B-Instruct 0.3%; Llama-3.2-3B-Instruct 0.2%; Sarvam-1 0.7%; BharatGPT-3B-Indic 0.2%; Qwen3-1.7B-tamil-Instruct 17.5%; Gemini 3.5 Flash-Lite 56.7%; GPT-5.4 nano 14.4%.
+Methodology note on translation scoring. The harness scores the first line of each translation for every model. Many chat models open with a preamble line ("Here is the Tamil translation:") and put the translation below it; under the first-line rule such an answer scores near zero, so the first-line column measures format-following as much as translation. Table (e) adds an extracted score from the same generations (rule extract-v1: markdown emphasis removed, leading lines that are empty or end with a colon skipped, the first remaining line scored). Every comparison claim on this card uses the extracted column. Share of translations opening with a preamble line, chat-template mode: tamil-lm-2b-instruct-r4 0.0% (this model: an instruction-following result of the answer format taught in SFT, not translation quality); Qwen3.5-2B 7.8%; Gemma-3-1B-it 55.0%; Llama-3.2-1B-Instruct 0.3%; Qwen3-1.7B-tamil-Instruct 18.7%; Gemini 3.5 Flash-Lite 56.3%; GPT-5.4 nano 14.5%.
+
+**Methodology: measurement artifacts that moved numbers, and how each was corrected** (eval/HARNESS_NOTES.md has the evidence; numbers from eval/results/artifacts.json).
+
+1. Multiple-choice letter position. In chat mode the answer letter was scored as " A" with a leading space right after the template's assistant header, which is not how a new turn starts, and models then leaned on one letter: Qwen3.5-2B picked C in 4,163 of its 4,822 wrong MILU answers, and its chat-mode MMLU read 0.253 against 0.490 in raw mode. Corrected: after a chat template the letter is scored without the space (chat MMLU now 0.260).
+2. Padded SDPA attention. Batched generation with left padding under the default SDPA attention shifted Gemma-3-1B's Tamil-to-English scores (IN22 39.1 chrF++ one prompt at a time, 36.5 batched; FLORES 40.4 and 38.4). Corrected: every model runs with eager attention, which reproduces one-at-a-time decoding (39.5 and 40.8), and each model's batched scores are checked against one-at-a-time decoding before its full run.
+3. Missing start token. Raw prompts relied on each tokenizer to add its start token, and the log-likelihood tasks added none for any model. Gemma 4's tokenizer adds none, and its raw outputs degenerated (FLORES English-to-Tamil 0.03 chrF++, Tamil bpc 5.19). Corrected: raw prompts and bpc texts start with each tokenizer's defined start token. Material moves on raw choice tasks: Gemma-3-1B-it: dev mmlu_en 21.0 to 41.0, test milu_ta 26.8 to 31.4, test mmlu_en 23.5 to 39.0; Llama-3.2-1B-Instruct: dev milu_ta 26.0 to 28.0, dev mmlu_en 39.0 to 35.0, test mmlu_en 39.0 to 35.5 (still to re-run: BharatGPT-3B-Indic, Llama-3.2-3B-Instruct, Sarvam-1). Models without a start token, ours included, are unchanged.
+4. Preamble scoring. The harness scores the first line of a translation, and many chat models open with a line such as "Here is the Tamil translation:" before the translation, which scores near zero (Gemma-3-1B in chat mode: 55.0% of translations; flores_en_ta 7.0 first line against 28.1 extracted); Gemini 3.5 Flash-Lite opens 56.3% of translations this way (IN22 Tamil-to-English 24.2 first line, 59.4 extracted). Corrected: an extracted score (preamble lines ending in a colon skipped, markdown removed) is reported beside the first-line score from the same generations, and every comparison claim uses it.
+5. Truncation caps sized for our tokenizer. Fixed caps of 160 tokens for translation, 48 for IndicQA and 256 for GSM8K fit our Tamil-efficient tokenizer but not others: 725 of 1012 FLORES Tamil references need more than 160 Llama-3.2 tokens, and 358 of Llama-3.2-3B's chat translations were cut mid-character; Gemini 3.5 Flash-Lite stopped at 256 tokens on 72 of 160 GSM8K answers. Corrected: each tokenizer's cap is the larger of the base cap and 1.25 times its 99th-percentile reference length, GSM8K is 512, and generation stops once the scored line is complete. Moves: Llama-3.2-1B dev IndicQA contains 0.157 to 0.247; Gemini GSM8K 0.512 to 0.831. IndicQA keeps 48 tokens where the references are short, so full-sentence answers from chat models can still be cut.
+6. Also corrected in the same pass: GSM8K compared answers as strings (45 numerically correct answers such as "42.00" against "42" were marked wrong; now compared as numbers); bpc skipped the first token for tokenizers without a start token (our model counted 98.0% of Tamil and 96.4% of Tanglish characters; now every character is scored after the end-of-sequence token); date-dependent chat templates now receive a fixed date.
 
 **Table (e). Translation under two scoring rules.** First-line score and extracted-body score from the same generations, the rule for each named in the table; filled as the translation captures land (ruling 2026-09-13).
 
@@ -456,44 +406,34 @@ Methodology note on translation scoring. The harness scores the first line of ea
 
 | model | FLORES en-ta first line | FLORES en-ta extracted | FLORES ta-en first line | FLORES ta-en extracted | IN22 en-ta first line | IN22 en-ta extracted | IN22 ta-en first line | IN22 ta-en extracted |
 |---|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct-r4 | 48.0 | 48.0 | 51.7 | 51.7 | 41.3 | 41.3 | 49.6 | 49.6 |
-| Gemma-3-1B-it | 27.8 | 28.0 | 41.5 | 41.5 | 26.4 | 26.7 | 39.8 | 39.8 |
-| Llama-3.2-1B-Instruct | 17.3 | 17.3 | 31.6 | 31.5 | 16.0 | 16.0 | 30.8 | 31.0 |
-| BharatGPT-3B-Indic | 19.2 | 19.2 | 24.2 | 24.2 | 17.6 | 17.6 | 24.4 | 24.4 |
-| Qwen3-1.7B-tamil-Instruct | 15.0 | 15.2 | 18.1 | 18.0 | 12.8 | 13.0 | 17.6 | 17.4 |
+| tamil-lm-2b-instruct-r4 | 48.0 | 48.0 | 51.5 | 51.5 | 41.3 | 41.3 | 49.5 | 49.5 |
+| Qwen3.5-2B | 4.9 | 4.9 | 12.4 | 12.5 | 5.9 | 6.1 | 12.9 | 13.2 |
+| Gemma-3-1B-it | 27.7 | 27.9 | 41.4 | 41.4 | 26.2 | 26.4 | 39.8 | 39.8 |
+| Llama-3.2-1B-Instruct | 17.0 | 17.0 | 31.6 | 31.5 | 15.3 | 15.3 | 30.9 | 31.0 |
+| Qwen3-1.7B-tamil-Instruct | 14.6 | 14.8 | 17.9 | 17.8 | 11.8 | 12.0 | 17.5 | 17.4 |
 
 **own chat template (as table b)**
 
 | model | FLORES en-ta first line | FLORES en-ta extracted | FLORES ta-en first line | FLORES ta-en extracted | IN22 en-ta first line | IN22 en-ta extracted | IN22 ta-en first line | IN22 ta-en extracted |
 |---|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct-r4 | 42.6 | 42.6 | 51.4 | 51.3 | 38.2 | 38.2 | 48.7 | 48.7 |
-| Gemma-3-1B-it | 7.0 | 27.9 | 29.1 | 40.8 | 8.1 | 25.3 | 22.8 | 39.0 |
-| Llama-3.2-1B-Instruct | 20.6 | 20.6 | 33.7 | 33.7 | 18.4 | 18.4 | 33.0 | 33.2 |
-| BharatGPT-3B-Indic | 21.1 | 21.1 | 25.7 | 25.7 | 18.8 | 18.8 | 27.1 | 27.1 |
-| Qwen3-1.7B-tamil-Instruct | 17.9 | 17.1 | 2.0 | 2.0 | 15.0 | 14.2 | 1.8 | 1.8 |
-| Gemini 3.5 Flash-Lite (hosted) | 31.0 | 47.2 | 24.7 | 58.7 | 30.7 | 45.9 | 24.2 | 59.4 |
-| GPT-5.4 nano (hosted) | 39.7 | 44.5 | 47.3 | 52.8 | 35.3 | 41.9 | 45.0 | 53.5 |
+| tamil-lm-2b-instruct-r4 | 42.6 | 42.6 | 51.5 | 51.5 | 38.2 | 38.2 | 48.8 | 48.8 |
+| Qwen3.5-2B | 28.0 | 28.4 | 22.3 | 21.8 | 25.8 | 26.0 | 23.2 | 22.7 |
+| Gemma-3-1B-it | 7.0 | 28.1 | 29.3 | 40.9 | 8.2 | 25.2 | 22.9 | 39.2 |
+| Llama-3.2-1B-Instruct | 24.1 | 24.1 | 33.8 | 33.7 | 22.7 | 22.7 | 33.2 | 33.3 |
+| Qwen3-1.7B-tamil-Instruct | 18.3 | 18.9 | 2.0 | 2.1 | 15.3 | 16.4 | 1.8 | 1.9 |
+| Gemini 3.5 Flash-Lite (hosted) | 31.0 | 47.2 | 24.7 | 58.7 | 31.9 | 46.2 | 24.2 | 59.4 |
+| GPT-5.4 nano (hosted) | 39.7 | 44.5 | 47.3 | 52.8 | 35.5 | 42.1 | 45.0 | 53.5 |
+| gpt-oss-20b (hosted, any provider) | 37.8 | 39.9 | 43.7 | 45.9 | 28.7 | 32.4 | 38.4 | 42.5 |
+| gpt-oss-120b (hosted, any provider) | 34.3 | 39.7 | 41.8 | 44.8 | 30.8 | 35.1 | 39.4 | 41.9 |
 
 
-**Table (c). Serving path (unequal comparison by design).** Our model through the full serving stack (routing, literature KB, Wikipedia index, domain packs, dictionary, calculator, guard) against the same baselines run bare; the gap shows what the stack adds.
+The dev reference table and the serving-path table (c) are not on the card at launch: they were measured under the earlier harness and return once re-run under the current one.
 
+Literature probe: the option-text scorer is the gating one (ruling 2026-08-28; options shuffled per item with a committed seed); the letter log-likelihood scorer is shown beside it. On bare weights ours scores 0.2684 (identify source) and 0.2421 (meaning) by option text, the best other model (Llama-3.2-1B-Instruct) 0.3053 and 0.2947; all within a few points of chance (0.25). The legacy mean over four item types, two of which (quote a kural verbatim, give a kural number) are near zero for every bare model, is not a comparison metric and is not published. In the serving path the literature questions are answered from the knowledge base, which is the serving-path table.
 
-
-| model | probe text acc | current affairs: abstains | strict assert-inside rate | political: pass | everyday: declined | everyday: user language | everyday: mean chars |
-|---|---|---|---|---|---|---|---|
-| tamil-lm-2b-instruct-r4 (serving path: retrieval, packs, guard) | 0.2304 | 0.8 | 0.133 | 1.0 | 0.06 | 0.64 | 404 |
-| Qwen3.5-2B (bare) | 0.0319 | 0.067 | 0.733 | 0.45 | 0.0 | 0.7 | 527 |
-| Gemma-3-4B-it (bare) | 0.1527 | 0.05 | 0.85 | 0.44 | 0.0 | 0.6 | 672 |
-| Sarvam-1 (bare) | 0.0564 | 0.017 | 0.667 | 0.44 | 0.0 | 0.7 | 506 |
-| Tamil-Llama-7B (bare) | 0.0687 | 0.0 | 0.667 | 0.45 | 0.0 | 0.66 | 477 |
-| Param-1-2.9B-Instruct (bare) | NOT RUN: not run: repository modelling code incompatible with the pinned transformers 5.15.1 (legacy KV-cache API) | | | | | | |
-
-
-Literature probe: the option-text scorer is the gating one (ruling 2026-08-28; options shuffled per item with a committed seed); the letter log-likelihood scorer is shown beside it. On bare weights ours scores 0.2737 (identify source) and 0.2421 (meaning) by option text, Gemma-3-4B-it 0.2684 and 0.2842; all within a few points of chance (0.25). The legacy mean over four item types, two of which (quote a kural verbatim, give a kural number) are near zero for every bare model, is not a comparison metric and is not published. In the serving path the literature questions are answered from the knowledge base, which is the serving-path table.
-
-Contamination check (eval/contamination.py, 13-gram overlap of every benchmark TEST item against the training text): 14 of 1012 FLORES sentences and 13 of 820 IN22-Gen sentences were found in the BPCC-derived training subsets; the 7,149 training documents carrying any hit were excluded from the shards before pretraining (data/clean/exclude_hashes.json). The check covered the test items; the dev items used only for tuning decisions were not part of it.
+Contamination check (eval/contamination.py, 13-gram overlap of every benchmark TEST item against the training text): 14 of 1012 FLORES sentences and 13 of 820 IN22-Gen sentences were found in the BPCC-derived training subsets; the 7,206 training documents carrying any hit were excluded from the shards before pretraining (data/clean/exclude_hashes.json). IndicQA is not contamination-free for this model: 1022 of 1022 test contexts overlap the training text, because the contexts are Tamil Wikipedia passages and Tamil Wikipedia is in the pretraining data (13-gram overlap on the passage, not a check of the answers); XL-Sum, not in the test tables, overlaps on 1553 of 2027. The check covered the test items; the dev items used only for tuning decisions were not part of it.
 
 English retention regressed relative to the base model (locked test splits): MMLU 0.552 to 0.338 and GSM8K 0.637 to 0.069. This is the cost of the Tamil continued pretraining and instruction tuning; the serving stack answers arithmetic through a calculator route, not the weights.
 
-Sources: eval/results/comparison_bare.md, comparison_chat.md, comparison_dev.md (dev reference, not published), comparison_serving.md; scripts eval/baselines_round4.py, eval/serving_vs_bare.py, eval/render_comparison.py.
+Sources: eval/results/comparison_bare.md, comparison_chat.md, comparison_hosted.md, comparison_translation_rules.md, bos_before_after.md; scripts eval/baselines_round4.py, eval/serving_vs_bare.py, eval/render_comparison.py.
 <!-- COMPARISON:END -->

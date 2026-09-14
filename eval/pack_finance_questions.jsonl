@@ -1,0 +1,102 @@
+{"id": "finq-001-ta", "qid": 1, "lang": "ta", "q": "யுபிஐ என்றால் என்ன? அது எப்படி வேலை செய்கிறது?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["UPI", "செலுத்துகை", "வங்கி"]}
+{"id": "finq-001-tanglish", "qid": 1, "lang": "tanglish", "q": "UPI na enna? adhu epdi work aagudhu?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["UPI", "செலுத்துகை", "வங்கி"]}
+{"id": "finq-001-en", "qid": 1, "lang": "en", "q": "What is UPI and how does it work?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["UPI", "செலுத்துகை", "வங்கி"]}
+{"id": "finq-002-ta", "qid": 2, "lang": "ta", "q": "யுபிஐ-ஐ யார் நடத்துகிறார்கள்? என்பிசிஐ என்றால் என்ன?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["NPCI", "செலுத்துதல்கள் கழகம்"]}
+{"id": "finq-002-tanglish", "qid": 2, "lang": "tanglish", "q": "UPI ya yaaru run pandranga? NPCI na enna?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["NPCI", "செலுத்துதல்கள் கழகம்"]}
+{"id": "finq-002-en", "qid": 2, "lang": "en", "q": "Who runs UPI? What is NPCI?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["NPCI", "செலுத்துதல்கள் கழகம்"]}
+{"id": "finq-003-ta", "qid": 3, "lang": "ta", "q": "ரூபே கார்டுக்கும் விசா கார்டுக்கும் என்ன வித்தியாசம்?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["ரூபே", "விசா", "அட்டை"]}
+{"id": "finq-003-tanglish", "qid": 3, "lang": "tanglish", "q": "RuPay card ku Visa card ku enna vithyasam?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["ரூபே", "விசா", "அட்டை"]}
+{"id": "finq-003-en", "qid": 3, "lang": "en", "q": "What is the difference between a RuPay card and a Visa card?", "topic": "upi", "expect_pack": "finance", "expect_terms": ["ரூபே", "விசா", "அட்டை"]}
+{"id": "finq-004-tanglish", "qid": 4, "lang": "tanglish", "q": "savings account na enna?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["சேமிப்புக் கணக்கு", "வட்டி"]}
+{"id": "finq-004-en", "qid": 4, "lang": "en", "q": "What is a savings account?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["சேமிப்புக் கணக்கு", "வட்டி"]}
+{"id": "finq-005-ta", "qid": 5, "lang": "ta", "q": "நிலையான வைப்புத் தொகைக்கும் சேமிப்புக் கணக்குக்கும் என்ன வித்தியாசம்?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["நிலையான வைப்பு", "வட்டி", "சேமிப்பு"]}
+{"id": "finq-005-tanglish", "qid": 5, "lang": "tanglish", "q": "FD ku savings account ku enna difference?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["நிலையான வைப்பு", "வட்டி", "சேமிப்பு"]}
+{"id": "finq-005-en", "qid": 5, "lang": "en", "q": "What is the difference between a fixed deposit and a savings account?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["நிலையான வைப்பு", "வட்டி", "சேமிப்பு"]}
+{"id": "finq-006-ta", "qid": 6, "lang": "ta", "q": "ஜன் தன் கணக்கு என்றால் என்ன? யார் திறக்கலாம்?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["ஜன் தன்", "வங்கி", "கணக்கு"]}
+{"id": "finq-006-tanglish", "qid": 6, "lang": "tanglish", "q": "Jan Dhan account na enna? yaaru open pannalam?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["ஜன் தன்", "வங்கி", "கணக்கு"]}
+{"id": "finq-006-en", "qid": 6, "lang": "en", "q": "What is a Jan Dhan account and who can open one?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["ஜன் தன்", "வங்கி", "கணக்கு"]}
+{"id": "finq-007-ta", "qid": 7, "lang": "ta", "q": "காசோலை பவுன்ஸ் ஆனால் என்ன ஆகும்?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["காசோலை", "அவமதிப்பு"]}
+{"id": "finq-007-tanglish", "qid": 7, "lang": "tanglish", "q": "cheque bounce aana enna aagum?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["காசோலை", "அவமதிப்பு"]}
+{"id": "finq-007-en", "qid": 7, "lang": "en", "q": "What happens when a cheque bounces?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["காசோலை", "அவமதிப்பு"]}
+{"id": "finq-008-ta", "qid": 8, "lang": "ta", "q": "டெபிட் கார்டுக்கும் கிரெடிட் கார்டுக்கும் என்ன வித்தியாசம்?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["பற்று அட்டை", "கடன் அட்டை"]}
+{"id": "finq-008-tanglish", "qid": 8, "lang": "tanglish", "q": "debit card ku credit card ku enna vithyasam?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["பற்று அட்டை", "கடன் அட்டை"]}
+{"id": "finq-008-en", "qid": 8, "lang": "en", "q": "What is the difference between a debit card and a credit card?", "topic": "bank_account", "expect_pack": "finance", "expect_terms": ["பற்று அட்டை", "கடன் அட்டை"]}
+{"id": "finq-009-ta", "qid": 9, "lang": "ta", "q": "பான் கார்டு என்றால் என்ன? அது எதற்கு தேவை?", "topic": "pan", "expect_pack": "finance", "expect_terms": ["நிரந்தர கணக்கு எண்", "வருமான வரி"]}
+{"id": "finq-009-tanglish", "qid": 9, "lang": "tanglish", "q": "PAN card na enna? edhukku venum?", "topic": "pan", "expect_pack": "finance", "expect_terms": ["நிரந்தர கணக்கு எண்", "வருமான வரி"]}
+{"id": "finq-009-en", "qid": 9, "lang": "en", "q": "What is a PAN card and why is it needed?", "topic": "pan", "expect_pack": "finance", "expect_terms": ["நிரந்தர கணக்கு எண்", "வருமான வரி"]}
+{"id": "finq-010-ta", "qid": 10, "lang": "ta", "q": "பான் எண்ணில் எத்தனை எழுத்துகள் இருக்கும்?", "topic": "pan", "expect_pack": "finance", "expect_terms": ["நிரந்தர கணக்கு எண்", "பத்து"]}
+{"id": "finq-010-tanglish", "qid": 10, "lang": "tanglish", "q": "PAN number la ethana letters irukkum?", "topic": "pan", "expect_pack": "finance", "expect_terms": ["நிரந்தர கணக்கு எண்", "பத்து"]}
+{"id": "finq-010-en", "qid": 10, "lang": "en", "q": "How many characters does a PAN number have?", "topic": "pan", "expect_pack": "finance", "expect_terms": ["நிரந்தர கணக்கு எண்", "பத்து"]}
+{"id": "finq-011-ta", "qid": 11, "lang": "ta", "q": "ஆதார் என்றால் என்ன? அதில் எத்தனை இலக்கங்கள்?", "topic": "aadhaar", "expect_pack": "finance", "expect_terms": ["ஆதார்", "12", "எண்"]}
+{"id": "finq-011-tanglish", "qid": 11, "lang": "tanglish", "q": "Aadhaar na enna? adhula ethana digits?", "topic": "aadhaar", "expect_pack": "finance", "expect_terms": ["ஆதார்", "12", "எண்"]}
+{"id": "finq-011-en", "qid": 11, "lang": "en", "q": "What is Aadhaar and how many digits does it have?", "topic": "aadhaar", "expect_pack": "finance", "expect_terms": ["ஆதார்", "12", "எண்"]}
+{"id": "finq-012-ta", "qid": 12, "lang": "ta", "q": "ஆதார் அட்டையை யார் வழங்குகிறார்கள்?", "topic": "aadhaar", "expect_pack": "finance", "expect_terms": ["ஆதார்", "ஆணையம்"]}
+{"id": "finq-012-tanglish", "qid": 12, "lang": "tanglish", "q": "Aadhaar card ah yaaru issue pannuranga?", "topic": "aadhaar", "expect_pack": "finance", "expect_terms": ["ஆதார்", "ஆணையம்"]}
+{"id": "finq-012-en", "qid": 12, "lang": "en", "q": "Who issues the Aadhaar card?", "topic": "aadhaar", "expect_pack": "finance", "expect_terms": ["ஆதார்", "ஆணையம்"]}
+{"id": "finq-013-ta", "qid": 13, "lang": "ta", "q": "பிஎஃப் என்றால் என்ன? சம்பளத்தில் எவ்வளவு பிடிக்கப்படும்?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["EPF", "12%", "contribution"]}
+{"id": "finq-013-tanglish", "qid": 13, "lang": "tanglish", "q": "PF na enna? salary la evlo pudippanga?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["EPF", "12%", "contribution"]}
+{"id": "finq-013-en", "qid": 13, "lang": "en", "q": "What is EPF and how much is deducted from salary?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["EPF", "12%", "contribution"]}
+{"id": "finq-014-ta", "qid": 14, "lang": "ta", "q": "பிஎஃப் பணத்தை எப்படி எடுப்பது?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["withdrawal", "member", "EPF"]}
+{"id": "finq-014-tanglish", "qid": 14, "lang": "tanglish", "q": "PF amount epdi withdraw pandradhu?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["withdrawal", "member", "EPF"]}
+{"id": "finq-014-en", "qid": 14, "lang": "en", "q": "How do I withdraw my PF money?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["withdrawal", "member", "EPF"]}
+{"id": "finq-015-ta", "qid": 15, "lang": "ta", "q": "UAN எண் என்றால் என்ன?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["UAN", "Universal Account Number"]}
+{"id": "finq-015-tanglish", "qid": 15, "lang": "tanglish", "q": "UAN number na enna?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["UAN", "Universal Account Number"]}
+{"id": "finq-015-en", "qid": 15, "lang": "en", "q": "What is a UAN?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["UAN", "Universal Account Number"]}
+{"id": "finq-016-ta", "qid": 16, "lang": "ta", "q": "தேசிய ஓய்வூதியத் திட்டம் (NPS) என்றால் என்ன?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["தேசிய ஓய்வூதிய", "திட்டம்", "ஓய்வூதியம்"]}
+{"id": "finq-016-tanglish", "qid": 16, "lang": "tanglish", "q": "NPS na enna? National Pension Scheme?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["தேசிய ஓய்வூதிய", "திட்டம்", "ஓய்வூதியம்"]}
+{"id": "finq-016-en", "qid": 16, "lang": "en", "q": "What is the National Pension System?", "topic": "epf", "expect_pack": "finance", "expect_terms": ["தேசிய ஓய்வூதிய", "திட்டம்", "ஓய்வூதியம்"]}
+{"id": "finq-017-ta", "qid": 17, "lang": "ta", "q": "இந்தியாவில் வருமான வரி யார் கட்ட வேண்டும்?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமான வரி", "இந்திய", "சட்டம்"]}
+{"id": "finq-017-tanglish", "qid": 17, "lang": "tanglish", "q": "India la income tax yaaru kattanum?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமான வரி", "இந்திய", "சட்டம்"]}
+{"id": "finq-017-en", "qid": 17, "lang": "en", "q": "Who has to pay income tax in India?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமான வரி", "இந்திய", "சட்டம்"]}
+{"id": "finq-018-ta", "qid": 18, "lang": "ta", "q": "வருமான வரி ஸ்லாப் என்றால் என்ன?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமான வரி", "விகிதங்கள்"]}
+{"id": "finq-018-tanglish", "qid": 18, "lang": "tanglish", "q": "income tax slab na enna?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமான வரி", "விகிதங்கள்"]}
+{"id": "finq-018-en", "qid": 18, "lang": "en", "q": "What is an income tax slab?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமான வரி", "விகிதங்கள்"]}
+{"id": "finq-019-ta", "qid": 19, "lang": "ta", "q": "TDS என்றால் என்ன? சம்பளத்தில் ஏன் பிடிக்கிறார்கள்?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமானவரி பிடித்தம்", "TDS"]}
+{"id": "finq-019-tanglish", "qid": 19, "lang": "tanglish", "q": "TDS na enna? salary la yen pudikkiranga?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமானவரி பிடித்தம்", "TDS"]}
+{"id": "finq-019-en", "qid": 19, "lang": "en", "q": "What is TDS and why is it deducted from salary?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["வருமானவரி பிடித்தம்", "TDS"]}
+{"id": "finq-020-ta", "qid": 20, "lang": "ta", "q": "ஜிஎஸ்டி என்றால் என்ன? நாம் வாங்கும் பொருட்களுக்கு எப்படி வரி போடுகிறார்கள்?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["சரக்கு மற்றும் சேவை வரி", "GST"]}
+{"id": "finq-020-tanglish", "qid": 20, "lang": "tanglish", "q": "GST na enna? naama vaangura porul ku epdi tax podranga?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["சரக்கு மற்றும் சேவை வரி", "GST"]}
+{"id": "finq-020-en", "qid": 20, "lang": "en", "q": "What is GST and how is it charged on the things we buy?", "topic": "tax", "expect_pack": "finance", "expect_terms": ["சரக்கு மற்றும் சேவை வரி", "GST"]}
+{"id": "finq-021-ta", "qid": 21, "lang": "ta", "q": "மியூச்சுவல் ஃபண்ட் என்றால் என்ன?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["பரஸ்பர நிதி", "முதலீட்டாளர்"]}
+{"id": "finq-021-tanglish", "qid": 21, "lang": "tanglish", "q": "mutual fund na enna?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["பரஸ்பர நிதி", "முதலீட்டாளர்"]}
+{"id": "finq-021-en", "qid": 21, "lang": "en", "q": "What is a mutual fund?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["பரஸ்பர நிதி", "முதலீட்டாளர்"]}
+{"id": "finq-022-ta", "qid": 22, "lang": "ta", "q": "பங்கு என்றால் என்ன? பங்குச் சந்தை எப்படி வேலை செய்கிறது?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["பங்கு", "நிறுவன", "சந்தை"]}
+{"id": "finq-022-tanglish", "qid": 22, "lang": "tanglish", "q": "share na enna? stock market epdi work aagudhu?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["பங்கு", "நிறுவன", "சந்தை"]}
+{"id": "finq-022-en", "qid": 22, "lang": "en", "q": "What is a share and how does the stock market work?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["பங்கு", "நிறுவன", "சந்தை"]}
+{"id": "finq-023-ta", "qid": 23, "lang": "ta", "q": "இறையாண்மை தங்கப் பத்திரம் என்றால் என்ன?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["தங்கப் பத்திரம்", "ரிசர்வ் வங்கி"]}
+{"id": "finq-023-tanglish", "qid": 23, "lang": "tanglish", "q": "sovereign gold bond na enna?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["தங்கப் பத்திரம்", "ரிசர்வ் வங்கி"]}
+{"id": "finq-023-en", "qid": 23, "lang": "en", "q": "What is a sovereign gold bond?", "topic": "investing", "expect_pack": "finance", "expect_terms": ["தங்கப் பத்திரம்", "ரிசர்வ் வங்கி"]}
+{"id": "finq-024-ta", "qid": 24, "lang": "ta", "q": "காப்பீடு என்றால் என்ன? பிரீமியம் என்றால் என்ன?", "topic": "insurance", "expect_pack": "finance", "expect_terms": ["காப்பீடு", "பிரீமிய"]}
+{"id": "finq-024-tanglish", "qid": 24, "lang": "tanglish", "q": "insurance na enna? premium na enna?", "topic": "insurance", "expect_pack": "finance", "expect_terms": ["காப்பீடு", "பிரீமிய"]}
+{"id": "finq-024-en", "qid": 24, "lang": "en", "q": "What is insurance and what is a premium?", "topic": "insurance", "expect_pack": "finance", "expect_terms": ["காப்பீடு", "பிரீமிய"]}
+{"id": "finq-025-ta", "qid": 25, "lang": "ta", "q": "வாகனக் காப்பீடு இந்தியாவில் கட்டாயமா?", "topic": "insurance", "expect_pack": "finance", "expect_terms": ["வாகனக் காப்பீடு", "கட்டாய"]}
+{"id": "finq-025-tanglish", "qid": 25, "lang": "tanglish", "q": "vehicle insurance India la compulsory ah?", "topic": "insurance", "expect_pack": "finance", "expect_terms": ["வாகனக் காப்பீடு", "கட்டாய"]}
+{"id": "finq-025-en", "qid": 25, "lang": "en", "q": "Is vehicle insurance compulsory in India?", "topic": "insurance", "expect_pack": "finance", "expect_terms": ["வாகனக் காப்பீடு", "கட்டாய"]}
+{"id": "finq-026-ta", "qid": 26, "lang": "ta", "q": "இஎம்ஐ என்றால் என்ன? அது எப்படி கணக்கிடப்படுகிறது?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["மாதாந்திர தவணை", "வட்டி", "கடன்"]}
+{"id": "finq-026-tanglish", "qid": 26, "lang": "tanglish", "q": "EMI na enna? epdi calculate pandranga?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["மாதாந்திர தவணை", "வட்டி", "கடன்"]}
+{"id": "finq-026-en", "qid": 26, "lang": "en", "q": "What is an EMI and how is it calculated?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["மாதாந்திர தவணை", "வட்டி", "கடன்"]}
+{"id": "finq-027-ta", "qid": 27, "lang": "ta", "q": "சிபில் ஸ்கோர் என்றால் என்ன?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["சிபில்", "கடன்"]}
+{"id": "finq-027-tanglish", "qid": 27, "lang": "tanglish", "q": "CIBIL score na enna?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["சிபில்", "கடன்"]}
+{"id": "finq-027-en", "qid": 27, "lang": "en", "q": "What is a CIBIL score?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["சிபில்", "கடன்"]}
+{"id": "finq-028-ta", "qid": 28, "lang": "ta", "q": "நகைக் கடன் எப்படி வேலை செய்கிறது?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["நகைக் கடன்", "தங்க"]}
+{"id": "finq-028-tanglish", "qid": 28, "lang": "tanglish", "q": "gold loan epdi work aagudhu?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["நகைக் கடன்", "தங்க"]}
+{"id": "finq-028-en", "qid": 28, "lang": "en", "q": "How does a gold loan work?", "topic": "loans", "expect_pack": "finance", "expect_terms": ["நகைக் கடன்", "தங்க"]}
+{"id": "finq-029-ta", "qid": 29, "lang": "ta", "q": "ஓடிபி என்றால் என்ன? அதை யாருக்கும் சொல்லக்கூடாது ஏன்?", "topic": "fraud", "expect_pack": "finance", "expect_terms": ["ஒரு முறை கடவுச்சொல்", "OTP"]}
+{"id": "finq-029-tanglish", "qid": 29, "lang": "tanglish", "q": "OTP na enna? yaarukum solla koodadhu yen?", "topic": "fraud", "expect_pack": "finance", "expect_terms": ["ஒரு முறை கடவுச்சொல்", "OTP"]}
+{"id": "finq-029-en", "qid": 29, "lang": "en", "q": "What is an OTP and why must I never share it?", "topic": "fraud", "expect_pack": "finance", "expect_terms": ["ஒரு முறை கடவுச்சொல்", "OTP"]}
+{"id": "finq-030-ta", "qid": 30, "lang": "ta", "q": "கம்ப்யூட்டர் சரி செய்கிறேன் என்று போன் செய்து பணம் கேட்பது மோசடியா?", "topic": "fraud", "expect_pack": "finance", "expect_terms": ["தொழில்நுட்ப உதவி", "மோசடி"]}
+{"id": "finq-030-tanglish", "qid": 30, "lang": "tanglish", "q": "computer repair pannuren nu call panni panam ketta adhu fraud ah?", "topic": "fraud", "expect_pack": "finance", "expect_terms": ["தொழில்நுட்ப உதவி", "மோசடி"]}
+{"id": "finq-030-en", "qid": 30, "lang": "en", "q": "Someone called saying they will fix my computer and asked for money, is that a scam?", "topic": "fraud", "expect_pack": "finance", "expect_terms": ["தொழில்நுட்ப உதவி", "மோசடி"]}
+{"id": "finq-031-ta", "qid": 31, "lang": "ta", "q": "நெல் பயிருக்கு அரசு மானியம் எவ்வளவு கிடைக்கும்?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-032-tanglish", "qid": 32, "lang": "tanglish", "q": "ration card ku apply panna enna documents venum?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-033-en", "qid": 33, "lang": "en", "q": "Tell me a short story about a bank robber who became a monk.", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-034-ta", "qid": 34, "lang": "ta", "q": "இன்று வானிலை எப்படி இருக்கு?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-036-en", "qid": 36, "lang": "en", "q": "Who was the first Chief Minister of Tamil Nadu?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-037-ta", "qid": 37, "lang": "ta", "q": "பொங்கல் பண்டிகை எப்போது கொண்டாடப்படுகிறது?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-039-en", "qid": 39, "lang": "en", "q": "What is the capital of Karnataka?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-040-ta", "qid": 40, "lang": "ta", "q": "வங்கிக் கிளையில் நடந்த ஒரு சிறுகதை சொல்லுங்கள்.", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-041-tanglish", "qid": 41, "lang": "tanglish", "q": "PM Kisan 6000 rupees eppo account ku varum?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-042-en", "qid": 42, "lang": "en", "q": "How do I apply for a ration card in Tamil Nadu?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-043-ta", "qid": 43, "lang": "ta", "q": "திருக்குறள் முதல் குறள் என்ன?", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-044-en", "qid": 44, "lang": "en", "q": "Write a poem about money.", "topic": null, "expect_pack": null, "expect_terms": []}
+{"id": "finq-045-tanglish", "qid": 45, "lang": "tanglish", "q": "bank la velai kidaikka enna exam ezhuthanum?", "topic": null, "expect_pack": null, "expect_terms": []}

@@ -86,16 +86,61 @@ def dictionary_pack(out, n_ta=30000, n_en=8000):
     size = fts_db(f"{out}/dictionary_small.sqlite", rows, {"source": "Tamil and English Wiktionary (CC BY-SA 4.0), most common headwords", "entries": len(rows)})
     return len(rows), size
 
+PART_MAX = 1500   # RetrievalLayer.kt puts text.take(1500) of the chosen chunk into the prompt: every part fits that window whole
+# Chunks left out of the app packs, each with its reason (matched on title, section and page URL so a renumbered chunks.jsonl cannot
+# drop the wrong row; the build fails when a rule matches no row or more than one).
+PACK_EXCLUDE = {
+    "finance": [{"title": "சேமிப்புக் கணக்கு", "section": "ஐக்கிய மாநிலங்கள்", "url_contains": "%E0%AE%9A%E0%AF%87%E0%AE%AE%E0%AE%BF%E0%AE%AA%E0%AF%8D%E0%AE%AA%E0%AF%81%E0%AE%95%E0%AF%8D_%E0%AE%95%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81",
+                 "reason": "ruling 2026-09-14 (item 14): garbled machine-style Tamil about US deposit rules (Regulation D); unusable as an answer on savings accounts in India"}],
+}
+# extra chunk files merged into a pack after its chunks.jsonl
+PACK_EXTRA = {"agriculture": ["chunks_tamil_university.jsonl"]}
+
+def split_text(text, cap=PART_MAX):
+    """Split a chunk longer than cap into parts that each keep the chunk's header (title and section line) and break at a paragraph,
+    line or sentence end (a space when there is none in the second half of the window). Nothing is dropped (ruling 2026-09-14,
+    item 16: split instead of truncating)."""
+    if len(text) <= cap: return [text]
+    head, body = text.split("\n\n", 1) if "\n\n" in text[:400] else ("", text)
+    prefix = head + "\n\n" if head else ""
+    if len(prefix) > cap // 4: prefix = head.split("\n")[0][:120] + "\n\n"   # a very long section list: the title line only on every part
+    room = cap - len(prefix)
+    parts, rest = [], body.strip()
+    while rest:
+        if len(rest) <= room: parts.append(rest); break
+        w = rest[:room]
+        cut = max(w.rfind("\n\n"), w.rfind("\n"), w.rfind(". "), w.rfind("? "), w.rfind("! "), w.rfind("। "))
+        if cut < room // 2: cut = w.rfind(" ")
+        if cut < room // 3: cut = room - 1
+        parts.append(rest[:cut + 1].strip()); rest = rest[cut + 1:].strip()
+    return [prefix + x for x in parts if x]
+
 def domain_packs(out):
-    os.makedirs(f"{out}/packs", exist_ok=True); res = {}
+    os.makedirs(f"{out}/packs", exist_ok=True); res = {}; stats = {}
     for name in ("cooking", "nature", "agriculture", "finance"):
         p = f"{ROOT}/data/packs/{name}/chunks.jsonl"
         if not os.path.exists(p): continue
+        src = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
+        for extra in PACK_EXTRA.get(name, []):
+            ep = f"{ROOT}/data/packs/{name}/{extra}"
+            if os.path.exists(ep): src += [json.loads(l) for l in open(ep, encoding="utf-8") if l.strip()]
+        excluded = []
+        for rule in PACK_EXCLUDE.get(name, []):
+            m = [d for d in src if d.get("title") == rule["title"] and (d.get("section") or "") == rule["section"] and rule["url_contains"] in (d.get("url") or "")]
+            if len(m) != 1: raise SystemExit(f"{name}: exclusion rule matches {len(m)} chunks: {rule}")
+            excluded.append((m[0]["id"], rule["reason"])); src.remove(m[0])
         rows = []
-        for l in open(p, encoding="utf-8"):
-            d = json.loads(l); rows.append({"title": d.get("title") or d.get("name_ta") or "", "text": (d.get("text") or "")[:2000], "meta": {k: d.get(k) for k in ("dish", "topic", "crop", "service", "source", "license", "dated", "official_site", "name_ta", "name_en", "group") if d.get(k) is not None}})
+        for d in src:
+            text = d.get("text") or ""; parts = split_text(text)
+            meta = {k: d.get(k) for k in ("dish", "topic", "crop", "service", "source", "license", "dated", "official_site", "name_ta", "name_en", "group") if d.get(k) is not None}
+            for i, part in enumerate(parts):
+                rows.append({"title": d.get("title") or d.get("name_ta") or "", "text": part,
+                             "meta": dict(meta, id=d.get("id") if len(parts) == 1 else f"{d.get('id')}#{i + 1}", **({"part": f"{i + 1}/{len(parts)}"} if len(parts) > 1 else {}))})
         gate = json.load(open(f"{out}/device_gates.json")).get(name, {"scale": "bm25", "floor": 10.0, "margin": 0.5}) if os.path.exists(f"{out}/device_gates.json") else {"scale": "bm25", "floor": 10.0, "margin": 0.5}
-        res[name] = (len(rows), fts_db(f"{out}/packs/{name}.sqlite", rows, {"name": name, "gate": gate, "license": "see LICENSES.md in the pack repository"}))
+        res[name] = (len(rows), fts_db(f"{out}/packs/{name}.sqlite", rows, {"name": name, "gate": gate, "license": "see LICENSES.md in the pack repository", "excluded": [{"id": i, "reason": r} for i, r in excluded], "part_max": PART_MAX}))
+        stats[name] = {"source_chunks": len(src) + len(excluded), "excluded": [i for i, _ in excluded], "parts": len(rows), "source_chars": sum(len(d.get("text") or "") for d in src),
+                       "chars_kept": sum(len(d.get("text") or "") for d in src), "chars_kept_before_2000_cap": sum(min(len(d.get("text") or ""), 2000) for d in src), "split_chunks": sum(1 for d in src if len(d.get("text") or "") > PART_MAX)}
+    json.dump(stats, open(f"{out}/pack_split_stats.json", "w"), ensure_ascii=False, indent=1)
     return res
 
 RULES_HEX = 32   # hash prefix kept per rule (128 bits)
@@ -184,7 +229,7 @@ def main():
     if "guard" in steps: nv, sv = guard_export(a.out); L.append(f"| guard v2.1 JSON (in-app) | {nv:,} n-grams | {sv/1e6:.1f} MB | in the APK | char_wb 2..5, logistic regression |"); print("guard done", flush=True)
     if "rules" in steps: nr_, sr_ = rules_export(a.out); L.append(f"| serving rules, hashed (in-app) | {nr_} self-harm cues | {sr_/1e3:.0f} KB | in the APK | exported from the rule file via guard.py, salted SHA-256 |"); print("rules done", flush=True)
     if "lexicon" in steps: sl = lexicon(a.out); L.append(f"| lexicon (in-app) | hashed | {sl/1e6:.2f} MB | in the APK | hashed set, severities, salt |")
-    for name, (nr, sz) in (domain_packs(a.out) if "packs" in steps else {}).items(): L.append(f"| {name} pack (optional) | {nr:,} chunks | {sz/1e6:.1f} MB | {sz/1e6:.1f} MB | FTS5 BM25, device gate in meta |")
+    for name, (nr, sz) in (domain_packs(a.out) if "packs" in steps else {}).items(): L.append(f"| {name} pack (optional) | {nr:,} chunks (long chunks split at {PART_MAX} characters) | {sz/1e6:.1f} MB | {sz/1e6:.1f} MB | FTS5 BM25, device gate in meta |")
     print("domain packs done", flush=True)
     if "dictionary" in steps: nd, sd = dictionary_pack(a.out); L.append(f"| dictionary small (optional) | {nd:,} entries | {sd/1e6:.1f} MB | {sd/1e6:.1f} MB | {'under the 20 MB target' if sd < 20e6 else 'OVER the 20 MB target: report'} |"); print("dictionary done", flush=True)
     if "wiki" in steps: nw, sw, sg = wiki_pack(a.out); L.append(f"| Wikipedia leads (optional, on by default after download) | {nw:,} articles | {sw/1e6:.1f} MB | {sg/1e6:.1f} MB gz | {'under the 400 MB target' if sw < 400e6 else 'OVER the 400 MB target'} |"); print("wiki done", flush=True)

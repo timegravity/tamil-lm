@@ -1,4 +1,4 @@
-# Licences: Timegravity Tamil app, models and knowledge packs (generated 2026-09-14 08:54 UTC by build_licenses_md.py)
+# Licences: Timegravity Tamil app, models and knowledge packs (generated 2026-09-14 10:12 UTC by build_licenses_md.py)
 
 This is an independent research project; no legal review has been performed on data licensing.
 
@@ -28,7 +28,7 @@ tamil-lm-2b weights: Apache License 2.0, matching the base model Qwen/Qwen3.5-2B
 Automated check: android/app/app/licence-audit.gradle.kts (task :app:licenceAudit, run before every assemble and bundle task and in CI by .github/workflows/licence-audit.yml).
 
 1. GPL and AGPL. Shipped runtime modules checked: 114 (both editions, Maven POM licences with parent POMs followed); build tooling modules checked: 144 (the Android Gradle plugin and the Kotlin Gradle plugin, transitively); native code compiled into the APK scanned for GPL headers. GPL or AGPL components found that fail the build: 0.
-   - Build tooling only, dual-licensed with a non-GPL option, not packaged into the APK: 2. The non-GPL licence (CDDL) is elected for these; they are recorded, not failed. This reading is flagged for Vignesh to confirm.
+   - Build tooling only, dual-licensed with a non-GPL option, not packaged into the APK: 2. The non-GPL licence (CDDL) is elected for these. They are recorded, not a build failure, because they run only on the build machine and nothing from them is linked into or packaged in the app; only a GPL or AGPL component in the shipped runtime graph or in the native code compiled into the APK fails the build (confirmed by Vignesh 2026-09-14).
      - com.sun.activation:javax.activation:1.2.0 [build tooling] licence: CDDL/GPLv2+CE https://github.com/javaee/activation/blob/master/LICENSE.txt
      - javax.annotation:javax.annotation-api:1.3.2 [build tooling] licence: CDDL + GPLv2 with classpath exception https://github.com/javaee/javax.annotation/blob/master/LICENSE (with Classpath Exception)
    - LGPL (not GPL) in build tooling, offered with Apache 2.0: 2.
@@ -190,14 +190,15 @@ https://mozilla.org/MPL/2.0/
 
    - Tamil Wikipedia leads (offline) (wiki_leads): Tamil Wikipedia dump 2026-08-01, family-safe filtered index, lead sections only: 185256 passages, CC BY-SA 4.0
    - Dictionary (common words) (dictionary_small): Tamil Wiktionary (ta.wiktionary.org) contributors: 11148 passages, CC BY-SA 4.0; English Wiktionary (en.wiktionary.org) contributors: 5307 passages, CC BY-SA 4.0; ta.wiktionary (inverted): 3922 passages, CC BY-SA 4.0; en.wiktionary (inverted): 3516 passages, CC BY-SA 4.0
-   - Cooking pack (pack_cooking): Tamil Wikipedia (ta.wikipedia.org) contributors: 547 passages, CC BY-SA 4.0; English Wikibooks (en.wikibooks.org) contributors: 112 passages, CC BY-SA 4.0; Tamil Wikibooks (ta.wikibooks.org) contributors: 21 passages, CC BY-SA 4.0
-   - Nature pack (pack_nature): Tamil Wikipedia (ta.wikipedia.org) contributors: 2148 passages, CC BY-SA 4.0
-   - Agriculture pack (pack_agriculture): Tamil Wikipedia (ta.wikipedia.org) contributors: 565 passages, CC BY-SA 4.0; English Wikipedia (en.wikipedia.org) contributors: 67 passages, CC BY-SA 4.0; Tamil Wikibooks (ta.wikibooks.org) contributors: 5 passages, CC BY-SA 4.0
-   - Finance basics pack (pack_finance): Tamil Wikipedia (ta.wikipedia.org) contributors: 279 passages, CC BY-SA 4.0; Employees' Provident Fund Organisation (epfo.gov.in): 26 passages, Government of India copyright policy (epfo.gov.in/copyright-policy)
+   - Cooking pack (pack_cooking): Tamil Wikipedia (ta.wikipedia.org) contributors: 891 passages, CC BY-SA 4.0; English Wikibooks (en.wikibooks.org) contributors: 151 passages, CC BY-SA 4.0; Tamil Wikibooks (ta.wikibooks.org) contributors: 27 passages, CC BY-SA 4.0
+   - Nature pack (pack_nature): Tamil Wikipedia (ta.wikipedia.org) contributors: 2995 passages, CC BY-SA 4.0
+   - Agriculture pack (pack_agriculture): Tamil Wikipedia (ta.wikipedia.org) contributors: 957 passages, CC BY-SA 4.0; Tamil University encyclopedias (அறிவியல் களஞ்சியம், வாழ்வியற் களஞ்சியம்) on Tamil Wikisource (ta.wikisource.org): 154 passages, CC BY-SA (Tamil University publications; Tamil Nadu Tamil Development Department order, Commons file dated 2016-08-12; Commons licence review pending, checked 2026-09-14); English Wikipedia (en.wikipedia.org) contributors: 122 passages, CC BY-SA 4.0; Tamil Wikibooks (ta.wikibooks.org) contributors: 7 passages, CC BY-SA 4.0
+   - Finance basics pack (pack_finance): Tamil Wikipedia (ta.wikipedia.org) contributors: 613 passages, CC BY-SA 4.0; Employees' Provident Fund Organisation (epfo.gov.in): 52 passages, Government of India copyright policy (epfo.gov.in/copyright-policy)
 
 Share-alike reasoning. CC BY-SA 4.0 requires that Adapted Material you share be licensed under CC BY-SA 4.0 or a compatible licence (Section 3(b)). The packs are Adapted Material: the articles are excerpted, split into passages, cleaned and filtered. The app distributes the pack files to users, which is sharing. So the pack contents must be redistributable under CC BY-SA 4.0, and they are published under CC BY-SA 4.0 in the public GGUF repository (https://huggingface.co/Timegravity/tamil-lm-2b-gguf), with the attribution each passage carries (article title and URL). The share-alike obligation attaches to the adapted content, not to separate software that reads the files, so the app code stays closed. Each pack's manifest (the pack file's meta table and the per-passage source and licence fields) and the Licences screen state the sources and licences.
 The finance pack also holds 26 passages from epfo.gov.in under the EPFO copyright policy (reproduction permitted, accurately and with the source acknowledged). They are not relicensed under CC BY-SA; the pack's published copy states which passages carry which terms.
 
+The agriculture pack also holds entries from Tamil University's அறிவியல் களஞ்சியம் and வாழ்வியற் களஞ்சியம் on Tamil Wikisource (added 2026-09-14). Their Wikimedia Commons file pages say "The Tamil university released all its publications under CC-BY-SA", tag them {{cc-by-sa-1.0+}} and cite the Tamil Nadu Tamil Development Department order (Commons file dated 2016-08-12); they are included on the strength of that order. The Commons licence review of that claim is pending (checked 2026-09-14) and is to be revisited: if it fails, the entries are removed (chunks_tamil_university.jsonl through PACK_EXTRA in build_app_packs.py) and the pack is rebuilt. Full record: data/packs/agriculture/LICENSES.md, section AG-TU.
 ## Network
 
 The only network client in the app is android/app/app/src/main/java/ai/timegravity/tamil/download/Allowlist.kt, which refuses any host other than huggingface.co, hf.co and their download subdomains, on the first request and on every redirect hop (network interceptor added 2026-09-14), and logs every host it contacts (tag TamilNet). The Timegravity tab opens timegravity.ai in the user's own browser, which is not a connection made by the app. The run-time verification (a full session with a network log, model download excluded) needs a phone session and is pending.
@@ -206,7 +207,7 @@ The only network client in the app is android/app/app/src/main/java/ai/timegravi
 
 | pin | status |
 |---|---|
-| No GPL or AGPL in the dependency graph, checked in CI | automated; 0 failing hits; dual-licensed tooling reading to confirm |
+| No GPL or AGPL in the dependency graph, checked in CI | automated; 0 failing hits; build-time-only dual-licensed tooling recorded, not failed (confirmed by Vignesh 2026-09-14) |
 | Licences screen renders every component with full text | the build fails if a shipped library has no mapped full text |
 | First-launch acceptance recorded locally and not shown again | Prefs.eulaAccepted |
 | APK SHA-256 in the release notes matches the hosted file | scripts/release_info.py computes it from the APK; to check at release |

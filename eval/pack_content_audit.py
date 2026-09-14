@@ -19,22 +19,24 @@ are on the shipped text, which build_app_packs.py cuts to the first 2,000 charac
 
   .venv/bin/python eval/pack_content_audit.py   -> eval/results/pack_content_audit.md and eval/results/pack_content_audit.json
 """
-import collections, json, os, re, sqlite3, sys, time
+import collections, glob, json, os, re, sqlite3, sys, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PACKS = ["cooking", "agriculture", "finance", "nature"]
 PROC_MIN = 3.0   # procedure markers per 100 words for a chunk to count as procedural
 
+# Written without \\b, \\d or \\w so that Python, the JVM and Android's regex engine read it the same way (the stricter pack rule
+# ships this pattern to the phone in assets/packs/device_gates.json).
 PROC_RX = re.compile("|".join([
     # Tamil imperative and obligative forms, step words
     r"[க-ஹ]வும்(?=[\s,.;:]|$)", r"வேண்டும்", r"முதலில்", r"பின்னர்", r"பிறகு", r"அடுத்து", r"இறுதியாக",
     # quantities and units
-    r"\d+\s*(?:கிலோ|கி\.?கி|கிராம்|லிட்டர்|மி\.?லி|தேக்கரண்டி|மேசைக்கரண்டி|கப்|டம்ளர்|எக்டேர்|ஹெக்டேர்|ஏக்கர்|செ\.?மீ|மீ\b|நாட்கள்|நாள்|வாரம்|%)",
-    r"(?i:\b\d+(?:\.\d+)?\s*(?:kg|g|mg|ml|l|litres?|liters?|cups?|tsp|tbsp|teaspoons?|tablespoons?|ha|hectares?|acres?|cm|days?|minutes?|mins?|%)\b)",
+    r"[0-9]+\s*(?:கிலோ|கி\.?கி|கிராம்|லிட்டர்|மி\.?லி|தேக்கரண்டி|மேசைக்கரண்டி|கப்|டம்ளர்|எக்டேர்|ஹெக்டேர்|ஏக்கர்|செ\.?மீ|மீ(?![\u0B80-\u0BFF])|நாட்கள்|நாள்|வாரம்|%)",
+    r"(?i:(?<![a-z0-9])[0-9]+(?:\.[0-9]+)?\s*(?:kg|g|mg|ml|l|litres?|liters?|cups?|tsp|tbsp|teaspoons?|tablespoons?|ha|hectares?|acres?|cm|days?|minutes?|mins?|%)(?![a-z0-9]))",
     # farming, cooking and filing actions
     r"விதைப்பு|விதைக்க|நடவு|நடுதல்|நாற்றங்கால்|உரமிட|இட வேண்டும்|தெளிக்க|தெளிப்பு|பாய்ச்ச|களை எடு|அறுவடை செய்|இடைவெளி|கலந்து|வறுத்து|அரைத்து|வேக வை|தாளி|ஊற வை|சேர்த்து|விண்ணப்பி|சமர்ப்பி|பதிவு செய்",
-    r"(?m:^\s*(?:\d+[.)]|[-*•])\s)", r"(?i:\b(?:add|mix|stir|heat|boil|fry|soak|grind|serve|sow|plant|apply|spray|irrigate|submit|click|select|log ?in|visit|fill)\b)",
-    r"(?i:\bingredients\b|\bprocedure\b|\bmethod\b|\bstep\s*\d)",
+    r"(?m:^\s*(?:[0-9]+[.)]|[-*•])\s)", r"(?i:(?<![a-z])(?:add|mix|stir|heat|boil|fry|soak|grind|serve|sow|plant|apply|spray|irrigate|submit|click|select|log ?in|visit|fill)(?![a-z]))",
+    r"(?i:(?<![a-z])(?:ingredients|procedure|method)(?![a-z])|(?<![a-z])step\s*[0-9])",
 ]))
 
 # obvious questions for each pack's topic: (question, kind, topic terms any of which marks a chunk as on topic)
@@ -131,12 +133,23 @@ def lead_chars(row, first):
 def load(name):
     con = sqlite3.connect(os.path.join(ROOT, "dist", "app_packs", "packs", f"{name}.sqlite"))
     docs = con.execute("SELECT id, title, text, meta FROM docs ORDER BY id").fetchall()
-    rows = [json.loads(l) for l in open(os.path.join(ROOT, "data", "packs", name, "chunks.jsonl"), encoding="utf-8") if l.strip()]
-    # build_app_packs.py writes each chunk's text cut to its first 2,000 characters; the rows must otherwise be the same, in order
+    src = [json.loads(l) for l in open(os.path.join(ROOT, "data", "packs", name, "chunks.jsonl"), encoding="utf-8") if l.strip()]
+    for extra in sorted(glob.glob(os.path.join(ROOT, "data", "packs", name, "chunks_*.jsonl"))):
+        if not extra.endswith("chunks_unscanned.jsonl"): src += [json.loads(l) for l in open(extra, encoding="utf-8") if l.strip()]
+    metas = [json.loads(d[3] or "{}") for d in docs]
+    if all("id" in m for m in metas):
+        # build_app_packs.py (2026-09-14) splits long chunks into parts at 1,500 characters and records the chunk id (with #part) in meta
+        byid = {r["id"]: r for r in src}; rows = []
+        for d, m in zip(docs, metas):
+            base = byid[m["id"].split("#")[0]]
+            rows.append(dict(base, id=m["id"], doc_id=d[0], meta=m, text=d[2], built_chars=len(d[2]), source_chars=len(base["text"])))
+        return con, rows
+    # older builds: one row per chunk, text cut to its first 2,000 characters; the rows must otherwise be the same, in order
+    rows = src
     if len(rows) != len(docs) or any(r["title"] != d[1] or r["text"][:2000] != d[2] for r, d in zip(rows, docs)):
         raise SystemExit(f"{name}: chunks.jsonl does not match the shipped pack file row for row")
-    for r, d in zip(rows, docs):
-        r["doc_id"] = d[0]; r["meta"] = json.loads(d[3] or "{}"); r["built_chars"] = len(r["text"]); r["text"] = d[2]
+    for r, d, m in zip(rows, docs, metas):
+        r["doc_id"] = d[0]; r["meta"] = m; r["built_chars"] = len(r["text"]); r["source_chars"] = len(r["text"]); r["text"] = d[2]
     return con, rows
 
 def fts(con, terms, k=40):

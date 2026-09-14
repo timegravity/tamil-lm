@@ -69,7 +69,7 @@ def probe_sentence():
     current = {m[0] for m in B.MODELS}; va = table_version(os.path.join(R, "comparison_bare.md"))
     def same_version(name):   # only probe files from table (a)'s harness version count (removed models and legacy probe files never do)
         pf = os.path.join(R, f"probe_cmp_{name}.json")
-        return os.path.exists(pf) and va is not None and B.version_key(json.load(open(pf)).get("harness", "unversioned")) == B.version_key(va)
+        return os.path.exists(pf) and va is not None and B.version_key(json.load(open(pf)).get("harness", "unversioned")) in (va, B.version_key(va))
     rows = {r["model"]: r for r in json.load(open(p, encoding="utf-8")) if r["model"] in current}
     o = need(rows, "tamil-lm-2b-instruct-r4", what="comparison rows")
     others = [r for n, r in rows.items() if n != "tamil-lm-2b-instruct-r4" and isinstance(r.get("probe_option_identify"), (int, float)) and same_version(n)]
@@ -79,6 +79,33 @@ def probe_sentence():
             f"On bare weights ours scores {need(o, 'probe_option_identify')} (identify source) and {need(o, 'probe_option_meaning')} (meaning) by option text{best}; "
             "all within a few points of chance (0.25). The legacy mean over four item types, two of which (quote a kural verbatim, give a kural number) are near zero for every bare model, is not a comparison metric and is not published. "
             "In the serving path the literature questions are answered from the knowledge base, which is the serving-path table.")
+
+def launch_status():
+    """Launch status line (freeze ruling 2026-09-14): which models have complete rows under the current harness and which are still
+    running, with the time of this update. A model counts as complete when its raw and chat-template test rows and its literature
+    probe exist under table (a)'s harness version."""
+    import baselines_round4 as B
+    va = table_version(os.path.join(R, "comparison_bare.md"))
+    drop = set()
+    cp = os.path.join(R, "comparison_control.json")
+    if os.path.exists(cp): drop = set(json.load(open(cp)).get("remove", []))
+    done, running = [], []
+    for n, *_ in B.MODELS:
+        if n in B.SKIP or n in drop: continue
+        files = [f"cmp_{n}_test.json", f"cmp_{n}_chat_test.json", f"probe_cmp_{n}.json"]
+        ok = all(os.path.exists(os.path.join(R, f)) for f in files)
+        if ok and va:
+            pv = json.load(open(os.path.join(R, f"probe_cmp_{n}.json"))).get("harness", "unversioned")
+            ok = B.version_key(pv) in (va, B.version_key(va))   # the title carries the keyed version already
+        (done if ok else running).append(n)
+    when = time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())
+    return (f"**Status (last updated {when}).** Rows complete under the current harness: {', '.join(done)}, and the hosted models in table (d). "
+            + (f"Still running: {', '.join(running)}. This table is updated as each of them completes; no statement on this card rests on a model that has not run." if running else "Every listed model has run."))
+
+PLACEHOLDER = "to follow (run in progress; rows are added as they land)"
+def complete_rows_only(block):
+    """Drop the empty placeholder rows of models still running (freeze ruling 2026-09-14: only complete rows are published)."""
+    return "\n".join(l for l in block.split("\n") if PLACEHOLDER not in l)
 
 TIE = 1.0   # chrF++ points: within this margin a direction counts as tied
 
@@ -225,22 +252,20 @@ def main():
         f"### Comparison with other open models (generated {time.strftime('%Y-%m-%d')}, commit {commit}, harness {hv})", "",
         "Tables (a), (b) and (e) were produced locally on this machine by this repository's evaluation harness on the locked test splits, with identical prompts within each table, identical split ids, greedy decoding and bf16 weights for every model; the dev reference table uses the dev split, table (d) comes from hosted APIs, and table (c) is the serving path with its own decoding (noted there). No number is copied from a paper or a model card. The metric is named in every column header (chrF++, accuracy, F1, contains-answer rate, bits per character). Models that could not be run are listed with the reason.", "",
         f"Summary: {summary()}", "",
-        "**Dev reference table. Dev split, up to 300 items per task (fewer where a dev split is smaller), identical raw prompts.** A reference for tuning decisions, not a comparison claim; its harness version is named below. Our own model's row also shows its locked test numbers alongside, marked as test.", "",
-        table_block(os.path.join(R, "comparison_dev.md"), notes=False), "",
+        launch_status(), "",
         "**Table (a). Identical raw prompts.** The same raw prompt for every model, no chat template for any model including ours. Chat-tuned models that expect their template are penalised on generation tasks in this table by design.", "",
-        table_block(os.path.join(R, "comparison_bare.md"), pending=PENDING_AB), "",
+        complete_rows_only(table_block(os.path.join(R, "comparison_bare.md"), pending=PENDING_AB)), "",
         "**Table (b). Each model with its own chat template.** Every model wrapped in its own chat template with the system prompt its model card recommends, thinking disabled where the template supports it; ours with its own chat template. The two tables differ only in prompt wrapping; table (b) is the fairer view of chat-tuned models, table (a) the strictly identical one.", "",
-        table_block(os.path.join(R, "comparison_chat.md"), pending=PENDING_AB, notes=False), "",
+        complete_rows_only(table_block(os.path.join(R, "comparison_chat.md"), pending=PENDING_AB, notes=False)), "",
         hosted_context(), "",
         "**Table (d). Hosted models (generation tasks only, chat mode, locked test split).** The same prompts and scoring through OpenRouter; closed models pinned to the lab's own provider, the open-weight gpt-oss models served by any provider (recorded per response); exclusions and data policy in the notes under the table.", "",
         table_block(os.path.join(R, "comparison_hosted.md"), pending="Hosted-model table not yet rendered: the hosted runs are in progress (ruling 2026-09-13)."), "",
         preamble_note(), "", artifacts_note(), "",
         "**Table (e). Translation under two scoring rules.** First-line score and extracted-body score from the same generations, the rule for each named in the table; filled as the translation captures land (ruling 2026-09-13).", "",
-        table_block(os.path.join(R, "comparison_translation_rules.md"), pending="Table (e) not yet rendered: the translation captures are being produced (ruling 2026-09-13)."), "",
-        "**Table (c). Serving path (unequal comparison by design).** Our model through the full serving stack (routing, literature KB, Wikipedia index, domain packs, dictionary, calculator, guard) against the same baselines run bare; the gap shows what the stack adds. Decoding: the serving row used the server's sampling settings (temperature 0.7, top_p 0.9, repetition penalty 1.15, no repeated 4-grams; the run of 2026-09-12 10:23 UTC predates greedy serving), the bare rows greedy decoding.", "",
-        table_block(os.path.join(R, "comparison_serving.md")), "",
+        complete_rows_only(table_block(os.path.join(R, "comparison_translation_rules.md"), pending="Table (e) not yet rendered: the translation captures are being produced (ruling 2026-09-13).")), "",
+        "The dev reference table and the serving-path table (c) are not on the card at launch: they were measured under the earlier harness and return once re-run under the current one.", "",
         probe_sentence(), "", contamination_sentence(), "", regression_sentence(), "",
-        "Sources: eval/results/comparison_bare.md, comparison_chat.md, comparison_dev.md (dev reference), comparison_hosted.md, comparison_translation_rules.md, comparison_serving.md, bos_before_after.md; scripts eval/baselines_round4.py, eval/serving_vs_bare.py, eval/render_comparison.py.",
+        "Sources: eval/results/comparison_bare.md, comparison_chat.md, comparison_hosted.md, comparison_translation_rules.md, bos_before_after.md; scripts eval/baselines_round4.py, eval/serving_vs_bare.py, eval/render_comparison.py.",
     ])
     print(block[:3000])
     if a.write:

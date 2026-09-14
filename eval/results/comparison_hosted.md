@@ -1,4 +1,4 @@
-# Hosted models, locked test split, generation tasks, chat mode (2026-09-14 03:56 UTC)
+# Hosted models, locked test split, generation tasks, chat mode (2026-09-14 10:08 UTC)
 
 Prompts and scoring are eval/suite.py's, unchanged; the answers came from the hosted API through OpenRouter at temperature 0 with reasoning off or minimal, each request pinned to the lab's own provider with fallbacks off (gpt-oss: any provider by ruling, cheapest first, provider recorded per response; it cannot switch reasoning off and runs at low effort, with 1,024 extra output tokens allowed for its reasoning), and the serving provider recorded on every response. Our model's row is its table (b) run on the same items.
 

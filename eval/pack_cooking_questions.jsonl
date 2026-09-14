@@ -1,0 +1,50 @@
+{"id": "cookq-001", "lang": "ta", "q": "இட்லி மாவு அரைக்க அரிசிக்கும் உளுத்தம்பருப்புக்கும் என்ன விகிதம்?", "dish": "idli", "expect_pack": "cooking"}
+{"id": "cookq-002", "lang": "ta", "q": "சாம்பாரில் என்னென்ன பொருட்கள் சேர்க்கப்படும்?", "dish": "sambar", "expect_pack": "cooking"}
+{"id": "cookq-003", "lang": "ta", "q": "ரசம் வைக்கும் முறையை சொல்லுங்கள்.", "dish": "rasam", "expect_pack": "cooking"}
+{"id": "cookq-004", "lang": "ta", "q": "வெண்பொங்கல் செய்ய என்னென்ன தேவை?", "dish": "pongal", "expect_pack": "cooking"}
+{"id": "cookq-005", "lang": "ta", "q": "அவியலுக்கு தேங்காயுடன் வேறு என்ன சேர்த்து அரைக்க வேண்டும்?", "dish": "avial", "expect_pack": "cooking"}
+{"id": "cookq-006", "lang": "ta", "q": "மோர்க்குழம்பு எப்படி செய்வது?", "dish": "mor kuzhambu", "expect_pack": "cooking"}
+{"id": "cookq-007", "lang": "ta", "q": "வத்தல் குழம்புக்கு புளி இல்லாவிட்டால் அதற்குப் பதிலாக என்ன சேர்க்கலாம்?", "dish": "vatha kuzhambu", "expect_pack": "cooking"}
+{"id": "cookq-008", "lang": "ta", "q": "முறுக்கு மாவில் எந்தெந்த மாவு சேர்ப்பார்கள்?", "dish": "murukku", "expect_pack": "cooking"}
+{"id": "cookq-009", "lang": "ta", "q": "அதிரசம் செய்யும்போது வெல்லப்பாகு எந்தப் பதத்தில் இருக்க வேண்டும்?", "dish": "adhirasam", "expect_pack": "cooking"}
+{"id": "cookq-010", "lang": "ta", "q": "தேங்காய்ச் சட்னி அரைக்கும் முறை என்ன?", "dish": "chutney", "expect_pack": "cooking"}
+{"id": "cookq-011", "lang": "ta", "q": "புளியோதரைக்கு எந்தெந்தப் பொருட்களைத் தாளிக்க வேண்டும்?", "dish": "puliyodharai", "expect_pack": "cooking"}
+{"id": "cookq-012", "lang": "ta", "q": "பாயசத்தில் சர்க்கரைக்குப் பதிலாக வெல்லம் சேர்க்கலாமா?", "dish": "payasam", "expect_pack": "cooking"}
+{"id": "cookq-013", "lang": "ta", "q": "தயிர் சாதம் செய்யும்போது பால் ஏன் சேர்க்கிறார்கள்?", "dish": "curd rice", "expect_pack": "cooking"}
+{"id": "cookq-014", "lang": "ta", "q": "கூட்டு செய்ய எந்தப் பருப்பு பயன்படுத்துவது நல்லது?", "dish": "kootu", "expect_pack": "cooking"}
+{"id": "cookq-015", "lang": "ta", "q": "சுண்டல் செய்வதற்கு கடலையை எவ்வளவு நேரம் ஊற வைக்க வேண்டும்?", "dish": "sundal", "expect_pack": "cooking"}
+{"id": "cookq-016", "lang": "ta", "q": "திருக்குறளை எழுதியவர் யார்?", "dish": null, "expect_pack": null}
+{"id": "cookq-017", "lang": "ta", "q": "தமிழ் நெடுங்கணக்கில் எத்தனை எழுத்துகள் உள்ளன?", "dish": null, "expect_pack": null}
+{"id": "cookq-018", "lang": "tanglish", "q": "Idli maavu epdi arikkanum?", "dish": "idli", "expect_pack": "cooking"}
+{"id": "cookq-019", "lang": "tanglish", "q": "Sambar la enna enna kaaikari podalaam?", "dish": "sambar", "expect_pack": "cooking"}
+{"id": "cookq-020", "lang": "tanglish", "q": "Rasam ku thakkali illatha samayathula enna use pannalam?", "dish": "rasam", "expect_pack": "cooking"}
+{"id": "cookq-021", "lang": "tanglish", "q": "Dosai maavu pulikkala na enna panradhu?", "dish": "dosai", "expect_pack": "cooking"}
+{"id": "cookq-022", "lang": "tanglish", "q": "Ven pongal la milagum seeragamum epo sernthu thaalikanum?", "dish": "pongal", "expect_pack": "cooking"}
+{"id": "cookq-023", "lang": "tanglish", "q": "Upma seiya rava nalladhaa illa arisi maavaa?", "dish": "upma", "expect_pack": "cooking"}
+{"id": "cookq-024", "lang": "tanglish", "q": "Medhu vadai maavula thanni jaasthi aiduchu, adha epdi sari panradhu?", "dish": "vadai", "expect_pack": "cooking"}
+{"id": "cookq-025", "lang": "tanglish", "q": "Adai la enna enna paruppu serkkanum?", "dish": "adai", "expect_pack": "cooking"}
+{"id": "cookq-026", "lang": "tanglish", "q": "Uthappam mela enna topping podalaam?", "dish": "uthappam", "expect_pack": "cooking"}
+{"id": "cookq-027", "lang": "tanglish", "q": "Lemon rice ku elumichai illena enna vachu pulippu kondu vara mudiyum?", "dish": "lemon rice", "expect_pack": "cooking"}
+{"id": "cookq-028", "lang": "tanglish", "q": "Thengai sadam epdi pandradhu?", "dish": "coconut rice", "expect_pack": "cooking"}
+{"id": "cookq-029", "lang": "tanglish", "q": "Kozhi kuzhambu ku enna masala thevai?", "dish": "chicken curry", "expect_pack": "cooking"}
+{"id": "cookq-030", "lang": "tanglish", "q": "Mutton kuzhambu la mutton soft aaga enna panna?", "dish": "mutton kuzhambu", "expect_pack": "cooking"}
+{"id": "cookq-031", "lang": "tanglish", "q": "Meen fry ku enna masala thechu vaikkanum?", "dish": "fish fry", "expect_pack": "cooking"}
+{"id": "cookq-032", "lang": "tanglish", "q": "Muttai kulambu la thengai paal serkkalama?", "dish": "egg curry", "expect_pack": "cooking"}
+{"id": "cookq-033", "lang": "tanglish", "q": "Enakku pasikkuthu nu English la epdi sollrathu?", "dish": null, "expect_pack": null}
+{"id": "cookq-034", "lang": "en", "q": "What goes into a traditional Tamil sambar?", "dish": "sambar", "expect_pack": "cooking"}
+{"id": "cookq-035", "lang": "en", "q": "How is rasam different from sambar?", "dish": "rasam", "expect_pack": "cooking"}
+{"id": "cookq-036", "lang": "en", "q": "What are the ingredients of idli batter?", "dish": "idli", "expect_pack": "cooking"}
+{"id": "cookq-037", "lang": "en", "q": "How do you get dosai batter to ferment properly?", "dish": "dosai", "expect_pack": "cooking"}
+{"id": "cookq-038", "lang": "en", "q": "What can I use instead of urad dal in medu vadai?", "dish": "vadai", "expect_pack": "cooking"}
+{"id": "cookq-039", "lang": "en", "q": "What is the method for making avial?", "dish": "avial", "expect_pack": "cooking"}
+{"id": "cookq-040", "lang": "en", "q": "Which vegetables are usually used in a kootu?", "dish": "kootu", "expect_pack": "cooking"}
+{"id": "cookq-041", "lang": "en", "q": "How do you temper a poriyal at the end?", "dish": "poriyal", "expect_pack": "cooking"}
+{"id": "cookq-042", "lang": "en", "q": "What goes into puliyodharai paste?", "dish": "puliyodharai", "expect_pack": "cooking"}
+{"id": "cookq-043", "lang": "en", "q": "How is the rice cooked for a biryani before it is layered with the masala?", "dish": "biryani", "expect_pack": "cooking"}
+{"id": "cookq-044", "lang": "en", "q": "What is the difference between kesari and halwa?", "dish": "kesari", "expect_pack": "cooking"}
+{"id": "cookq-045", "lang": "en", "q": "What are the ingredients of a payasam?", "dish": "payasam", "expect_pack": "cooking"}
+{"id": "cookq-046", "lang": "en", "q": "How is murukku dough shaped before frying?", "dish": "murukku", "expect_pack": "cooking"}
+{"id": "cookq-047", "lang": "en", "q": "What can replace coconut in a chutney?", "dish": "chutney", "expect_pack": "cooking"}
+{"id": "cookq-048", "lang": "en", "q": "How is curd rice prepared so it keeps well in a lunch box?", "dish": "curd rice", "expect_pack": "cooking"}
+{"id": "cookq-049", "lang": "en", "q": "Who wrote the Thirukkural?", "dish": null, "expect_pack": null}
+{"id": "cookq-050", "lang": "en", "q": "Translate: I am hungry", "dish": null, "expect_pack": null}

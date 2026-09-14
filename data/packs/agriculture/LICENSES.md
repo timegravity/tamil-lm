@@ -49,3 +49,17 @@ rule as the cooking pack (decision 2026-09-09).
   under CC BY-SA 4.0, with attribution to the article or page title and URL that each chunk carries.
 - Machine check on the build day: the quoted statement was searched for on each cached policy page;
   every quote was found on its cached page.
+
+## AG-TU: Tamil University encyclopedias on Tamil Wikisource (added 2026-09-14, ruling item 15)
+
+| # | source | url | licence (as stated, quoted) | verified at | decision | what was taken |
+|---|---|---|---|---|---|---|
+| AG-TU | Tamil University, Thanjavur: அறிவியல் களஞ்சியம் (science encyclopedia, 19 volumes) and வாழ்வியற் களஞ்சியம் (social science encyclopedia, 15 volumes), proofreading pages on Tamil Wikisource | https://ta.wikisource.org/wiki/அட்டவணை:அறிவியல்_களஞ்சியம்_14.pdf (one index per volume) | Wikimedia Commons file page of each volume (checked for volumes 5 and 14 of the science encyclopedia and volume 1 of the social science encyclopedia): "The Tamil university released all its publications under CC-BY-SA. refer the below document."; licence template {{cc-by-sa-1.0+}}; Permission field: [[File:GoTN Tamil Development Departments order on creative commons cc by sa.pdf]], whose Commons page reads "Government Order of Department of Tamil Development Government of Tamil Nadu declared books publications under CC-BY-SA" with date 2016-08-12 | https://commons.wikimedia.org/wiki/File:அறிவியல்_களஞ்சியம்_14.pdf, https://commons.wikimedia.org/wiki/File:அறிவியல்_களஞ்சியம்_5.pdf, https://commons.wikimedia.org/wiki/File:வாழ்வியற்_களஞ்சியம்_1.pdf and https://commons.wikimedia.org/wiki/File:GoTN_Tamil_Development_Departments_order_on_creative_commons_cc_by_sa.pdf, fetched 2026-09-14 | include (Vignesh, 2026-09-14: on the strength of the government order) | entry text on crops, pests and farming practice (build_pack_tamil_university.py, data/packs/agriculture/chunks_tamil_university.jsonl) |
+
+- Pending review, to revisit: every volume's Commons file page carries {{LicenseReview}}, meaning the Commons licence review of the
+  CC BY-SA claim has not been completed (checked 2026-09-14). The inclusion rests on the Tamil Nadu government order as cited on those
+  pages. If the review fails, or the order is found not to cover these volumes, remove chunks_tamil_university.jsonl from the pack
+  (PACK_EXTRA in build_app_packs.py) and rebuild.
+- Attribution: every chunk carries the entry title, the series, volume and printed page (section), the Wikisource page URL, and the
+  licence line; the published pack keeps them.
+- Share-alike: the chunks are redistributed under CC BY-SA 4.0 (the {{cc-by-sa-1.0+}} tag permits later versions) with that attribution.

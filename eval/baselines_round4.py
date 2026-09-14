@@ -485,6 +485,9 @@ def render(res, a):
         row = {"model": name, "id": mid, "licence": lic, "note": note, "category": cat, "size_b": size, "params": r.get("params"), "tok_per_word": r.get("tok_per_word"),
                "scores": {"raw_dev": load_scores(dev_stage(name), "dev", "dev"), "raw_test": load_scores(f"cmp_{name}", "test", "a"), "chat_test": load_scores(f"cmp_{name}_chat", "test", "b")},
                "not_run": (SKIP.get(name) or r.get("reason")) if (name in SKIP or r.get("skipped")) else None, "phases": ph, "chat_note": r.get("chat_note"), "raw_note": r.get("raw_note")}
+        # launch freeze 2026-09-14: a model still running shows as a placeholder in every table, never with partial numbers
+        if not all(os.path.exists(os.path.join(HERE, "results", f)) for f in (f"cmp_{name}_test.json", f"cmp_{name}_chat_test.json", f"probe_cmp_{name}.json")) and name not in SKIP and not r.get("skipped"):
+            row["scores"] = {"raw_dev": {}, "raw_test": {}, "chat_test": {}}
         if name == "Gemma-3-1B-it" and bcj.get("test_gate_gemma_3_1b") == "FAIL":
             row["not_run"] = "batched harness failed the single-item comparison on its full test split (eval/results/batch_check.md)"; row["scores"]["raw_test"] = {}; row["scores"]["chat_test"] = {}
         pp = os.path.join(HERE, "results", f"probe_cmp_{name}.json")

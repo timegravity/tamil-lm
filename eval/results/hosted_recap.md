@@ -1,4 +1,4 @@
-# Hosted models: old answer caps against v3 caps (2026-09-14 03:55 UTC)
+# Hosted models: old answer caps against v3 caps (2026-09-14 10:09 UTC)
 
 Old: every request capped at 160 tokens (translation), 48 (IndicQA), 256 (GSM8K). v3: the suite's per-tokenizer caps computed with the closest public tokenizer (Gemini: Gemma 3; GPT-5.4 nano: o200k), GSM8K 512. Responses that completed under the old cap were re-used; responses stopped at the old cap were re-sent where the v3 cap is larger. Same prompts, temperature 0, same provider pins.
 
