@@ -1,4 +1,4 @@
-# Hosted models, locked test split, generation tasks, chat mode (2026-09-14 12:02 UTC)
+# Hosted models, locked test split, generation tasks, chat mode (2026-09-15 02:40 UTC)
 
 Prompts and scoring are eval/suite.py's, unchanged; the answers came from the hosted API through OpenRouter at temperature 0 with reasoning off or minimal, each request pinned to the lab's own provider with fallbacks off (gpt-oss: any provider, cheapest first, provider recorded per response; it cannot switch reasoning off and runs at low effort, with 1,024 extra output tokens allowed for its reasoning). Our model's column is its chat-template run from table (b). Every model in this table has run, so no row is provisional.
 
@@ -21,7 +21,7 @@ Bold: the best score in each metric row by the metric's direction; scores within
 
 Notes:
 
-- tamil-lm-2b-instruct (round 4c, this repository): translations opening with a preamble line 0.0% (0 of 3664); an instruction-following result of the answer format taught in SFT, not a measure of translation quality.
+- tamil-lm-2b-instruct (this repository): translations opening with a preamble line 0.0% (0 of 3664); an instruction-following result of the answer format taught in SFT, not a measure of translation quality.
 - Gemini 3.5 Flash-Lite: 4989 requests served by Google (Google (Vertex), zero data retention); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 56.3% (2061 of 3663).
 - GPT-5.4 nano: 4889 requests served by OpenAI (OpenAI, no zero retention, no data collection); reasoning tokens billed 0; the scored split has 4846 items; translations opening with a preamble line 14.5% (531 of 3663).
 - gpt-oss-20b (reasoning could not be disabled: each request carried 1,024 extra tokens; not directly comparable): 4845 requests served by Darkbloom 4834, AkashML 5, CoreWeave 4, DekaLLM 2 (any provider, cheapest first with fallbacks, no data collection; reasoning at low effort); reasoning tokens billed 98487; the scored split has 4846 items; translations opening with a preamble line 8.2% (299 of 3663).

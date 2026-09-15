@@ -92,7 +92,8 @@ def launch_status():
     done, running = [], []
     for n, *_ in B.MODELS:
         if n in B.SKIP or n in drop: continue
-        files = [f"cmp_{n}_test.json", f"cmp_{n}_chat_test.json", f"probe_cmp_{n}.json"]
+        chat_skipped = ((json.load(open(os.path.join(R, "comparison_bare_state.json"))).get(n) or {}).get("phases") or {}).get("chat_test") == "skipped"   # no chat template
+        files = [f"cmp_{n}_test.json", f"probe_cmp_{n}.json"] + ([] if chat_skipped else [f"cmp_{n}_chat_test.json"])
         ok = all(os.path.exists(os.path.join(R, f)) for f in files)
         if ok and va:
             pv = json.load(open(os.path.join(R, f"probe_cmp_{n}.json"))).get("harness", "unversioned")

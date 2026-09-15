@@ -12,7 +12,7 @@
 | model | params | licence | tokens per Tamil word | FLORES en-ta chrF++ | FLORES ta-en chrF++ | IN22 en-ta chrF++ | IN22 ta-en chrF++ | MILU accuracy | IndicQA F1 | IndicQA contains-answer rate | Belebele accuracy | IndicXNLI accuracy | IndicSentiment accuracy | MMLU accuracy | GSM8K accuracy | Tamil bpc (lower is better) | Tanglish bpc (lower is better) | literature probe, letter log-likelihood accuracy (identify source and meaning) | literature probe, option-text accuracy, identify source | literature probe, option-text accuracy, meaning |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Qwen3.5-2B | 2.27B | apache-2.0 | 6.59 | 4.8 | 13.9 | 5.3 | 13.0 | 0.240 | 0.047 | 0.106 | 0.272 | 0.333 | 0.545 | 0.570 | 0.200 | 4.455 | 3.286 | 0.253 | 0.237 | 0.258 |
-| Qwen3.5-4B | 4.66B | apache-2.0 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Qwen3.5-4B | 4.66B | apache-2.0 | 6.59 | 18.8 | 23.3 | 17.3 | 23.9 | 0.243 | 0.097 | 0.200 | 0.272 | 0.330 | 0.500 | 0.710 | 0.025 | 4.327 | 3.161 | 0.255 | 0.258 | 0.210 |
 
 **big-lab small models**
 
@@ -21,7 +21,7 @@
 | Gemma-3-1B-it | 1.00B | gemma | 2.46 | 30.0 | 40.4 | 29.5 | 39.1 | 0.253 | 0.167 | 0.392 | 0.294 | 0.333 | 0.487 | 0.210 | 0.250 | 1.856 | 3.956 | 0.371 | 0.232 | 0.205 |
 | Llama-3.2-1B-Instruct | 1.24B | llama3.2 | 12.05 | 16.9 | 30.7 | 15.6 | 31.5 | 0.263 | 0.108 | 0.157 | 0.256 | 0.333 | 0.481 | 0.410 | 0.325 | 1.823 | 3.369 | 0.318 | 0.305 | 0.295 |
 | Llama-3.2-3B-Instruct | 3.21B | llama3.2 | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
-| Gemma-3-4B-it | 4.30B | gemma | |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NOT RUN: to follow (run in progress; rows are added as they land)
+| Gemma-3-4B-it | 4.30B | gemma | 2.46 | 45.2 | 51.8 | 41.8 | 50.2 | 0.220 | 0.266 | 0.671 | 0.261 | 0.333 | 0.519 | 0.370 | 0.700 | 1.970 | 3.877 | 0.621 | 0.274 | 0.168 |
 
 **Indian labs**
 
