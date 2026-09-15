@@ -34,7 +34,7 @@ def table_block(path, pending=None, notes=True):
     lines = [l.rstrip("\n") for l in open(path, encoding="utf-8")]
     start = next((i for i, l in enumerate(lines) if l.startswith("Generation mode per model")), len(lines))
     body, shared = lines[:start], lines[start:]
-    keep = [l for l in body if l.startswith("|") or l.startswith("**") or l.startswith(("Bold: ", "Provisional rows")) or l.startswith("System prompts") or l.startswith("Translations scored by") or l.startswith("This dev table is the legacy") or l.startswith("- ") or l == ""]
+    keep = [l for l in body if l.startswith("|") or l.startswith("**") or l.startswith("Bold: ") or l.startswith("System prompts") or l.startswith("Translations scored by") or l.startswith("This dev table is the legacy") or l.startswith("- ") or l == ""]
     if notes: keep += [l for l in shared if l.startswith("|") or l.startswith("- ") or l.startswith(NOTE_PREFIXES) or l == ""]
     v = table_version(path)
     return (f"Harness version: {v}.\n\n" if v and "comparison_" in path and "hosted" not in path and "translation_rules" not in path and "serving" not in path else "") + "\n".join(keep)
@@ -66,7 +66,7 @@ def probe_sentence():
     p = os.path.join(R, "comparison_bare.json")
     if not os.path.exists(p): raise MissingResult(f"missing {p}")
     import baselines_round4 as B
-    current = {m[0] for m in B.MODELS}; va = table_version(os.path.join(R, "comparison_bare.md"))
+    current = {m[0] for m in B.MODELS} - set(json.load(open(os.path.join(R, "comparison_final.json"))).get("not_run", {})) - set(B.SKIP); va = table_version(os.path.join(R, "comparison_bare.md"))
     def same_version(name):   # only probe files from table (a)'s harness version count (removed models and legacy probe files never do)
         pf = os.path.join(R, f"probe_cmp_{name}.json")
         return os.path.exists(pf) and va is not None and B.version_key(json.load(open(pf)).get("harness", "unversioned")) in (va, B.version_key(va))
@@ -81,51 +81,45 @@ def probe_sentence():
             "In the serving path the literature questions are answered from the knowledge base, which is the serving-path table.")
 
 def launch_status():
-    """Launch status line (freeze ruling 2026-09-14): which models have complete rows under the current harness and which are still
-    running, with the time of this update. A model counts as complete when its raw and chat-template test rows and its literature
-    probe exist under table (a)'s harness version."""
+    """Status line of the closed comparison (eval/results/comparison_final.json): the date it was closed and how many local and hosted
+    models the tables hold. The models not run are listed once, under table (a)."""
     import baselines_round4 as B
-    va = table_version(os.path.join(R, "comparison_bare.md"))
-    drop = set()
-    cp = os.path.join(R, "comparison_control.json")
-    if os.path.exists(cp): drop = set(json.load(open(cp)).get("remove", []))
-    done, running = [], []
-    for n, *_ in B.MODELS:
-        if n in B.SKIP or n in drop: continue
-        chat_skipped = ((json.load(open(os.path.join(R, "comparison_bare_state.json"))).get(n) or {}).get("phases") or {}).get("chat_test") == "skipped"   # no chat template
-        files = [f"cmp_{n}_test.json", f"probe_cmp_{n}.json"] + ([] if chat_skipped else [f"cmp_{n}_chat_test.json"])
-        ok = all(os.path.exists(os.path.join(R, f)) for f in files)
-        if ok and va:
-            pv = json.load(open(os.path.join(R, f"probe_cmp_{n}.json"))).get("harness", "unversioned")
-            ok = B.version_key(pv) in (va, B.version_key(va))   # the title carries the keyed version already
-        (done if ok else running).append(n)
-    when = time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())
-    return (f"**Status (last updated {when}).** Rows complete under the current harness: {', '.join(done)}, and the hosted models in table (d). "
-            + (f"Still running: {', '.join(running)}. This table is updated as each of them completes; no statement on this card rests on a model that has not run." if running else "Every listed model has run."))
+    fin = json.load(open(os.path.join(R, "comparison_final.json")))
+    not_run = set(fin.get("not_run", {})) | set(B.SKIP)
+    local = [n for n, *_ in B.MODELS if n not in not_run and all(os.path.exists(os.path.join(R, f)) for f in (f"cmp_{n}_test.json", f"cmp_{n}_chat_test.json", f"probe_cmp_{n}.json"))]
+    hosted = [slug for _, slug in HOSTED_ALL if os.path.exists(os.path.join(R, f"hosted_{slug}_chat_test.json"))]
+    return f"**Final comparison as of {fin['closed']}:** {len(local)} local models and {len(hosted)} hosted models; models not run are listed below table (a)."
 
-PLACEHOLDER = "to follow (run in progress; rows are added as they land)"
+PLACEHOLDER = "NOT RUN: "
 def complete_rows_only(block):
-    """Drop the empty placeholder rows of models still running (freeze ruling 2026-09-14: only complete rows are published)."""
+    """Drop any empty placeholder row of a model without results (the not-run list under table a names them once)."""
     return "\n".join(l for l in block.split("\n") if PLACEHOLDER not in l)
 
 TIE = 1.0   # chrF++ points: within this margin a direction counts as tied
 
 def summary():
-    """The comparison claim (ruling 2026-09-13): computed from the EXTRACTED translation chrF++ (table e, rule extract-v1), never from
-    the first-line column, and published only when every open model under 8B in the comparison has its extracted scores. Each model
-    counts with the better of its raw and chat-template modes. IndicQA uses the contains-answer rate from tables (a) and (b).
-    Until then the claim is withheld with a pending line (the sentence ruled on 2026-09-12 was based on the dev first-line numbers)."""
-    import baselines_round4 as B
+    """The comparison claim over the closed set (eval/results/comparison_final.json): computed from the EXTRACTED translation chrF++
+    (table e), never from the first-line column, over the open models under 8B that ran. Each model counts with the better of its raw
+    and chat-template modes; a translation task the suite refused as degenerate in a mode gives no score from that mode. IndicQA uses the
+    contains-answer rate from tables (a) and (b). A model whose extracted scores are missing is named plainly."""
+    import baselines_round4 as B, suite as S
     tasks = [("flores_en_ta", "FLORES en-ta"), ("flores_ta_en", "FLORES ta-en"), ("in22gen_en_ta", "IN22 en-ta"), ("in22gen_ta_en", "IN22 ta-en")]
-    state = json.load(open(os.path.join(R, "comparison_bare_state.json")))
+    fin = json.load(open(os.path.join(R, "comparison_final.json"))); not_run = set(fin.get("not_run", {})) | set(B.SKIP)
+    def refused(name, suffix):
+        p = os.path.join(R, f"cmp_{name}{suffix}_test.json"); out = set()
+        if os.path.exists(p):
+            for r in json.load(open(p)):
+                if r.get("degenerate") and not S.reviewed(r.get("stage", f"cmp_{name}{suffix}"), "test", r["benchmark"]): out.add(r["benchmark"])
+        return out
     def best_extracted(name):
         vals = {}
         for suffix in ("", "_chat"):
             p = os.path.join(R, f"extract_cmp_{name}{suffix}_test.json")
             if not os.path.exists(p): continue
+            bad = refused(name, suffix)
             for r in json.load(open(p)):
                 if r["harness"] != "extract-v1": raise MissingResult(f"{p}: rule {r['harness']}")
-                if r["metric"] == "chrf++_extracted": vals[r["benchmark"]] = max(vals.get(r["benchmark"], -1), r["score"])
+                if r["metric"] == "chrf++_extracted" and r["benchmark"] not in bad: vals[r["benchmark"]] = max(vals.get(r["benchmark"], -1), r["score"])
         return vals
     def best_contains(name):
         v = []
@@ -133,32 +127,33 @@ def summary():
             p = os.path.join(R, f"cmp_{name}{suffix}_test.json")
             if os.path.exists(p): v += [r["score"] for r in json.load(open(p)) if r["benchmark"] == "indicqa_ta" and r["metric"] == "contains"]
         return max(v) if v else None
-    open_small = [(n, size) for n, mid, ad, lic, note, cat, size in B.MODELS if size < 8 and n not in B.SKIP and not (state.get(n) or {}).get("skipped")]
-    missing = []
-    table = {}
-    for n, size in open_small:
-        chat_skipped = (state.get(n) or {}).get("phases", {}).get("chat_test") == "skipped"
-        need_files = [f"extract_cmp_{n}_test.json"] + ([] if chat_skipped else [f"extract_cmp_{n}_chat_test.json"])
-        if not all(os.path.exists(os.path.join(R, f)) for f in need_files): missing.append(n); continue
-        table[n] = (best_extracted(n), best_contains(n), size)
-    if missing:
-        return (f"pending. The comparison claim is computed from the extracted translation chrF++ (table e) once every open model under 8B has it; "
-                f"still to come: {', '.join(missing)}.")
-    ours = "tamil-lm-2b-instruct-r4"; o = table.pop(ours)
+    ran = [n for n, mid, ad, lic, note, cat, size in B.MODELS if size < 8 and n not in not_run]
+    table, missing = {}, []
+    for n in ran:
+        vals = best_extracted(n)
+        if any(t not in vals for t, _ in tasks): missing.append(n); continue
+        table[n] = (vals, best_contains(n))
+    ours = "tamil-lm-2b-instruct-r4"
+    if ours not in table: return "not computed: this model's extracted translation scores are missing."
+    o = table.pop(ours); n_models = len(table) + 1
     best_or_tied, ahead = [], {}
     for t, label in tasks:
-        lead = max(table.items(), key=lambda kv: kv[1][0][t])
-        if o[0][t] >= lead[1][0][t] - TIE: best_or_tied.append(label)
-        for n, (vals, _, _) in table.items():
+        lead = max(table.items(), key=lambda kv: kv[1][0][t]) if table else None
+        if lead is None or o[0][t] >= lead[1][0][t] - TIE: best_or_tied.append(label)
+        for n, (vals, _) in table.items():
             if vals[t] > o[0][t] + TIE: ahead.setdefault(n, []).append(f"{label} ({vals[t]:.1f} vs {o[0][t]:.1f})")
-    qa_ahead = [f"{n} ({c:.3f} vs {o[1]:.3f})" for n, (_, c, _) in table.items() if c is not None and o[1] is not None and c > o[1]]
-    parts = [f"On translation (extracted chrF++, better of raw and chat-template modes), best or tied within {TIE:.0f} point among open models under 8B on "
+    qa_ahead = [f"{n} ({c:.3f} vs {o[1]:.3f})" for n, (_, c) in table.items() if c is not None and o[1] is not None and c > o[1]]
+    parts = [f"among the {n_models} open models under 8B in these tables (this model and {n_models - 1} others), on translation (extracted chrF++, better of raw and chat-template modes) this model is best or tied within {TIE:.0f} point on "
              f"{len(best_or_tied)} of 4 directions ({', '.join(best_or_tied) or 'none'}), at 2B"]
     if ahead: parts.append("ahead of it: " + "; ".join(f"{n} on {', '.join(v)}" for n, v in ahead.items()))
     if qa_ahead: parts.append("higher IndicQA contains-answer rate: " + ", ".join(qa_ahead))
-    return "; ".join(parts) + "."
+    out = "; ".join(parts) + "."
+    if missing: out += " Not included because their extracted translation scores are missing: " + ", ".join(missing) + "."
+    return out[0].upper() + out[1:]
+
 
 HOSTED = [("Gemini 3.5 Flash-Lite", "google_gemini-3.5-flash-lite"), ("GPT-5.4 nano", "openai_gpt-5.4-nano")]
+HOSTED_ALL = HOSTED + [("gpt-oss-20b", "openai_gpt-oss-20b"), ("gpt-oss-120b", "openai_gpt-oss-120b")]
 DIRS = [("flores_en_ta", "FLORES en-ta"), ("flores_ta_en", "FLORES ta-en"), ("in22gen_en_ta", "IN22 en-ta"), ("in22gen_ta_en", "IN22 ta-en")]
 
 def _extracted(fname):
@@ -223,7 +218,7 @@ def artifacts_note():
         f"Padded SDPA attention. Batched generation with left padding under the default SDPA attention shifted Gemma-3-1B's Tamil-to-English scores (IN22 {sd['in22gen_ta_en']['single']:.1f} chrF++ one prompt at a time, {sd['in22gen_ta_en']['batched_sdpa']:.1f} batched; FLORES {sd['flores_ta_en']['single']:.1f} and {sd['flores_ta_en']['batched_sdpa']:.1f}). Corrected: every model runs with eager attention, which reproduces one-at-a-time decoding ({sd['in22gen_ta_en']['batched_eager']:.1f} and {sd['flores_ta_en']['batched_eager']:.1f}), and each model's batched scores are checked against one-at-a-time decoding before its full run.",
         f"Missing start token. Raw prompts relied on each tokenizer to add its start token, and the log-likelihood tasks added none for any model. Gemma 4's tokenizer adds none, and its raw outputs degenerated (FLORES English-to-Tamil {st['gemma4_e4b_raw_dev_before']['flores_en_ta_chrf']:.2f} chrF++, Tamil bpc {st['gemma4_e4b_raw_dev_before']['tamil_bpc']:.2f}). Corrected: raw prompts and bpc texts start with each tokenizer's defined start token. Material moves on raw choice tasks: {'; '.join(st['material']) or 'none'}" + (f" (still to re-run: {', '.join(st['pending'])})" if st["pending"] else "") + ". Models without a start token, ours included, are unchanged.",
         f"Preamble scoring. The harness scores the first line of a translation, and many chat models open with a line such as \"Here is the Tamil translation:\" before the translation, which scores near zero" + (f" (Gemma-3-1B in chat mode: {gem['share']}% of translations; {gem['task']} {gem['first']:.1f} first line against {gem['extracted']:.1f} extracted)" if gem else "") + f"; Gemini 3.5 Flash-Lite opens {pr['gemini']['share']}% of translations this way (IN22 Tamil-to-English {pr['gemini']['in22gen_ta_en_first']:.1f} first line, {pr['gemini']['in22gen_ta_en_extracted']:.1f} extracted). Corrected: an extracted score (preamble lines ending in a colon skipped, markdown removed) is reported beside the first-line score from the same generations, and every comparison claim uses it.",
-        f"Truncation caps sized for our tokenizer. Fixed caps of 160 tokens for translation, 48 for IndicQA and 256 for GSM8K fit our Tamil-efficient tokenizer but not others: {cp['llama_flores_refs_over_160']} of {cp['flores_items']} FLORES Tamil references need more than 160 Llama-3.2 tokens, and {cp['llama3b_chat_translations_cut_mid_character']} of Llama-3.2-3B's chat translations were cut mid-character; Gemini 3.5 Flash-Lite stopped at 256 tokens on {cp['gemini_gsm8k_cut_at_256']} of 160 GSM8K answers. Corrected: each tokenizer's cap is the larger of the base cap and 1.25 times its 99th-percentile reference length, GSM8K is 512, and generation stops once the scored line is complete. Moves: Llama-3.2-1B dev IndicQA contains {f3(cp['llama1b_dev_indicqa_contains_before'])} to {f3(cp['llama1b_dev_indicqa_contains_after'])}; Gemini GSM8K {f3(cp['gemini_gsm8k_before'])} to {f3(cp['gemini_gsm8k_after'])}. IndicQA keeps 48 tokens where the references are short, so full-sentence answers from chat models can still be cut.",
+        f"Truncation caps sized for our tokenizer. Fixed caps of 160 tokens for translation, 48 for IndicQA and 256 for GSM8K fit our Tamil-efficient tokenizer but not others: {cp['llama_flores_refs_over_160']} of {cp['flores_items']} FLORES Tamil references need more than 160 Llama-3.2 tokens, and in a capture under the old caps {cp['llama3b_chat_translations_cut_mid_character']} of {cp['captured']} FLORES chat translations from the 3B Llama-3.2 model (whose comparison run was not completed) were cut mid-character; Gemini 3.5 Flash-Lite stopped at 256 tokens on {cp['gemini_gsm8k_cut_at_256']} of 160 GSM8K answers. Corrected: each tokenizer's cap is the larger of the base cap and 1.25 times its 99th-percentile reference length, GSM8K is 512, and generation stops once the scored line is complete. Moves: Llama-3.2-1B dev IndicQA contains {f3(cp['llama1b_dev_indicqa_contains_before'])} to {f3(cp['llama1b_dev_indicqa_contains_after'])}; Gemini GSM8K {f3(cp['gemini_gsm8k_before'])} to {f3(cp['gemini_gsm8k_after'])}. IndicQA keeps 48 tokens where the references are short, so full-sentence answers from chat models can still be cut.",
         f"Also corrected in the same pass: GSM8K compared answers as strings ({gs['correct_answers_marked_wrong']} numerically correct answers such as \"42.00\" against \"42\" were marked wrong; now compared as numbers); bpc skipped the first token for tokenizers without a start token (our model counted {bp['tamil_heldout']}% of Tamil and {bp['tanglish_heldout']}% of Tanglish characters; now every character is scored after the end-of-sequence token); date-dependent chat templates now receive a fixed date."]
     return "**Methodology: measurement artifacts that moved numbers, and how each was corrected** (eval/HARNESS_NOTES.md has the evidence; numbers from eval/results/artifacts.json).\n\n" + "\n".join(f"{i}. {t}" for i, t in enumerate(items, 1))
 
@@ -269,7 +264,7 @@ def main():
         "Sources: eval/results/comparison_bare.md, comparison_chat.md, comparison_hosted.md, comparison_translation_rules.md, bos_before_after.md; scripts eval/baselines_round4.py, eval/serving_vs_bare.py, eval/render_comparison.py.",
     ])
     import re as _re
-    left = sorted(set(_re.findall(r"rulings? 20\d\d-\d\d-\d\d|Vignesh|confirmed by|by ruling", block)))
+    left = sorted(set(_re.findall(r"rulings? 20\d\d-\d\d-\d\d|Vignesh|confirmed by|by ruling|[Pp]rovisional|still running|to follow|as they complete|as each .{0,20} completes", block)))
     if left: raise MissingResult(f"card comparison block still carries internal process references: {left}")
     # card display names: the internal run label of this release is not a model name (the result files keep it)
     for internal, shown in (("tamil-lm-2b-instruct round 4c", "tamil-lm-2b-instruct"), ("tamil-lm-2b-instruct-r4", "tamil-lm-2b-instruct")):

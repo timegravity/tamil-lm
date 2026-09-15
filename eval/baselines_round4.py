@@ -456,7 +456,7 @@ def table(rows, mode, split, title_note):
             p = row.get("params"); ps = f"{p/1e9:.2f}B" if p else f"~{row['size_b']}B"
             sc = row["scores"][f"{mode}_{split}"]
             if row.get("not_run") or not sc:
-                why = row.get("not_run") or (row.get("chat_note") if mode == "chat" and row.get("chat_note") else "to follow (run in progress; rows are added as they land)")
+                why = row.get("not_run") or (row.get("chat_note") if mode == "chat" and row.get("chat_note") else "not run")
                 L.append(f"| {row['model']} | {ps} | {row['licence']} | | " + " | ".join([""] * len(metrics)) + f" | NOT RUN: {why}")
                 continue
             cells = []
@@ -482,21 +482,20 @@ def public_note(text):
     return t.strip()
 
 STATE_FOR_TABLES = {}
+def TR_closed():
+    import table_rank as _TR
+    return _TR.closed_set()
 def load_n(stage, split):
     p = os.path.join(HERE, "results", f"{stage}_{split}.json")
     return {f"{r['benchmark']}:{r['metric']}": r.get("n") for r in json.load(open(p))} if os.path.exists(p) else {}
 
-def running_models(rows):
-    """Models in the comparison that have not finished (not skipped, not removed, no complete result set)."""
-    return [r["model"] for r in rows if not r.get("not_run") and not r["model"].endswith("(locked TEST split)") and not r["scores"].get("raw_test") and not r["scores"].get("chat_test")]
 
 def table_t(rows, mode, split, title_note):
     """Tables (a) and (b), transposed (2026-09-14): metrics as rows with their direction and tie margin, models as columns with their
-    parameter count, a model-group row, best scores bold within the tie margin, provisional rows marked (eval/table_rank.py)."""
+    parameter count, a model-group row, best scores bold within the tie margin (eval/table_rank.py)."""
     import table_rank as TR
     metrics = METRICS_TEST + (["probe_letter", "probe_option_identify", "probe_option_meaning"] if mode == "raw" else [])
     shown = [r for r in rows if not r.get("not_run") and r["scores"].get(f"{mode}_{split}")]
-    running = running_models(rows)
     cols = []
     for cat in CATEGORIES:
         for r in [x for x in shown if x["category"] == cat]:
@@ -520,13 +519,9 @@ def table_t(rows, mode, split, title_note):
                 if n: ns.append(n)
         n = min(ns) if ns else (380 if m == "probe_letter" else 190)   # probe: identify source and meaning, 190 items each
         table_rows.append((m, SHORT[m], vals, n))
-    src = lambda m: "tpw" if m == "tok_per_word" else ("probe" if m.startswith("probe") else mode)
-    body, decisions = TR.transposed(cols, table_rows, running, src, state=STATE_FOR_TABLES)
+    body, decisions = TR.transposed(cols, table_rows)
     TR.write_decisions(f"{mode}_{split}", decisions)
-    L = [title_note, "", TR.CAPTION, ""] + body + [""]
-    note = TR.provisional_note(decisions)
-    if note: L += [note, ""]
-    return L
+    return [title_note, "", TR.CAPTION, ""] + body + [""]
 
 def render(res, a):
     import suite
@@ -541,7 +536,11 @@ def render(res, a):
         row = {"model": name, "id": mid, "licence": lic, "note": note, "category": cat, "size_b": size, "params": r.get("params"), "tok_per_word": r.get("tok_per_word"),
                "scores": {"raw_dev": load_scores(dev_stage(name), "dev", "dev"), "raw_test": load_scores(f"cmp_{name}", "test", "a"), "chat_test": load_scores(f"cmp_{name}_chat", "test", "b")},
                "not_run": (SKIP.get(name) or r.get("reason")) if (name in SKIP or r.get("skipped")) else None, "phases": ph, "chat_note": r.get("chat_note"), "raw_note": r.get("raw_note")}
-        # launch freeze 2026-09-14: a model still running shows as a placeholder in every table, never with partial numbers
+        # closed comparison (comparison_final.json, 2026-09-15): a model not run has no scores in any table, dev rows included
+        final_not_run = TR_closed().get("not_run", {})
+        if name in final_not_run and name not in SKIP:
+            row["not_run"] = final_not_run[name]; row["scores"] = {"raw_dev": {}, "raw_test": {}, "chat_test": {}}
+        # a model without its complete result set never shows partial numbers
         _need = (f"cmp_{name}_test.json", f"probe_cmp_{name}.json") + (() if (r.get("phases") or {}).get("chat_test") == "skipped" else (f"cmp_{name}_chat_test.json",))
         if not all(os.path.exists(os.path.join(HERE, "results", f)) for f in _need) and name not in SKIP and not r.get("skipped"):
             row["scores"] = {"raw_dev": {}, "raw_test": {}, "chat_test": {}}
@@ -574,14 +573,15 @@ def render(res, a):
             pre.append(f"{n} {100*a_/t_:.1f}% ({a_} of {t_}){note}")
     tb += ["Translations scored by their first line, the harness rule for every model. Share of each model's translations whose first line is a preamble rather than a translation (the first non-empty line ends with a colon after markdown emphasis is removed; eval/preamble_share.py), which score near zero under that rule: " + "; ".join(pre) + ". The extracted-body score for every model is in table (e) (comparison_translation_rules.md), and every comparison claim uses it.", ""]
     tb += ["Bits per character in table (b) is the same measurement as in table (a), except for our model: with no start token, the first text token is scored after the end-of-sequence token, and our chat mode loads the instruct tokenizer, whose end-of-sequence token is <|im_end|> rather than the base tokenizer's <|endoftext|>. Quote our bpc from table (a).", ""]
-    tb += ["System prompts used in table (b): " + "; ".join(f"{k}: \"{v}\"" for k, v in CHAT_HINTS.items()) + "; every other model: none (template only).", ""]
+    tb += ["System prompts used in table (b): " + "; ".join(f"{k}: \"{v}\"" for k, v in CHAT_HINTS.items() if k not in set(TR_closed().get("not_run", {})) | set(SKIP)) + "; every other model: none (template only).", ""]
     ours = next((r for r in rows if r["category"] == "ours"), None)
     if ours is not None:
         t = load_scores("sft4_final", "test")
         if t:
             rows = [dict(ours, model="tamil-lm-2b-instruct-r4 (locked TEST split)", scores={"raw_dev": t, "raw_test": t, "chat_test": {}}, probe_letter="no test split", probe_option_identify="no test split", probe_option_meaning="no test split")] + rows
     td = table(rows, "raw", "dev", ("# Dev split, up to 300 items per task (fewer where the dev split is smaller: IN22 204, IndicQA 255, Belebele 180, IndicSentiment 156, MMLU 100, GSM8K 40), identical raw prompts" + (" (harness version " + vd + ")" if v2_complete else " (legacy single-item harness, pre-versioning; re-run under the batched eager harness follows once every model has a v2 dev row)") + "; the test-split tables (raw and chat-template modes) carry our model now and each baseline as it lands. Our own model's row also shows its locked test numbers alongside, marked as test."))
-    modes = {n: (res.get(n) or {}).get("gen_mode") for n, *_ in MODELS if (res.get(n) or {}).get("gen_mode")}
+    _not_run = set(TR_closed().get("not_run", {})) | set(SKIP)
+    modes = {n: (res.get(n) or {}).get("gen_mode") for n, *_ in MODELS if (res.get(n) or {}).get("gen_mode") and n not in _not_run}
     checks = {n: (res.get(n) or {}).get("mode_check") or {} for n in modes}
     V1 = "check-v1: 300 items per generation task, thresholds chrF++ 2.0, F1 0.02, contains 0.03, accuracy 0.05"
     by_spec = {}
@@ -596,7 +596,7 @@ def render(res, a):
     ba = os.path.join(HERE, "results", "bos_before_after.json")
     if os.path.exists(ba):
         bj = json.load(open(ba)); moved = bj.get("material") or []
-        notes += ["Effect of the start token on raw-mode MILU, MMLU and Belebele, per re-run model (eval/results/bos_before_after.md): " + ("; ".join(moved) + "." if moved else f"no model moved by {bj.get('threshold_points')} accuracy points or more." ) + (" Still to re-run: " + ", ".join(bj["pending"]) + "." if bj.get("pending") else "")]
+        notes += ["Effect of the start token on raw-mode MILU, MMLU and Belebele, per re-run model (eval/results/bos_before_after.md): " + ("; ".join(moved) + "." if moved else f"no model moved by {bj.get('threshold_points')} accuracy points or more." )]
     notes += ["", "Degenerate-output check: a generation task is refused when at least half of its generations repeat the prompt's last line or loop on one line, when a translation task scores chrF++ below 2 with non-empty generations, or when bpc exceeds 4.8 (Tamil) or 6.0 (Tanglish); refused cells read \"degenerate\" and never show a score."]
     notes += [f"- degenerate, not scored: {x}" for x in dict.fromkeys(DEGENERATE_CELLS)] + [f"- flagged and reviewed, shown as measured: {public_note(x)}" for x in dict.fromkeys(REVIEWED_NOTES)]
     for lg in glob.glob(os.path.join(ROOT, "logs", "cmp_gpt-oss-20b_raw_test.log")):
@@ -628,7 +628,7 @@ def render_translation_rules(rows):
          "Extracted (rule extract-v1, eval/extract_score.py): markdown emphasis removed, leading empty lines and lines ending with a colon skipped, then the first remaining line. "
          "A model without its four translation captures yet is not listed; the captures for models that ran before capture existed come from a re-run of the translation tasks only.", "",
          TR.CAPTION, ""]
-    srcs = {}; running = running_models(rows)
+    srcs = {}
     for mode, suffix, title in (("raw", "", "identical raw prompts (as table a)"), ("chat", "_chat", "own chat template (as table b)")):
         cols, data = [], {}
         for r in rows:
@@ -659,11 +659,9 @@ def render_translation_rules(rows):
             for rule, rl in (("firstline", "first line"), ("extracted", "extracted")):
                 k = f"{t}:chrf++_{rule}"
                 trows.append((k, f"{tl} chrF++, {rl}", {c[0]: data[(c[0], k)] for c in cols}, None))
-        body, decisions = TR.transposed(cols, trows, running, lambda m, mode=mode: f"extract_{mode}")
+        body, decisions = TR.transposed(cols, trows)
         TR.write_decisions(f"translation_rules_{mode}", decisions)
         L += body + [""]
-        note = TR.provisional_note(decisions)
-        if note: L += [note, ""]
     for mode, vs in srcs.items():
         vs.discard(version_key("unrecorded"))
         if len(vs) > 1: raise MissingResult(f"table (e), {mode} mode: local rows come from generation harness versions {sorted(vs)}; one table, one version")

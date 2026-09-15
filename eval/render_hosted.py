@@ -30,7 +30,7 @@ def main():
     L = [f"# Hosted models, locked test split, generation tasks, chat mode ({time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())})", "",
          "Prompts and scoring are eval/suite.py's, unchanged; the answers came from the hosted API through OpenRouter at temperature 0 with reasoning off or minimal, "
          "each request pinned to the lab's own provider with fallbacks off (gpt-oss: any provider, cheapest first, provider recorded per response; it cannot switch reasoning off and runs at low effort, with 1,024 extra output tokens allowed for its reasoning). "
-         "Our model's column is its chat-template run from table (b). Every model in this table has run, so no row is provisional.", "",
+         "Our model's column is its chat-template run from table (b).", "",
          TR.CAPTION, ""]
     o = scores(OURS[1])
     total = 0.0; served_notes = []
@@ -64,7 +64,7 @@ def main():
         a_, t_ = PS.hosted_share(slug(model))
         served_notes.append(f"{name}: {sum(served.values())} requests served by {served_txt} ({policy}); reasoning tokens billed {rtok}; the scored split has {n_items} items; translations opening with a preamble line {100*a_/t_:.1f}% ({a_} of {t_}).")
     trows = [(f"{t}:{m}", label + (", first line" if m == "chrf++" else ""), vals[(t, m)], ns[(t, m)]) for t, m, label in COLS] + [(None, k, v, None) for k, v in text.items()]
-    body, decisions = TR.transposed(cols, trows, [], lambda m: None)
+    body, decisions = TR.transposed(cols, trows)
     TR.write_decisions("hosted_chat_test", decisions)
     L += body
     L += ["", "Notes:", ""] + [f"- {x}" for x in served_notes] + [

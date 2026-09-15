@@ -17,6 +17,8 @@ def scores(path):
 
 def main():
     models = sorted({f[len("cmp_"):-len("_v2_dev.json")] for f in os.listdir(PRE) if f.endswith("_v2_dev.json")}) if os.path.isdir(PRE) else []
+    fp = os.path.join(R, "comparison_final.json")   # closed comparison: models not run are not re-run models
+    if os.path.exists(fp): models = [m for m in models if m not in json.load(open(fp)).get("not_run", {})]
     L = [f"# Raw-mode MILU, MMLU and Belebele before and after the start-token rule bos-v1 ({time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime())})", "",
          "Before: harness e35cc70118 (log-likelihood prompts without any start token). After: bos-v1 (each tokenizer's defined start token first). Accuracy, raw prompts, same items. "
          f"Material: a change of at least {THRESHOLD:g} points. Models whose tokenizer defines no start token have identical inputs under both rules, so their rows must not move.", "",
@@ -39,7 +41,7 @@ def main():
         if any(c == "pending" for c in cells): pending.append(m)
         if moved: material.append(f"{m}: " + ", ".join(moved))
         L.append(f"| {m} | {st} | " + " | ".join(cells) + " |")
-    L += ["", "Material changes: " + ("; ".join(material) if material else "none so far") + ".", "Pending: " + (", ".join(pending) if pending else "none") + "."]
+    L += ["", "Material changes: " + ("; ".join(material) if material else "none") + "."] + (["Not re-run: " + ", ".join(pending) + "."] if pending else [])
     open(os.path.join(R, "bos_before_after.md"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     json.dump({"threshold_points": THRESHOLD, "material": material, "pending": pending, "models": models}, open(os.path.join(R, "bos_before_after.json"), "w"), indent=1)
     print("\n".join(L))
