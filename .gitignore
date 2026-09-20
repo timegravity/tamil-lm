@@ -11,3 +11,4 @@ ckpt/
 exports/
 logs/
 eval/results/*.json
+!eval/results/tokenizer_extension.json
