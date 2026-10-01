@@ -24,4 +24,4 @@ Purpose-specific models that start from tamil-lm-2b or from any model listed her
 
 ## Questions
 
-Open a GitHub issue.
+Open a GitHub issue, or ask the free Recipe Assistant at https://timegravity.ai/research/recipe (login required).
