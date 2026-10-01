@@ -2,7 +2,7 @@
 
 Tamil continued pretraining and instruction tuning of Qwen/Qwen3.5-2B-Base, by Timegravity Labs Private Limited (Coimbatore, India). Author: Vignesh Angurajan.
 
-Built a model with this recipe? Add it to [BUILT-WITH-THIS-RECIPE.md](BUILT-WITH-THIS-RECIPE.md).
+Built a model with this recipe? Add it to [BUILT-WITH-THIS-RECIPE.md](BUILT-WITH-THIS-RECIPE.md). Hardware, memory and what to expect on a smaller GPU: [docs/HARDWARE-AND-FAQ.md](docs/HARDWARE-AND-FAQ.md).
 
 The model card, with the data, evaluation, safety results and limitations, is on Hugging Face: https://huggingface.co/Timegravity/tamil-lm-2b-instruct (weights) and https://huggingface.co/Timegravity/tamil-lm-2b-gguf (quantised files and the CC BY-SA knowledge packs). MODEL_CARD.md in this repository is a copy.
 

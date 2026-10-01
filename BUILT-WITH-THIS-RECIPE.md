@@ -1,6 +1,8 @@
 # Built with this recipe
 
-Models trained by other people using the tamil-lm-2b recipe. This is a self-service list: if you built one, add yourself with a pull request. Nobody curates it, so nobody is missed.
+Models trained by other people using the tamil-lm-2b recipe. This is a self-service list: if you built one, add yourself with a pull request. Nobody curates it beyond a check that the model is public and has a card, so nobody is missed.
+
+Hardware, memory and what to expect on a smaller GPU: [docs/HARDWARE-AND-FAQ.md](docs/HARDWARE-AND-FAQ.md).
 
 ## How to add your model
 

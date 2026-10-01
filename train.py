@@ -3,8 +3,9 @@
 Recipe (baseline commit):
   LoRA r128 on attention (q,k,v,o) + DeltaNet (in_proj_qkv, in_proj_z, out_proj),
   r256 on MLP (gate,up,down). Embeddings and lm_head frozen. 8-bit AdamW,
-  lr 2e-4 cosine to 10% floor, warmup 3%. seq 4096, micro-batch 4, grad accum
-  to 65536 tokens/step. Grad checkpointing on. torch.compile on. MTP off. bf16.
+  lr 2e-4 cosine to 10% floor, warmup 3%. seq 4096, micro-batch 1, gradient
+  accumulation 16 (65,536 tokens per step at sequence length 4,096).
+  Grad checkpointing on. torch.compile on. MTP off. bf16.
 
 Power-cut-safe checkpointing:
   saves model/LoRA + optimizer + scheduler + RNG states + step + tokens seen +
