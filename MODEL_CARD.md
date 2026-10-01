@@ -22,6 +22,7 @@ tamil-lm-2b is Qwen/Qwen3.5-2B-Base adapted to Tamil by continued pretraining, a
 - Languages: Tamil, Tanglish, English.
 - Precision: bf16 weights. Trained on a single 48 GB GPU.
 - Licence: Apache License 2.0 (see Licence and attribution).
+- Models built with this recipe: https://github.com/timegravity/tamil-lm/blob/main/BUILT-WITH-THIS-RECIPE.md (a self-service list; listed models are their builders' own work, not reviewed or endorsed by Timegravity Labs).
 - Related: quantised GGUF files and the knowledge packs are in https://huggingface.co/Timegravity/tamil-lm-2b-gguf; the serving stack, evaluation harness, training scripts and knowledge base build scripts are in https://github.com/timegravity/tamil-lm; the Timegravity Tamil Android app is released from that repository.
 
 ## Intended use

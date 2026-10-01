@@ -2,6 +2,8 @@
 
 Tamil continued pretraining and instruction tuning of Qwen/Qwen3.5-2B-Base, by Timegravity Labs Private Limited (Coimbatore, India). Author: Vignesh Angurajan.
 
+Built a model with this recipe? Add it to [BUILT-WITH-THIS-RECIPE.md](BUILT-WITH-THIS-RECIPE.md).
+
 The model card, with the data, evaluation, safety results and limitations, is on Hugging Face: https://huggingface.co/Timegravity/tamil-lm-2b-instruct (weights) and https://huggingface.co/Timegravity/tamil-lm-2b-gguf (quantised files and the CC BY-SA knowledge packs). MODEL_CARD.md in this repository is a copy.
 
 ## What is in this repository
@@ -22,3 +24,6 @@ Without your own rule file the example rules apply; they are illustrative, not a
 
 ## Licence
 The code in this repository is released under the Apache License 2.0 (LICENSE). The model weights are Apache 2.0; the knowledge pack contents from CC BY-SA sources are CC BY-SA 4.0. The Android app is not open source.
+
+## Responsibility
+This repository contains a training recipe and the code to run it. Models trained by others using this recipe are their own work, released under their own names and licences. Timegravity Labs does not review, endorse, host or take responsibility for them, and may remove any listing from this repository. If you release a model, publish a model card with its limits and safety notes.
